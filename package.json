@@ -6,7 +6,7 @@
     "dev": "lsof -ti:3000 | xargs -r kill -9 && NEXT_DISABLE_ESLINT=1 next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint . --ext .ts,.tsx",
     "prisma": "prisma",
     "migrate": "prisma migrate dev",
     "studio": "prisma studio",
@@ -22,7 +22,8 @@
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev --name init_or_sync",
     "db:reset": "prisma migrate reset --force",
-    "db:seed": "node prisma/seed.mjs"
+    "db:seed": "node prisma/seed.mjs",
+    "lint:strict": "eslint src --ext .ts,.tsx --max-warnings=0"
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
@@ -65,7 +66,13 @@
     "@types/nodemailer": "^7.0.1",
     "@types/react": "18.3.5",
     "@types/react-dom": "18.3.0",
+    "@typescript-eslint/eslint-plugin": "^8.44.0",
+    "@typescript-eslint/parser": "^8.44.0",
     "autoprefixer": "^10.4.21",
+    "eslint": "^9.35.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-next": "^0.0.0",
+    "eslint-plugin-react-hooks": "^5.2.0",
     "husky": "^9.0.0",
     "postcss": "^8.5.6",
     "prettier": "3.3.3",
