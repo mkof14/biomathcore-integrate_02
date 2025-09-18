@@ -18,7 +18,11 @@
     "smoke:dev": "bash scripts/dev-smoke.sh",
     "seed:catalog": "tsx prisma/seed_catalog.ts",
     "seed:questionnaires": "tsx prisma/seed_questionnaires.ts",
-    "seed:dynamic-rules": "tsx prisma/seed_dynamic_rules.ts"
+    "seed:dynamic-rules": "tsx prisma/seed_dynamic_rules.ts",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev --name init_or_sync",
+    "db:reset": "prisma migrate reset --force",
+    "db:seed": "node prisma/seed.mjs"
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
