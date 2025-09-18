@@ -1,0 +1,150 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Catalog {
+  id          String  @id
+  slug        String  @unique
+  title       String
+  description String?
+  priority    Int
+  status      String  @default("ACTIVE")
+  price       Int     @default(5)
+}
+
+model Category {
+  id        Int       @id @default(autoincrement())
+  slug      String    @unique
+  title     String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime
+  Service   Service[]
+}
+
+model Questionnaire {
+  id         Int        @id @default(autoincrement())
+  slug       String     @unique
+  title      String
+  priority   Int        @default(0)
+  status     String
+  visibility String
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime
+  Response   Response[]
+}
+
+model Service {
+  id          Int      @id @default(autoincrement())
+  slug        String   @unique
+  title       String
+  description String?
+  categoryId  Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime
+  Category    Category @relation(fields: [categoryId], references: [id])
+}
+
+model Response {
+  id              String        @id @default(cuid())
+  questionnaireId Int
+  questionnaire   Questionnaire @relation(fields: [questionnaireId], references: [id], onDelete: Cascade)
+  userEmail       String?
+  answers         Json
+  createdAt       DateTime      @default(now())
+
+  @@index([questionnaireId])
+}
+
+enum RuleTargetType {
+  PLAN
+  CATEGORY
+  SERVICE
+}
+
+model QuestionnaireRule {
+  id        String         @id @default(cuid())
+  target    RuleTargetType
+  slug      String
+  priority  Int            @default(100)
+  fields    Json
+  active    Boolean        @default(true)
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+
+  @@index([target, slug])
+}
+
+model DashboardChecklistItem {
+  id        String   @id @default(cuid())
+  userEmail String   @db.Text
+  text      String
+  done      Boolean  @default(false)
+  /// display order (small first)
+  ord       Int      @default(0)
+  updatedAt DateTime @updatedAt
+
+  @@index([userEmail, ord])
+}
+
+model DashboardMetric {
+  id        String   @id @default(cuid())
+  userEmail String   @db.Text
+  /// e.g. 'heart_rate', 'steps', 'sleep_minutes'
+  key       String
+  value     Float
+  unit      String?  @db.Text
+  updatedAt DateTime @updatedAt
+
+  @@unique([userEmail, key])
+}
+
+model MemberPreference {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  corePlan     Boolean  @default(true)
+  totalCents   Int      @default(1900)
+  updatedAt    DateTime @updatedAt
+
+  selections   MemberSelection[]
+  checklist    MemberChecklistItem[]
+}
+
+model MemberSelection {
+  id         String  @id @default(cuid())
+  memberId   String
+  slug       String
+  priceCents Int     @default(500)
+
+  member     MemberPreference @relation(fields: [memberId], references: [id], onDelete: Cascade)
+
+  @@unique([memberId, slug])
+  @@index([memberId])
+}
+
+model MemberChecklistItem {
+  id        String   @id @default(cuid())
+  memberId  String
+  key       String
+  done      Boolean  @default(false)
+  updatedAt DateTime @updatedAt
+
+  member    MemberPreference @relation(fields: [memberId], references: [id], onDelete: Cascade)
+
+  @@unique([memberId, key])
+  @@index([memberId])
+}
+
+model QuestionnaireResponse {
+  id          String   @id @default(cuid())
+  userId      String?  // optional for now
+  plan        String
+  metricMode  String
+  answers     Json
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

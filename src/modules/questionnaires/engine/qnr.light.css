@@ -1,0 +1,23 @@
+.qnr-root{
+  background:#f6f7fb;
+  border:1px solid rgba(0,0,0,.06);
+  border-radius:14px;
+  padding:16px;
+}
+.qnr-root label{ color:#222; }
+.qnr-root input, .qnr-root textarea, .qnr-root select{
+  color:#111; background:#fff; border:1px solid rgba(0,0,0,.15);
+}
+.qnr-root input::placeholder, .qnr-root textarea::placeholder{
+  color:rgba(0,0,0,.35);
+}
+.qnr-root .grid{ gap:14px; }
+.qnr-root .grid > div label{ min-height:1.25rem; display:block; }
+
+/* defaults moved from inline style */
+.qnr-root{
+  --qa-bg: rgba(255,255,255,0.03);
+  --qa-border: rgba(255,255,255,0.55);
+  --qa-fieldset-border: rgba(255,255,255,0.32);
+  --qa-input-bg: rgba(255,255,255,0.20);
+}

@@ -1,0 +1,37 @@
+"use client";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+
+const items = [
+  { href: "/member", label: "Home" },
+  { href: "/member/dashboard", label: "Dashboard" },
+  { href: "/member/questionnaires", label: "Questionnaires" },
+  { href: "/member/catalog", label: "Catalog" },
+  { href: "/member/reports", label: "Reports" },
+  { href: "/member/profile", label: "Profile" },
+];
+
+export default function MemberSidebar(){
+  const path = usePathname();
+  return (
+    <aside className="min-h-screen bg-slate-100 border-r w-60 p-4">
+      <div className="text-sm font-semibold mb-3 text-slate-700">Member Zone</div>
+      <nav className="space-y-1 text-sm">
+        {items.map(it=>{
+          const active = path === it.href || (it.href !== "/member" && path?.startsWith(it.href));
+          return (
+            <Link
+              key={it.href}
+              href={it.href}
+              className={`block px-3 py-2 rounded ${
+                active ? "bg-sky-100 text-sky-800" : "hover:bg-slate-200"
+              }`}
+            >
+              {it.label}
+            </Link>
+          );
+        })}
+      </nav>
+    </aside>
+  );
+}
