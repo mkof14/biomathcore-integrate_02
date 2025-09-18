@@ -1,3 +1,5 @@
+import type { ReportInput, ReportResult } from "@/lib/report-engine/contracts/reportSchemas";
+import type { ReportInput, ReportResult } from "@/lib/report-engine/contracts/reportSchemas";
 /* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { randomUUID as uuid } from "crypto";
 

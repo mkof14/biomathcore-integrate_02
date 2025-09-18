@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 /* MONITORING FOUNDATION */
 import os from 'node:os';
 import { execSync } from 'node:child_process';
@@ -33,7 +34,7 @@ export async function dbHealth(): Promise<{ ok: boolean; ms?: number; error?: st
     // @ts-expect-error raw
     await prisma.$queryRawUnsafe('SELECT 1');
     return { ok: true, ms: Date.now() - t0 };
-  } catch (e: any) {
+  } catch (e: unknown) {
     return { ok: false, error: e?.message || 'db_error' };
   }
 }
