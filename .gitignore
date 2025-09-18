@@ -27,3 +27,10 @@ pnpm-debug.log*
 .env.development.local
 .env.test.local
 .env.production.local
+
+# backups and archives
+*.zip
+*.tar
+*.tar.gz
+*.bak
+*_backup/
