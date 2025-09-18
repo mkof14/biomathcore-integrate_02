@@ -1,36 +1,38 @@
-# dependencies
-/node_modules
-.pnp
-.pnp.js
-
-# testing
-/coverage
-
-# next.js
-/.next/
-/out/
-/dist
-
-# production
-/build
-
-# misc
+node_modules/
+.next/
+out/
+dist/
+coverage/
+.cache/
+.pnp.*
+.vscode/
+.idea/
 .DS_Store
-*.log
+.env*
+!.env.example
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
-
-# env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
-# backups and archives
-*.zip
-*.tar
-*.tar.gz
+logs/
+*.log
+playwright-report/
+test-results/
+*.trace.zip
+blob-report/
+*.dump
+*.sql
 *.bak
-*_backup/
+*.tar
+*.tgz
+*.zip
+*.csv
+*.tsv
+*.parquet
+*.json
+!package.json
+!tsconfig.json
+!playwright.config.*
+!jest.config.*
+!*.schema.json
+*.webp.tmp
