@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { PrismaClient } from "@prisma/client";
 
 const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };

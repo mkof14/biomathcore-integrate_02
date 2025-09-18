@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { NextResponse } from "next/server";
 import { promises as fs } from "fs";
 import path from "path";
@@ -16,4 +17,4 @@ export async function GET() {
   }
 }
 
-export {};
+export { /* TODO: implement or remove */ };

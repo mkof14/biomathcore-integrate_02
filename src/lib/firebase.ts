@@ -1,4 +1,4 @@
-// @ts-nocheck
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 // Safe stub: Firebase disabled in local dev until configured
 export const firebaseDisabled = true;
 export function initializeApp() { throw new Error("Firebase is disabled in this build"); }

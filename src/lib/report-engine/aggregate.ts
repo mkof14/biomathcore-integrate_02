@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 // Self-contained aggregate without external imports
 
 export type Answers = Record<string, any>;
@@ -66,13 +67,13 @@ export async function aggregateUserData(userId: string, scope: {
   const prof = getProfile(userId);
   const profile = { anonReports: !!prof.anonReports, units: prof.units };
 
-  const questionnaires: Record<string, Answers> = {};
+  const questionnaires: Record<string, Answers> = { /* TODO: implement or remove */ };
   for (const q of scope.includeQuestionnaires) {
-    questionnaires[q] = getAnswers(userId, q) ?? {};
+    questionnaires[q] = getAnswers(userId, q) ?? { /* TODO: implement or remove */ };
   }
 
-  const devices = scope.includeDevices ? (()=>{ const d = getUserDevices(userId); return d.series; })() : {};
-  const labs = scope.includeLabs ? { A1C: +(5.2 + Math.random()*1.2).toFixed(1), LDL: 90+Math.round(Math.random()*60) } : {};
+  const devices = scope.includeDevices ? (()=>{ const d = getUserDevices(userId); return d.series; })() : { /* TODO: implement or remove */ };
+  const labs = scope.includeLabs ? { A1C: +(5.2 + Math.random()*1.2).toFixed(1), LDL: 90+Math.round(Math.random()*60) } : { /* TODO: implement or remove */ };
   const sexualHealthAllowed = scope.includeSexualHealth && hasEntitlement(userId, "sexual_health");
 
   return { userId, profile, questionnaires, devices, labs, sexualHealthAllowed };

@@ -1,7 +1,8 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { NextResponse } from "next/server";
 import { listReports, createReport } from "@/lib/repos/reportRepo";
 
-const ok = (d:any,s=200)=>NextResponse.json({ok:true,data:d},{status:s});
+const ok = (d: unknown,s=200)=>NextResponse.json({ok:true,data:d},{status:s});
 const bad=(m:string,s=400)=>NextResponse.json({ok:false,error:m},{status:s});
 export const runtime="nodejs";
 
@@ -54,4 +55,4 @@ export async function POST(req: Request){
   return ok(row,201);
 }
 
-export {};
+export { /* TODO: implement or remove */ };

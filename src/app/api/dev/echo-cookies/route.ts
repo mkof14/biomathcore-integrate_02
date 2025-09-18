@@ -1,4 +1,4 @@
-// @ts-nocheck
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 export const runtime = "nodejs";
 export async function GET(req: Request) {
   const cookie = req.headers.get("cookie") || "";

@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 export function kgToLb(kg: number) { return kg * 2.2046226218; }
 export function lbToKg(lb: number) { return lb / 2.2046226218; }
 

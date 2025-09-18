@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { createAIRun } from "@/lib/repos/aiRepo";
 import { createVoice } from "@/lib/repos/voiceRepo";
 import { createDG } from "@/lib/repos/drugGeneRepo";
@@ -12,7 +13,7 @@ function backFill(fn: (i:number)=>Promise<any>, count:number) {
     // растянем по времени: часть — сегодня, часть — прошлые дни
     const offsetDays = Math.floor(Math.random()*10);
     const at = new Date(now - offsetDays*day - Math.floor(Math.random()*day));
-    tasks.push(fn(i).then((row:any)=>{ row.createdAt = at; row.updatedAt = at; return row; }));
+    tasks.push(fn(i).then((row: unknown)=>{ row.createdAt = at; row.updatedAt = at; return row; }));
   }
   return Promise.all(tasks);
 }

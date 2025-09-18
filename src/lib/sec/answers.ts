@@ -1,9 +1,10 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import crypto from "crypto";
 
 const KEY_HEX = process.env.ANSWERS_ENC_KEY; // 64 hex chars for 32 bytes key
 const KEY = KEY_HEX ? Buffer.from(KEY_HEX, "hex") : null;
 
-export async function encryptSensitive(obj: any) {
+export async function encryptSensitive(obj: unknown) {
   if (!KEY) return obj;
   const iv = crypto.randomBytes(12);
   const cipher = crypto.createCipheriv("aes-256-gcm", KEY, iv);
@@ -13,7 +14,7 @@ export async function encryptSensitive(obj: any) {
   return { __enc: true, alg: "AES-256-GCM", iv: iv.toString("base64"), tag: tag.toString("base64"), data: enc.toString("base64") };
 }
 
-export async function decryptSensitive(payload: any) {
+export async function decryptSensitive(payload: unknown) {
   if (!KEY || !payload?.__enc) return payload;
   const iv = Buffer.from(payload.iv, "base64");
   const tag = Buffer.from(payload.tag, "base64");

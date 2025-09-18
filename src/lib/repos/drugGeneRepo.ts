@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { randomUUID } from "crypto";
 
 export type DGRow = {
@@ -21,7 +22,7 @@ type ListArgs = {
 };
 
 function mem() {
-  const g = globalThis as any;
+  const g = globalThis as unknown;
   if (!g.__DG__) g.__DG__ = new Map<string, DGRow>();
   return g.__DG__ as Map<string, DGRow>;
 }
@@ -33,7 +34,7 @@ export async function createDG(input: Partial<DGRow>): Promise<DGRow> {
     drugName: (input.drugName || "UnknownDrug").toString(),
     geneSymbol: (input.geneSymbol || "GENE").toString(),
     relation: (input.relation || "inhibits").toString(),
-    status: (input.status as any) || "pending",
+    status: (input.status as unknown) || "pending",
     createdAt: now,
     updatedAt: now,
   };
@@ -54,7 +55,7 @@ export async function updateDG(id: string, patch: Partial<DGRow>): Promise<DGRow
     drugName: patch.drugName ?? cur.drugName,
     geneSymbol: patch.geneSymbol ?? cur.geneSymbol,
     relation: patch.relation ?? cur.relation,
-    status: (patch.status as any) ?? cur.status,
+    status: (patch.status as unknown) ?? cur.status,
     updatedAt: new Date().toISOString(),
   };
   m.set(id, next);
@@ -69,7 +70,7 @@ export async function deleteDG(id: string): Promise<DGRow> {
   return cur;
 }
 
-export async function listDG(args: ListArgs = {}): Promise<{data: DGRow[]; nextCursor?: string}> {
+export async function listDG(args: ListArgs = { /* TODO: implement or remove */ }): Promise<{data: DGRow[]; nextCursor?: string}> {
   const { id, q, status, from, to, limit = 20, cursor } = args;
   const all = Array.from(mem().values());
   let rows = all.sort((a,b)=> (a.createdAt < b.createdAt ? 1 : -1));
@@ -109,7 +110,7 @@ export async function seedDG(n = 5): Promise<number> {
       drugName: drugs[i % drugs.length],
       geneSymbol: genes[(i+1) % genes.length],
       relation: rels[i % rels.length],
-      status: (i%3===0 ? "curated" : "pending") as any
+      status: (i%3===0 ? "curated" : "pending") as unknown
     });
   }
   return mem().size;

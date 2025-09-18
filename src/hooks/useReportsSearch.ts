@@ -1,8 +1,8 @@
-// @ts-nocheck
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 "use client";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-type Row = { id: string; title?: string | null; content?: any; createdAt?: string };
+type Row = { id: string; title?: string | null; content?: unknown; createdAt?: string };
 type Resp = { ok: boolean; data?: Row[] };
 
 export function useReportsSearch(
@@ -34,7 +34,7 @@ export function useReportsSearch(
       const j: Resp = await r.json();
       if (!j.ok) throw new Error("Search failed");
       setRows(j.data || []);
-    } catch (e: any) {
+    } catch (e: unknown) {
       setError(e?.message || "Search error");
     } finally {
       setLoading(false);

@@ -23,7 +23,10 @@
     "prisma:migrate": "prisma migrate dev --name init_or_sync",
     "db:reset": "prisma migrate reset --force",
     "db:seed": "node prisma/seed.mjs",
-    "lint:strict": "eslint src --ext .ts,.tsx --max-warnings=0"
+    "lint:strict": "eslint src --ext .ts,.tsx --max-warnings=0",
+    "cleanup:api": "node tools/api-surface-cleanup.mjs",
+    "lint:active": "eslint src/lib src/hooks src/app/api src/app/auth --ext .ts,.tsx --max-warnings=0",
+    "lint:fix": "eslint . --ext .ts,.tsx --fix"
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",

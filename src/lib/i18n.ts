@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import en from "@/i18n/forms/en/forms.json";
 import es from "@/i18n/forms/es/forms.json";
 import ru from "@/i18n/forms/ru/forms.json";
@@ -13,7 +14,7 @@ export function normalizeLang(input?: string): "en"|"es"|"ru" {
   return "en";
 }
 
-export function localizeForm(form: any, slug: string, lang: string) {
+export function localizeForm(form: unknown, slug: string, lang: string) {
   const L = MAP[normalizeLang(lang)]?.[slug];
   if (!L) return form;
 
@@ -24,7 +25,7 @@ export function localizeForm(form: any, slug: string, lang: string) {
 
   // Заголовки секций по title
   if (L.sections && Array.isArray(clone.sections)) {
-    clone.sections = clone.sections.map((s: any) => {
+    clone.sections = clone.sections.map((s: unknown) => {
       const nt = L.sections[s.title] || s.title;
       return { ...s, title: nt };
     });

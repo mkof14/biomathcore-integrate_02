@@ -1,10 +1,11 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { aggregateUserData } from "./aggregate";
 import type { Report } from "./report-schema";
 
 export async function generateReport(userId: string, scope: Report["scope"]): Promise<Report> {
   const agg = await aggregateUserData(userId, scope);
 
-  const metrics: Record<string, unknown> = {};
+  const metrics: Record<string, unknown> = { /* TODO: implement or remove */ };
   const bmi = computeBMI(agg);
   if (bmi) metrics["BMI"] = bmi.toFixed(1);
   if (agg.devices?.steps) metrics["Avg steps (14d)"] = Math.round(agg.devices.steps.reduce((a,b)=>a+b,0)/agg.devices.steps.length);
@@ -15,7 +16,7 @@ export async function generateReport(userId: string, scope: Report["scope"]): Pr
   const sections = [
     { id:"overview", title:"Overview", html: `
       <p>Units: <strong>${agg.profile.units}</strong>. ${agg.profile.anonReports ? "Anonymous ID enabled." : "Named mode."}</p>
-      <p>Answered questionnaires: ${Object.keys(agg.questionnaires).filter(k=>Object.keys(agg.questionnaires[k]||{}).length>0).join(", ") || "none"}</p>
+      <p>Answered questionnaires: ${Object.keys(agg.questionnaires).filter(k=>Object.keys(agg.questionnaires[k]||{ /* TODO: implement or remove */ }).length>0).join(", ") || "none"}</p>
     ` },
     { id:"devices", title:"Devices", html: agg.devices?.steps ? `
       <p>Steps 14d: ${agg.devices.steps.join(", ")}</p>
@@ -45,7 +46,7 @@ export async function generateReport(userId: string, scope: Report["scope"]): Pr
   return report;
 }
 
-function computeBMI(agg: any): number|undefined {
+function computeBMI(agg: unknown): number|undefined {
   const p = agg.questionnaires?.patient;
   if (!p?.height_cm || !p?.weight_kg) return;
   const h = Number(p.height_cm)/100;
@@ -53,7 +54,7 @@ function computeBMI(agg: any): number|undefined {
   return w/(h*h);
 }
 
-function buildInsights(agg: any, bmi?: number) {
+function buildInsights(agg: unknown, bmi?: number) {
   const out: Array<{kind:"risk"|"trend"|"recommendation";label:string;detail:string}> = [];
   if (typeof bmi === "number") {
     if (bmi >= 30) out.push({ kind:"risk", label:"High BMI", detail:`BMI ${bmi.toFixed(1)} suggests obesity risk.` });
@@ -74,8 +75,8 @@ function buildInsights(agg: any, bmi?: number) {
   return out;
 }
 
-function buildSexualHealthHtml(agg: any) {
-  const sh = agg.questionnaires["sexual-health-male"] || agg.questionnaires["sexual-health-female"] || agg.questionnaires["sexual-health-general"] || {};
+function buildSexualHealthHtml(agg: unknown) {
+  const sh = agg.questionnaires["sexual-health-male"] || agg.questionnaires["sexual-health-female"] || agg.questionnaires["sexual-health-general"] || { /* TODO: implement or remove */ };
   const rows = [
     ["Night/Morning erections change", sh.nocturnal_erections_change ?? "—"],
     ["Sexual thoughts/fantasies change", sh.sexual_thoughts_change ?? "—"],

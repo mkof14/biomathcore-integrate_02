@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
@@ -6,7 +7,7 @@ export type ReportRow = {
   id: string;
   title: string;
   status: string | null;
-  content: any | null; // parsed JSON
+  content: unknown | null; // parsed JSON
   createdAt: string;
   updatedAt: string;
 };
@@ -35,7 +36,7 @@ export function useReports() {
         "/api/reports",
       );
       setData(resp.reports || []);
-    } catch (e: any) {
+    } catch (e: unknown) {
       setError(e?.message || "Failed to load");
     } finally {
       setLoading(false);
@@ -47,7 +48,7 @@ export function useReports() {
   }, [read]);
 
   const create = useCallback(
-    async (payload: { title: string; content?: any; status?: string }) => {
+    async (payload: { title: string; content?: unknown; status?: string }) => {
       await api("/api/reports", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -61,7 +62,7 @@ export function useReports() {
   const update = useCallback(
     async (
       id: string,
-      patch: Partial<{ title: string; content: any; status: string }>,
+      patch: Partial<{ title: string; content: unknown; status: string }>,
     ) => {
       await api(`/api/reports/${encodeURIComponent(id)}`, {
         method: "PATCH",

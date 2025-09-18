@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 export type ApiOk<T> = { ok: true; data: T };
 export type ApiFail = { ok: false; error: string; [k: string]: unknown };
 export type ApiResp<T> = ApiOk<T> | ApiFail;
@@ -7,7 +8,7 @@ export async function fetchJson<T=unknown>(
   init?: RequestInit
 ): Promise<T> {
   const r = await fetch(input, {
-    headers: { "Content-Type": "application/json", ...(init?.headers||{}) },
+    headers: { "Content-Type": "application/json", ...(init?.headers||{ /* TODO: implement or remove */ }) },
     credentials: "include",
     ...init,
   });

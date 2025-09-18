@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { NextRequest, NextResponse } from "next/server";
 import { getSecretsManager } from "../../../../lib/secrets";
 import { writeAudit } from "../../../../lib/audit";
@@ -21,7 +22,7 @@ export async function GET() {
  *  Создать/обновить секрет.
  *  Body: { key: string, value: string }
  */
-export async function POST(req: NextRequest) {  const body = await req.json().catch(() => ({}));
+export async function POST(req: NextRequest) {  const body = await req.json().catch(() => ({ /* TODO: implement or remove */ }));
   const key = String(body.key || "");
   const value = String(body.value || "");
   if (!key || !value) return NextResponse.json({ error: "key and value required" }, { status: 400 });
@@ -41,4 +42,4 @@ export async function DELETE(req: NextRequest) {
   return NextResponse.json({ ok: true });
 }
 
-export {};
+export { /* TODO: implement or remove */ };

@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/app/lib/prisma";
@@ -29,12 +30,12 @@ export async function POST(req: Request) {
         userId: null,
         plan: payload.plan,
         metricMode: payload.metricMode,
-        answers: mergedAnswers as any,
+        answers: mergedAnswers as unknown,
       },
     });
 
     return NextResponse.json({ ok: true, id: record.id }, { status: 200 });
-  } catch (e: any) {
+  } catch (e: unknown) {
     return NextResponse.json({ ok: false, error: e.message }, { status: 400 });
   }
 }

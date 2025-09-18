@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 export const STORAGE_KEY = "bmc.catalog.selected";
 
 export function loadSelected(): string[] {
@@ -17,5 +18,5 @@ export function saveSelected(slugs: string[]) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(slugs));
     // Notify other tabs/pages and listeners
     window.dispatchEvent(new Event("bmc-catalog-changed"));
-  } catch {}
+  } catch { /* TODO: implement or remove */ }
 }

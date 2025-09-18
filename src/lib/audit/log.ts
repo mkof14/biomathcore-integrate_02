@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import prisma from "@/lib/prisma";
 import { Prisma } from "@prisma/client";
 

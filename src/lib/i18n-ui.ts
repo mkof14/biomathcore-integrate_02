@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 "use client";
 
 // Поддерживаемые UI-языки
@@ -44,6 +45,6 @@ const M = {
 
 export function tUI(key: keyof typeof M["en"], lang?: UILang): string {
   const l = lang ?? getLang();
-  const dict = (M as any)[l] ?? M.en;
+  const dict = (M as unknown)[l] ?? M.en;
   return dict[key] ?? String(key);
 }

@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { db } from "./firebase";
 import { collection, getDocs } from "firebase/firestore";
 

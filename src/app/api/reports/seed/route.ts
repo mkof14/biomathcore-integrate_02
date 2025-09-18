@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { NextResponse } from "next/server";
 import { getServerSessionSafe } from "@/lib/auth";
 import prisma from "@/lib/prisma";
@@ -29,4 +30,4 @@ export async function POST() {
   return NextResponse.json({ ok: true, report: r });
 }
 
-export {};
+export { /* TODO: implement or remove */ };

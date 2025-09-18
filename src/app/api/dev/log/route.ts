@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { logger } from "@/lib/logger";
 export async function GET() {
   logger.info("dev.log ping", { at: new Date().toISOString() });

@@ -1,7 +1,8 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { NextResponse } from "next/server";
 
 // простое in-memory «хранилище» для девелопмента
-const store: any[] = [];
+const store: unknown[] = [];
 
 export async function POST(req: Request) {
   const body = await req.json();

@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { NextResponse } from "next/server";
 import { listAIRuns } from "@/lib/repos/aiRepo";
 import { listVoice } from "@/lib/repos/voiceRepo";
@@ -5,7 +6,7 @@ import { listDG } from "@/lib/repos/drugGeneRepo";
 
 export const runtime = "nodejs";
 
-function bucket(items:any[], field:string) {
+function bucket(items: unknown[], field:string) {
   const map = new Map<string, number>();
   for (const it of (items||[])) {
     const d = new Date(it[field] ?? it.createdAt ?? Date.now());
@@ -31,7 +32,7 @@ export async function GET(req: Request) {
     const mVO = bucket(voice?.data || [], "createdAt");
     const mDG = bucket(dg?.data || [], "createdAt");
 
-    const out:any[] = [];
+    const out: unknown[] = [];
     const now = new Date();
     for (let i = days - 1; i >= 0; i--) {
       const d = new Date(now);
@@ -46,7 +47,7 @@ export async function GET(req: Request) {
     }
 
     return NextResponse.json({ ok: true, data: out }, { headers: { "Cache-Control": "no-store" } });
-  } catch (e:any) {
+  } catch (e: unknown) {
     return NextResponse.json({ ok:false, error:e?.message || "failed" }, { status: 500 });
   }
 }

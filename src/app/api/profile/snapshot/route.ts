@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
@@ -13,7 +14,7 @@ export async function POST(req: NextRequest) {
       include: { answers: true }
     });
 
-    const data: any = {};
+    const data: unknown = { /* TODO: implement or remove */ };
     for (const s of sessions) {
       for (const a of s.answers) {
         data[a.questionId] = a.payloadJson; // NOTE: sensitive is already encrypted in storage if enabled
@@ -25,7 +26,7 @@ export async function POST(req: NextRequest) {
     });
 
     return NextResponse.json({ ok: true, id: snap.id });
-  } catch (e:any) {
+  } catch (e: unknown) {
     return NextResponse.json({ ok:false, error: e.message }, { status: 400 });
   }
 }

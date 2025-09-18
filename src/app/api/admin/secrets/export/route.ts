@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { NextResponse } from "next/server";
 import { getSecretsManager } from "../../../../../lib/secrets";
 export const runtime = "nodejs";
@@ -45,4 +46,4 @@ const base = apiIdx >= 0 ? parts.slice(apiIdx + 1) : parts;
   });
 }
 
-export {};
+export { /* TODO: implement or remove */ };

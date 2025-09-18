@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth/options";
@@ -15,4 +16,4 @@ export async function DELETE() {
   return NextResponse.json({ ok: true, deleted: res.count });
 }
 
-export {};
+export { /* TODO: implement or remove */ };

@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 export function getDevUserIdFromHeaders(req: Request): string | null {
   try {
     const raw = req.headers.get("cookie") || "";

@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { resetAI } from "@/lib/repos/aiRepo";
 import { resetVoice } from "@/lib/repos/voiceRepo";
 import { resetDG } from "@/lib/repos/drugGeneRepo";

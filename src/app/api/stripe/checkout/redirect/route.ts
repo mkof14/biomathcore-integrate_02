@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 
@@ -19,7 +20,7 @@ function resolvePriceId(inputPriceId?: string, plan?: string): string | null {
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json().catch(() => ({}));
+    const body = await req.json().catch(() => ({ /* TODO: implement or remove */ }));
     const priceId: string | undefined = body?.priceId;
     const plan: string | undefined = body?.plan;
     const userId: string | undefined = body?.userId;
@@ -45,7 +46,7 @@ export async function POST(req: NextRequest) {
 
     if (session.url) return NextResponse.redirect(session.url, 302);
     return new NextResponse("No Checkout URL", { status: 502 });
-  } catch (err: any) {
+  } catch (err: unknown) {
     return new NextResponse(`Checkout redirect error: ${err?.message ?? "Unknown error"}`, { status: 500 });
   }
 }

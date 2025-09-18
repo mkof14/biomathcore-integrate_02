@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { NextResponse } from "next/server";
 import allCategories from "@/components/data/allCategories";
 import { slugify } from "@/lib/slug";
@@ -11,7 +12,7 @@ type ApiCategory = {
 
 export async function GET() {
   // Single source of truth: derive categories from allCategories
-  const categories: ApiCategory[] = (allCategories || []).map((c: any) => ({
+  const categories: ApiCategory[] = (allCategories || []).map((c: unknown) => ({
     slug: slugify(c?.name ?? ""),
     name: c?.name ?? "",
     blurb:
@@ -27,4 +28,4 @@ export async function GET() {
   );
 }
 
-export {};
+export { /* TODO: implement or remove */ };

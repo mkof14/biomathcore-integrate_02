@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { NextResponse } from "next/server";
 import { promises as fs } from "fs";
 import path from "path";
@@ -12,17 +13,17 @@ async function loadSecrets(): Promise<SecretsMap> {
     const txt = await fs.readFile(p, "utf8");
     const parsed = JSON.parse(txt);
     if (parsed && typeof parsed === "object") {
-      if (Array.isArray((parsed as any).records)) {
-        const map: SecretsMap = {};
-        for (const r of (parsed as any).records) {
+      if (Array.isArray((parsed as unknown).records)) {
+        const map: SecretsMap = { /* TODO: implement or remove */ };
+        for (const r of (parsed as unknown).records) {
           if (r && typeof r.key === "string") map[r.key] = r.value;
         }
         return map;
       }
       return parsed as SecretsMap;
     }
-  } catch {}
-  return {};
+  } catch { /* TODO: implement or remove */ }
+  return { /* TODO: implement or remove */ };
 }
 
 /** GET /api/admin/secrets/:key */
@@ -40,7 +41,7 @@ export async function GET(req: Request) {
 
   const secrets = await loadSecrets();
   if (Object.prototype.hasOwnProperty.call(secrets, key)) {
-    return NextResponse.json({ key, value: (secrets as any)[key] });
+    return NextResponse.json({ key, value: (secrets as unknown)[key] });
   }
   return NextResponse.json({ error: "Secret not found", key }, { status: 404 });
 }

@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 export const runtime = "nodejs";
 const boot = Date.now();
 export async function GET() {

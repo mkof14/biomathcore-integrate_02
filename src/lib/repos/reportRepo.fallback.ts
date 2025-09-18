@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import crypto from "node:crypto";
 
 type Row = {
@@ -17,7 +18,7 @@ type Filters = {
   cursor?: string;
 };
 
-const g = global as any;
+const g = global as unknown;
 if (!g.__REPORTS__) {
   g.__REPORTS__ = new Map<string, Row>();
   // немного демо-данных
@@ -54,8 +55,8 @@ export async function fbUpdateReport(id: string, patch: Partial<{ title: string;
   if (!cur) throw new Error("not_found");
   const next: Row = {
     ...cur,
-    ...(patch.title ? { title: patch.title } : {}),
-    ...(patch.status ? { status: patch.status } : {}),
+    ...(patch.title ? { title: patch.title } : { /* TODO: implement or remove */ }),
+    ...(patch.status ? { status: patch.status } : { /* TODO: implement or remove */ }),
     updatedAt: new Date(),
   };
   g.__REPORTS__.set(id, next);

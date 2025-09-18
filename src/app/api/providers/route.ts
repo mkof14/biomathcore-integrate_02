@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 // src/app/api/providers/route.ts
 import { NextResponse } from "next/server";
 import { PROVIDERS } from "./_data";

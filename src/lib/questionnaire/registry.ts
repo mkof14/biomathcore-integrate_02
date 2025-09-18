@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 export type QOption = { value: string; label: string };
 export type QBase = {
   id: string;
@@ -17,7 +18,7 @@ export type QSection = { id: string; title: string; description?: string; questi
 export type QSchema = {
   id: string; version: number; title: string; description?: string;
   sections: QSection[];
-  logicRules?: Array<{ when: { questionId: string; operator: "equals"|"notEquals"|"lt"|"gt"|"in"|"notIn"; value: any }, then: { hideQuestionIds?: string[] } }>;
+  logicRules?: Array<{ when: { questionId: string; operator: "equals"|"notEquals"|"lt"|"gt"|"in"|"notIn"; value: unknown }, then: { hideQuestionIds?: string[] } }>;
 };
 
 export const QUESTIONNAIRE_REGISTRY: Record<string, QSchema> = {

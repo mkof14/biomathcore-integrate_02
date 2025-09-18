@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 export type QuestionnaireSchema = {
   id: string;
   version: number;
@@ -38,7 +39,7 @@ export type LogicRule = {
   when: {
     questionId: string;
     operator: "equals" | "notEquals" | "includes" | "gt" | "lt";
-    value: any;
+    value: unknown;
   };
   then: {
     showQuestionIds?: string[];

@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 
@@ -45,7 +46,7 @@ async function createSession(priceId: string, userId?: string) {
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json().catch(() => ({}));
+    const body = await req.json().catch(() => ({ /* TODO: implement or remove */ }));
     const priceId = resolvePriceId(body?.priceId, body?.plan);
     const userId = body?.userId as string | undefined;
     if (!priceId) return NextResponse.json({ error: "No valid priceId resolved" }, { status: 400 });
@@ -66,7 +67,7 @@ export async function POST(req: NextRequest) {
       redirect_url: session.url
     };
     return NextResponse.json(payload, { status: 200 });
-  } catch (err: any) {
+  } catch (err: unknown) {
     return NextResponse.json({ error: String(err?.message || err) }, { status: 500 });
   }
 }
@@ -82,7 +83,7 @@ export async function GET(req: NextRequest) {
     if (!priceId) return new NextResponse("No valid priceId resolved", { status: 400 });
     const session = await createSession(priceId, userId);
     return NextResponse.redirect(session.url, 302);
-  } catch (err: any) {
+  } catch (err: unknown) {
     return new NextResponse(String(err?.message || err), { status: 500 });
   }
 }

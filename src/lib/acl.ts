@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 export type SessionLike = { user?: { role?: string } } | null;
 
 export function isAdmin(session: SessionLike) {

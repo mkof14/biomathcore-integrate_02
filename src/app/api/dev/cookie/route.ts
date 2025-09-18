@@ -1,7 +1,7 @@
-// @ts-nocheck
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 export const runtime = "nodejs";
 export async function POST(req: Request) {
-  const body = await req.json().catch(()=>({}));
+  const body = await req.json().catch(()=>({ /* TODO: implement or remove */ }));
   const userId = (typeof body?.userId === "string" && body.userId.trim()) || "dev-user-001";
   const payload = JSON.stringify({ ok:true, userId });
   return new Response(payload, {

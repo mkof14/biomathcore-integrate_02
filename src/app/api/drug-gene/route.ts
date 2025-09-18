@@ -1,8 +1,9 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { NextResponse } from "next/server";
 import { listDG, createDG } from "@/lib/repos/drugGeneRepo";
 
 export const runtime = "nodejs";
-const ok = (d:any)=> NextResponse.json({ ok:true, data:d });
+const ok = (d: unknown)=> NextResponse.json({ ok:true, data:d });
 const bad = (m:string,c=400)=> NextResponse.json({ ok:false, error:m }, { status:c });
 
 export async function GET(req: Request){
@@ -19,7 +20,7 @@ export async function GET(req: Request){
 }
 
 export async function POST(req: Request){
-  const body = await req.json().catch(()=> ({}));
+  const body = await req.json().catch(()=> ({ /* TODO: implement or remove */ }));
   if (!body || typeof body !== "object") return bad("invalid_body");
   const row = await createDG(body);
   return ok(row);

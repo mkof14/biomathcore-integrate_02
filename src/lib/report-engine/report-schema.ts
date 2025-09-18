@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 export type InsightKind = "risk" | "trend" | "recommendation";
 export type Report = {
   id: string;

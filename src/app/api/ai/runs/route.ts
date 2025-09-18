@@ -1,8 +1,9 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { NextResponse } from "next/server";
 import { listAIRuns, createAIRun } from "@/lib/repos/aiRepo";
 
 export const runtime = "nodejs";
-const ok = (data:any) => NextResponse.json({ ok:true, data });
+const ok = (data: unknown) => NextResponse.json({ ok:true, data });
 
 export async function GET(req: Request) {
   const url = new URL(req.url);
@@ -15,7 +16,7 @@ export async function GET(req: Request) {
 }
 
 export async function POST(req: Request) {
-  const body = await req.json().catch(()=> ({}));
+  const body = await req.json().catch(()=> ({ /* TODO: implement or remove */ }));
   const row = await createAIRun(body);
   return ok(row);
 }

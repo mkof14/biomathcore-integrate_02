@@ -1,11 +1,12 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
 type Body = { questionnaireKey?: string; visibility?: "anonymous" | "identified" };
 
 export async function POST(req: Request) {
-  let body: Body = {};
-  try { body = await req.json(); } catch {}
+  let body: Body = { /* TODO: implement or remove */ };
+  try { body = await req.json(); } catch { /* TODO: implement or remove */ }
 
   const questionnaireKey = (body.questionnaireKey || "").trim();
   if (!questionnaireKey) {

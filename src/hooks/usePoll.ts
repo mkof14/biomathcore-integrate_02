@@ -1,4 +1,4 @@
-// @ts-nocheck
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 "use client";
 import { useEffect, useRef } from "react";
 

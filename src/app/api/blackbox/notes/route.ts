@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { NextResponse } from "next/server";
 import { listNotes, createNote } from "@/lib/repos/blackboxRepo";
 import { isDevMock } from "@/lib/dev";
@@ -12,7 +13,7 @@ export async function GET() {
 
 export async function POST(req: Request) {
   if (!isDevMock(req)) return NextResponse.json({ ok:false, error:"unauthorized" }, { status:401 });
-  const body = await req.json().catch(() => ({}));
+  const body = await req.json().catch(() => ({ /* TODO: implement or remove */ }));
   const title = typeof body?.title === "string" ? body.title.trim() : "";
   const content = typeof body?.content === "string" ? body.content : "";
   if (!title) return NextResponse.json({ ok:false, error:"title_required" }, { status:400 });

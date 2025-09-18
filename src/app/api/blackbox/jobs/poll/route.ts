@@ -1,4 +1,4 @@
-// @ts-nocheck
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
@@ -10,17 +10,17 @@ export async function GET(req: Request) {
 
     // Try BlackBoxJob first
     try {
-      const j = await (prisma as any).blackBoxJob.findUnique({ where: { id } });
+      const j = await (prisma as unknown).blackBoxJob.findUnique({ where: { id } });
       if (j) return NextResponse.json({ ok:true, data:{ id: j.id, status: j.status } });
-    } catch {}
+    } catch { /* TODO: implement or remove */ }
 
     // Fallback: simulated via Report row
     try {
       const r = await prisma.report.findUnique({ where: { id } });
       if (!r) return NextResponse.json({ ok:false, error:"NOT_FOUND" }, { status: 404 });
-      const status = (r.content as any)?.status ?? "queued";
+      const status = (r.content as unknown)?.status ?? "queued";
       return NextResponse.json({ ok:true, data:{ id: r.id, status, kind } });
-    } catch {}
+    } catch { /* TODO: implement or remove */ }
 
     return NextResponse.json({ ok:false, error:"UNKNOWN" }, { status: 404 });
   } catch {

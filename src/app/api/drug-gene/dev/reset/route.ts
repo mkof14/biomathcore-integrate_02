@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { NextResponse } from "next/server";
 import { resetDG } from "@/lib/repos/drugGeneRepo";
 import { withLog } from "@/lib/api/log";

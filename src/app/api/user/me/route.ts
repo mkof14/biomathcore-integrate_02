@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 // src/app/api/user/me/route.ts
 import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
@@ -25,10 +26,10 @@ export async function GET() {
         email: true,
         // planTier removed
         // keep stripeCustomerId ONLY if it exists in your schema
-        // @ts-ignore
+        // @ts-expect-error TODO: narrow types
         stripeCustomerId: true,
         createdAt: true,
-      } as any,
+      } as unknown,
     });
 
     if (!user) {

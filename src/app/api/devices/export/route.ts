@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import JSZip from "jszip";
 import { Parser as Json2Csv } from "@json2csv/plainjs";
 import { listDevices } from "@/lib/repos/deviceRepo";

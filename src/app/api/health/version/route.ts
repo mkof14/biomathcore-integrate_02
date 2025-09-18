@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { NextResponse } from "next/server";
 export const runtime = "nodejs";
 const startedAt = process.env.__STARTED_AT || (process.env.__STARTED_AT = new Date().toISOString());

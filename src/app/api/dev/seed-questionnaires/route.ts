@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
@@ -22,7 +23,7 @@ export async function POST() {
     }
 
     return NextResponse.json({ ok: true, created: data.length });
-  } catch (e:any) {
+  } catch (e: unknown) {
     console.error("seed error:", e);
     return NextResponse.json({ ok: false, error: e.message }, { status: 500 });
   }

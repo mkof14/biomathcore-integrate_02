@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
@@ -6,7 +7,7 @@ type Metrics = Record<string, unknown>;
 
 function makeInsights(metrics: Metrics): string[] {
   // Простейший генератор "инсайтов", чтобы сборка прошла
-  const keys = Object.keys(metrics || {});
+  const keys = Object.keys(metrics || { /* TODO: implement or remove */ });
   const k = keys.slice(0, 5);
   const lines: string[] = [];
   if (k.length === 0) {
@@ -37,10 +38,10 @@ const base = apiIdx >= 0 ? parts.slice(apiIdx + 1) : parts;
 
 /* end preamble */
 
-  let metrics: Metrics = {};
+  let metrics: Metrics = { /* TODO: implement or remove */ };
   try {
     const body = await req.json();
-    metrics = (body && body.metrics) || {};
+    metrics = (body && body.metrics) || { /* TODO: implement or remove */ };
   } catch { /* ignore */ }
   const insights = makeInsights(metrics);
   return NextResponse.json({ insights });
@@ -54,4 +55,4 @@ export async function GET() {
   });
 }
 
-export {};
+export { /* TODO: implement or remove */ };

@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { NextResponse } from "next/server";
 import { createDG } from "@/lib/repos/drugGeneRepo";
 import { withLog } from "@/lib/api/log";
@@ -9,6 +10,6 @@ export const POST = withLog(async () => {
     { drug: "Clopidogrel", gene: "CYP2C19", status: "queued" },
     { drug: "Abacavir", gene: "HLA-B*57:01", status: "done" },
   ];
-  for (const s of samples) await createDG(s as any);
+  for (const s of samples) await createDG(s as unknown);
   return NextResponse.json({ ok:true, created: samples.length });
 }, "dg.dev.seed");

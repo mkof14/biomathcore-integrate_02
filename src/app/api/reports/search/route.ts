@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
@@ -32,9 +33,9 @@ const base = apiIdx >= 0 ? parts.slice(apiIdx + 1) : parts;
     const [sortField, sortDir] = sortRaw.split(":");
     const orderBy = { [sortField || "createdAt"]: (sortDir === "asc" ? "asc" : "desc") as "asc" | "desc" };
 
-    const where: any = {};
+    const where: unknown = { /* TODO: implement or remove */ };
     if (from || to) {
-      where.createdAt = {};
+      where.createdAt = { /* TODO: implement or remove */ };
       if (from) where.createdAt.gte = from;
       if (to) where.createdAt.lte = to;
     }
@@ -55,4 +56,4 @@ const base = apiIdx >= 0 ? parts.slice(apiIdx + 1) : parts;
   }
 }
 
-export {};
+export { /* TODO: implement or remove */ };

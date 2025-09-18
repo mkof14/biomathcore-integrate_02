@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 export type Role = "SuperAdmin"|"Analyst"|"TechOperator"|"ContentManager"|"Moderator";
 
 export const permissions: Record<Role, string[]> = {

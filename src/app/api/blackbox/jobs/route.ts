@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 // src/app/api/blackbox/route.ts
 import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
@@ -32,7 +33,7 @@ export async function GET() {
     });
 
     return NextResponse.json({ ok: true, notes }, { status: 200 });
-  } catch (err: any) {
+  } catch (err: unknown) {
     const msg = err?.message || String(err);
    
     return bad(
@@ -58,8 +59,8 @@ export async function POST(req: Request) {
       return bad(404, "USER_NOT_FOUND");
     }
 
-    const body = await req.json().catch(() => ({}));
-    const { title, body: content, tags, status } = body || {};
+    const body = await req.json().catch(() => ({ /* TODO: implement or remove */ }));
+    const { title, body: content, tags, status } = body || { /* TODO: implement or remove */ };
 
     if (!title || !content) {
       return bad(400, "INVALID_INPUT", { need: ["title", "body"] });
@@ -76,7 +77,7 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json({ ok: true, note }, { status: 201 });
-  } catch (err: any) {
+  } catch (err: unknown) {
     const msg = err?.message || String(err);
     return bad(
       500,

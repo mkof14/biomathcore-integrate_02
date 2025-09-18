@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import type { Report } from "./report-schema";
 import { generateReport } from "./generate";
 
