@@ -43,6 +43,7 @@
     "bcryptjs": "^3.0.2",
     "clsx": "^2.1.1",
     "date-fns": "4.1.0",
+    "dotenv-safe": "^9.1.0",
     "firebase": "12.1.0",
     "json2csv": "6.0.0-alpha.2",
     "jspdf": "3.0.2",

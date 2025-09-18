@@ -6,6 +6,7 @@ export type AuditEvent = {
 };
 
 export async function audit(evt: AuditEvent): Promise<void> {
-  // eslint-disable-next-line no-console
-  console.debug('[audit]', { ...evt, ts: evt.ts ?? Date.now() });
+  if (process.env.NODE_ENV !== "production") {
+    console.debug("[audit]", { ...evt, ts: evt.ts ?? Date.now() });
+  }
 }

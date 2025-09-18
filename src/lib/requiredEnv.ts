@@ -1,9 +1,13 @@
+import dotenvSafe from "dotenv-safe";
+import path from "path";
+
+dotenvSafe.config({
+  example: path.resolve(process.cwd(), ".env.example"),
+  allowEmptyValues: false,
+});
+
 export function requiredEnv(key: string): string {
-  const v = process.env[key];
-  if (!v || v.trim() === '') {
-    const err = new Error(`Missing required env: ${key}`);
-    (err as any).status = 500;
-    throw err;
-  }
-  return v;
+  const val = process.env[key];
+  if (!val) throw new Error(`Missing required env: ${key}`);
+  return val;
 }
