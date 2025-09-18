@@ -26,7 +26,10 @@
     "lint:strict": "eslint src --ext .ts,.tsx --max-warnings=0",
     "cleanup:api": "node tools/api-surface-cleanup.mjs",
     "lint:active": "eslint src/lib src/hooks src/app/api src/app/auth --ext .ts,.tsx --max-warnings=0",
-    "lint:fix": "eslint . --ext .ts,.tsx --fix"
+    "lint:fix": "eslint . --ext .ts,.tsx --fix",
+    "test:smoke": "playwright test -g @smoke",
+    "status:curl": "curl -sS http://localhost:3000/api/status | jq .",
+    "metrics:curl": "curl -sS http://localhost:3000/api/metrics | jq ."
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
