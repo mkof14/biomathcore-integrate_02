@@ -1,4 +1,4 @@
-// @ts-nocheck
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 export async function searchReports(params: {
   q?: string; from?: string; to?: string; limit?: number; sort?: string;
 }) {

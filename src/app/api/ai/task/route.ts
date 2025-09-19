@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 export const runtime = "nodejs";
 export async function POST() {
   return new Response(JSON.stringify({ ok: true, created: true, id: crypto.randomUUID?.() ?? String(Date.now()) }), {

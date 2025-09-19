@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 type Level = "debug" | "info" | "warn" | "error";
 
 function ts() { return new Date().toISOString(); }

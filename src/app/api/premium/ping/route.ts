@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { NextResponse } from "next/server";
 import { requireActive } from "@/lib/guards/subscription";
 import { getServerSessionSafe } from "@/lib/auth";

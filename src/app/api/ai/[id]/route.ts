@@ -1,8 +1,9 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { NextResponse } from "next/server";
 import { getAIRun, updateAIRun, deleteAIRun } from "@/lib/repos/aiRepo";
 
 export const runtime = "nodejs";
-const ok = (d:any)=> NextResponse.json({ ok:true, data:d });
+const ok = (d: unknown)=> NextResponse.json({ ok:true, data:d });
 const nf = ()=> NextResponse.json({ ok:false, error:"not_found" }, { status:404 });
 const bad = (m:string,c=400)=> NextResponse.json({ ok:false, error:m }, { status:c });
 
@@ -12,7 +13,7 @@ export async function GET(_req: Request, { params }: { params: { id: string }}) 
   return ok(row);
 }
 export async function PATCH(req: Request, { params }: { params: { id: string }}) {
-  const body = await req.json().catch(()=> ({}));
+  const body = await req.json().catch(()=> ({ /* TODO: implement or remove */ }));
   if (!body || typeof body !== "object") return bad("invalid_body");
   try { return ok(await updateAIRun(params.id, body)); } catch { return nf(); }
 }

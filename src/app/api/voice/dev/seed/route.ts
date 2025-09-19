@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { NextResponse } from "next/server";
 import { createVoiceRun } from "@/lib/repos/voiceRepo";
 import { withLog } from "@/lib/api/log";
@@ -9,6 +10,6 @@ export const POST = withLog(async () => {
     { text: "Call patient", status: "queued" },
     { text: "Dictation", status: "failed" },
   ];
-  for (const s of samples) await createVoiceRun(s as any);
+  for (const s of samples) await createVoiceRun(s as unknown);
   return NextResponse.json({ ok:true, created: samples.length });
 }, "voice.dev.seed");

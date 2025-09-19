@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { NextResponse } from "next/server";
 import { Storage } from "@google-cloud/storage";
 
@@ -35,7 +36,7 @@ export async function POST(req: Request) {
           contentType: contentType || "application/octet-stream",
           sizeBytes: sizeBytes || 0,
           // userId: ... (если есть сессия — можно проставить)
-        } as any,
+        } as unknown,
       });
     } catch {
       // noop

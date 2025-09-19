@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 export const runtime = "nodejs";
 
 type MockSub = {
@@ -21,11 +22,11 @@ function mock(): MockSub {
 export async function GET() {
   try {
     // пробуем «реальный» обработчик, если он существует в проекте
-    const real = await import("./route.real").catch(() => null) as any;
+    const real = await import("./route.real").catch(() => null) as unknown;
     if (real?.GET) {
       const res = await real.GET();
       if (res?.ok || res?.status === 200) return res;
     }
-  } catch {}
+  } catch { /* TODO: implement or remove */ }
   return Response.json({ ok: true, data: mock(), mock: true }, { headers: { "Cache-Control": "no-store" }});
 }

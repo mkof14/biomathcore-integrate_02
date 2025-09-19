@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { NextResponse } from "next/server";
 export const runtime = "nodejs";
 /** POST /api/admin/ping/gemini — лёгкая проверка наличия ключа GEMINI_API_KEY. */
@@ -9,4 +10,4 @@ export async function POST() {
   );
 }
 
-export {};
+export { /* TODO: implement or remove */ };

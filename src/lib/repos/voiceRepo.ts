@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { randomUUID } from "crypto";
 
 type VoiceRow = {
@@ -19,7 +20,7 @@ type ListArgs = {
 };
 
 function mem() {
-  const g = globalThis as any;
+  const g = globalThis as unknown;
   if (!g.__VOICE__) g.__VOICE__ = new Map<string, VoiceRow>();
   return g.__VOICE__ as Map<string, VoiceRow>;
 }
@@ -29,7 +30,7 @@ export async function createVoice(input: Partial<VoiceRow>): Promise<VoiceRow> {
   const row: VoiceRow = {
     id: randomUUID(),
     title: (input.title || "Untitled").toString(),
-    status: (input.status as any) || "recorded",
+    status: (input.status as unknown) || "recorded",
     createdAt: now,
     updatedAt: now,
   };
@@ -48,7 +49,7 @@ export async function updateVoice(id: string, patch: Partial<VoiceRow>): Promise
   const next: VoiceRow = {
     ...cur,
     title: patch.title ?? cur.title,
-    status: (patch.status as any) ?? cur.status,
+    status: (patch.status as unknown) ?? cur.status,
     updatedAt: new Date().toISOString(),
   };
   m.set(id, next);
@@ -63,7 +64,7 @@ export async function deleteVoice(id: string): Promise<VoiceRow> {
   return cur;
 }
 
-export async function listVoice(args: ListArgs = {}): Promise<{data: VoiceRow[]; nextCursor?: string}> {
+export async function listVoice(args: ListArgs = { /* TODO: implement or remove */ }): Promise<{data: VoiceRow[]; nextCursor?: string}> {
   const { id, q, status, from, to, limit = 20, cursor } = args;
   const all = Array.from(mem().values());
   let rows = all.sort((a,b)=> (a.createdAt < b.createdAt ? 1 : -1));
@@ -96,7 +97,7 @@ export async function seedVoice(n = 3): Promise<number> {
   for (let i=0;i<n;i++){
     await createVoice({
       title: `Sample voice #${i+1}`,
-      status: (i%2===0 ? "recorded" : "processed") as any
+      status: (i%2===0 ? "recorded" : "processed") as unknown
     });
   }
   return mem().size;

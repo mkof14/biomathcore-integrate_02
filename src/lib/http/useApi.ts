@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 "use client";
 import { useCallback, useState } from "react";
 import { fetchJson } from "./client";
@@ -13,12 +14,12 @@ export function useApi<T>(url: string, opts?: RequestInit) {
       const init: RequestInit = { method, ...opts };
       if (body && method !== "GET") {
         init.body = JSON.stringify(body);
-        init.headers = { "Content-Type":"application/json", ...(opts?.headers||{}) };
+        init.headers = { "Content-Type":"application/json", ...(opts?.headers||{ /* TODO: implement or remove */ }) };
       }
       const res = await fetchJson<T>(url, init);
       setData(res);
       return res;
-    } catch (e:any) {
+    } catch (e: unknown) {
       setError(e?.message || "request_failed");
       throw e;
     } finally {

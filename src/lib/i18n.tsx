@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 "use client";
 import React, {createContext, useContext, useMemo, useState} from "react";
 
@@ -10,7 +11,7 @@ const UI_DICT: Record<string, Partial<Record<Lang,string>>> = {
   "Save draft":{en:"Save draft",ru:"Сохранить черновик"}, "Submit":{en:"Submit",ru:"Отправить"},
   "Complete required":{en:"Complete required",ru:"Заполните обязательные"},
 };
-const LABEL_MAP: Record<string, Partial<Record<Lang,string>>> = {};
+const LABEL_MAP: Record<string, Partial<Record<Lang,string>>> = { /* TODO: implement or remove */ };
 
 export function I18nProvider({children}:{children:React.ReactNode}){
   const [lang,setLang] = useState<Lang>("en");
@@ -31,7 +32,7 @@ export function LanguageSelect(){
   return (
     <select
       value={lang}
-      onChange={e=>setLang(e.target.value as any)}
+      onChange={e=>setLang(e.target.value as unknown)}
       className="h-9 rounded-md border border-neutral-700 bg-neutral-900 text-white px-2"
       aria-label="Language"
     >

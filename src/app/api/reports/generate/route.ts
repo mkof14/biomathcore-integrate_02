@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { NextResponse } from "next/server";
 import { saveReport } from "@/lib/report-engine/store";
 import { generateReport } from "@/lib/report-engine/generate";
@@ -5,7 +6,7 @@ export const runtime = "nodejs";
 
 export async function POST(req: Request) {
   try{
-    const body = await req.json().catch(()=> ({}));
+    const body = await req.json().catch(()=> ({ /* TODO: implement or remove */ }));
     const userId = body?.userId || "U1001";
     const scope = {
       includeQuestionnaires: body?.includeQuestionnaires ?? ["patient","lifestyle","medical-history"],
@@ -16,7 +17,7 @@ export async function POST(req: Request) {
     const r = await generateReport(userId, scope);
     saveReport(r);
     return NextResponse.json({ ok:true, id:r.id });
-  }catch(e:any){
+  }catch(e: unknown){
     return NextResponse.json({ ok:false, error:"failed" }, { status: 500 });
   }
 }

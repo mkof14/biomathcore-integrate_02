@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 // src/app/api/ai/stream/route.ts
 import { NextRequest } from "next/server";
 
@@ -121,7 +122,7 @@ export async function POST(req: NextRequest) {
         };
 
         await read();
-      } catch (e: any) {
+      } catch (e: unknown) {
         controller.enqueue(
           encoder.encode(`ERROR: ${String(e?.message ?? e).slice(0, 400)}`),
         );

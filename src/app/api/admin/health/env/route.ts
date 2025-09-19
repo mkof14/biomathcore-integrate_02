@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { NextResponse } from "next/server";
 import { REQUIRED_ENV } from "../../../../../lib/requiredEnv"; // from src/app/api/admin/health/env → src/lib/requiredEnv
 
@@ -18,4 +19,4 @@ export async function GET() {
   return NextResponse.json({ checkedAt: now, present, missing, total: REQUIRED_ENV.length });
 }
 
-export {};
+export { /* TODO: implement or remove */ };

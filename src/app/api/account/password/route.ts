@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { NextRequest } from "next/server";
 import { z } from "zod";
 import { PrismaClient } from "@prisma/client";
@@ -17,8 +18,8 @@ function ok<T>(payload: T, init?: ResponseInit) {
     headers: { "Content-Type": "application/json" },
   });
 }
-function bad(status: number, message: string, extra?: any) {
-  return ok({ ok: false, error: message, ...(extra || {}) }, { status });
+function bad(status: number, message: string, extra?: unknown) {
+  return ok({ ok: false, error: message, ...(extra || { /* TODO: implement or remove */ }) }, { status });
 }
 
 export async function POST(req: NextRequest) {

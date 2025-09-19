@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 // File: PLACEHOLDER
 import { PrismaClient } from "@prisma/client";
 import { ok, bad } from "@/lib/apiResponse";

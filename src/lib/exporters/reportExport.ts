@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import prisma from "@/lib/prisma";
 
 type AnyRec = Record<string, unknown>;
@@ -5,7 +6,7 @@ type AnyRec = Record<string, unknown>;
 function toCsv(rows: AnyRec[]): string {
   const headers = Array.from(
     rows.reduce<Set<string>>((acc, r) => {
-      Object.keys(r ?? {}).forEach((k) => acc.add(k));
+      Object.keys(r ?? { /* TODO: implement or remove */ }).forEach((k) => acc.add(k));
       return acc;
     }, new Set<string>())
   );

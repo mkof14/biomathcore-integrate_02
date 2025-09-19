@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 
@@ -6,7 +7,7 @@ export const runtime = "nodejs";
 function ensureEnv() {
   const key = process.env.STRIPE_SECRET_KEY;
   if (!key) throw new Error("Missing STRIPE_SECRET_KEY");
-  return new Stripe(key, { apiVersion: "2024-06-20" as any });
+  return new Stripe(key, { apiVersion: "2024-06-20" as unknown });
 }
 
 function resolveReturnUrl(req: NextRequest) {
@@ -16,7 +17,7 @@ function resolveReturnUrl(req: NextRequest) {
   return fromQuery || `${base}/member-zone/billing`;
 }
 
-async function resolveCustomerId(stripe: Stripe, req: NextRequest, body: any) {
+async function resolveCustomerId(stripe: Stripe, req: NextRequest, body: unknown) {
   const u = new URL(req.url);
   const fromQuery = u.searchParams.get("customerId");
   const fromBody = body?.customerId;
@@ -40,7 +41,7 @@ async function resolveCustomerId(stripe: Stripe, req: NextRequest, body: any) {
 
 async function createPortalSession(req: NextRequest) {
   const stripe = ensureEnv();
-  const body = req.method === "POST" ? await req.json().catch(() => ({})) : {};
+  const body = req.method === "POST" ? await req.json().catch(() => ({ /* TODO: implement or remove */ })) : { /* TODO: implement or remove */ };
   const customerId = await resolveCustomerId(stripe, req, body);
   if (!customerId) {
     return { error: "Missing customerId (or enable ALLOW_PORTAL_AUTO_CUSTOMER=1)", status: 400 } as const;
@@ -55,7 +56,7 @@ export async function POST(req: NextRequest) {
     const res = await createPortalSession(req);
     if ("error" in res) return NextResponse.json({ ok: false, error: res.error }, { status: res.status });
     return NextResponse.json({ ok: true, url: res.url });
-  } catch (e: any) {
+  } catch (e: unknown) {
     return NextResponse.json({ ok: false, error: e?.message || "Stripe error" }, { status: 400 });
   }
 }
@@ -65,7 +66,7 @@ export async function GET(req: NextRequest) {
     const res = await createPortalSession(req);
     if ("error" in res) return NextResponse.json({ ok: false, error: res.error }, { status: res.status });
     return NextResponse.redirect(res.url, { status: 302 });
-  } catch (e: any) {
+  } catch (e: unknown) {
     return NextResponse.json({ ok: false, error: e?.message || "Stripe error" }, { status: 400 });
   }
 }

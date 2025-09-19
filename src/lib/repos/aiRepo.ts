@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { randomUUID } from "crypto";
 
 export type AIRow = {
@@ -19,7 +20,7 @@ type ListArgs = {
 };
 
 function mem() {
-  const g = globalThis as any;
+  const g = globalThis as unknown;
   if (!g.__AIRUNS__) g.__AIRUNS__ = new Map<string, AIRow>();
   return g.__AIRUNS__ as Map<string, AIRow>;
 }
@@ -29,7 +30,7 @@ export async function createAIRun(input: Partial<AIRow>): Promise<AIRow> {
   const row: AIRow = {
     id: randomUUID(),
     title: (input.title || "Untitled run").toString(),
-    status: (input.status as any) || "queued",
+    status: (input.status as unknown) || "queued",
     createdAt: now,
     updatedAt: now,
   };
@@ -48,7 +49,7 @@ export async function updateAIRun(id: string, patch: Partial<AIRow>): Promise<AI
   const next: AIRow = {
     ...cur,
     title: patch.title ?? cur.title,
-    status: (patch.status as any) ?? cur.status,
+    status: (patch.status as unknown) ?? cur.status,
     updatedAt: new Date().toISOString(),
   };
   m.set(id, next);
@@ -63,7 +64,7 @@ export async function deleteAIRun(id: string): Promise<AIRow> {
   return cur;
 }
 
-export async function listAIRuns(args: ListArgs = {}): Promise<{data: AIRow[]; nextCursor?: string}> {
+export async function listAIRuns(args: ListArgs = { /* TODO: implement or remove */ }): Promise<{data: AIRow[]; nextCursor?: string}> {
   const { id, q, status, from, to, limit = 20, cursor } = args;
   const all = Array.from(mem().values());
   let rows = all.sort((a,b)=> (a.createdAt < b.createdAt ? 1 : -1));
@@ -91,7 +92,7 @@ export async function listAIRuns(args: ListArgs = {}): Promise<{data: AIRow[]; n
 export async function countAIRuns(): Promise<number> { return mem().size; }
 export async function seedAIRuns(n=5): Promise<number> {
   for (let i=0;i<n;i++){
-    await createAIRun({ title:`Demo run #${i+1}`, status: (i%2===0?"completed":"queued") as any });
+    await createAIRun({ title:`Demo run #${i+1}`, status: (i%2===0?"completed":"queued") as unknown });
   }
   return mem().size;
 }

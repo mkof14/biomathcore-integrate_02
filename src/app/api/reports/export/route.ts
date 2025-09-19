@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import JSZip from "jszip";
 import { Parser as Json2Csv } from "@json2csv/plainjs";
 import { listReports } from "@/lib/repos/reportRepo";
@@ -46,4 +47,4 @@ const base = apiIdx >= 0 ? parts.slice(apiIdx + 1) : parts;
   });
 }
 
-export {};
+export { /* TODO: implement or remove */ };

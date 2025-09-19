@@ -1,8 +1,9 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import JSZip from "jszip";
 import { Parser as Json2Csv } from "@json2csv/plainjs";
 
 export function toCsv<T extends Record<string, any>>(rows: T[], fields?: string[]) {
-  const parser = new Json2Csv({ fields: fields ?? Object.keys(rows[0] ?? {}) });
+  const parser = new Json2Csv({ fields: fields ?? Object.keys(rows[0] ?? { /* TODO: implement or remove */ }) });
   return parser.parse(rows);
 }
 

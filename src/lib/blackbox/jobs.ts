@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 // src/lib/blackbox/jobs.ts
 import { randomUUID } from "crypto";
 
@@ -56,7 +57,7 @@ export function createJob(
     status: "queued",
     createdAt: now,
     updatedAt: now,
-    params: params || {},
+    params: params || { /* TODO: implement or remove */ },
     result: null,
     error: null,
   };

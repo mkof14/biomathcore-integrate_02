@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { NextResponse } from "next/server";
 import { createAIRun } from "@/lib/repos/aiRepo";
 import { withLog } from "@/lib/api/log";
@@ -9,6 +10,6 @@ export const POST = withLog(async () => {
     { prompt: "Draft plan", status: "queued" },
     { prompt: "Explain lab", status: "failed" },
   ];
-  for (const s of samples) await createAIRun(s as any);
+  for (const s of samples) await createAIRun(s as unknown);
   return NextResponse.json({ ok:true, created: samples.length });
 }, "ai.dev.seed");

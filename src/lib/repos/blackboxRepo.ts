@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { randomUUID as uuid } from "crypto";
 
 export type BlackboxRun = {
@@ -15,7 +16,7 @@ type ListOpts = {
   cursor?: string | null | undefined;
 };
 
-const g = globalThis as any;
+const g = globalThis as unknown;
 if (!g.__BLACKBOX__) g.__BLACKBOX__ = new Map<string, BlackboxRun>();
 
 export async function listBlackbox({ limit = 20, cursor }: ListOpts) {
@@ -45,10 +46,10 @@ export async function createBlackbox(input: Partial<BlackboxRun>) {
     id: input.id || uuid(),
     prompt: input.prompt || "",
     response: input.response || "",
-    status: (input.status as any) || "running",
+    status: (input.status as unknown) || "running",
     createdAt: now,
     updatedAt: now,
-    meta: input.meta || {},
+    meta: input.meta || { /* TODO: implement or remove */ },
   };
   g.__BLACKBOX__.set(row.id, row);
   return row;
@@ -91,7 +92,7 @@ export async function runBlackbox(prompt: string) {
       status: "done",
     });
     return done;
-  } catch (e: any) {
+  } catch (e: unknown) {
     await updateBlackbox(running.id, { status: "error", response: e?.message || "error" });
     throw e;
   }

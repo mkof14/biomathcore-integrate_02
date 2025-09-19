@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { NextResponse } from "next/server";
 
 type Profile = {
@@ -8,7 +9,7 @@ type Profile = {
   updatedAt: string;
 };
 
-const g = globalThis as any;
+const g = globalThis as unknown;
 if (!g.__PROFILE_STORE__) g.__PROFILE_STORE__ = new Map<string, Profile>();
 
 function getUserIdFromCookie(req: Request): string {
@@ -40,7 +41,7 @@ export async function GET(req: Request) {
 
 export async function PATCH(req: Request) {
   const userId = getUserIdFromCookie(req);
-  const body = await req.json().catch(() => ({}));
+  const body = await req.json().catch(() => ({ /* TODO: implement or remove */ }));
   if (!body || typeof body !== "object") {
     return NextResponse.json({ ok: false, error: "invalid_body" }, { status: 400 });
   }

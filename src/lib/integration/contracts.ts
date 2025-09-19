@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 // Central event/type contract for AI + Voice integrations.
 
 export type AIRequest = {

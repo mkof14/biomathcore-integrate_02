@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 // src/lib/auth.ts
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth/options";

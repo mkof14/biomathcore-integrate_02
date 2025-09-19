@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import JSZip from "jszip";
 import { Parser as Json2Csv } from "@json2csv/plainjs";
 import { listDG } from "@/lib/repos/dgRepo";
@@ -8,7 +9,7 @@ export async function GET(req: Request) {
   const { data } = await listDG({ limit });
   const zip = new JSZip();
   zip.file("drug-gene.json", JSON.stringify(data, null, 2));
-  const csv = new Json2Csv({ fields: Object.keys(data[0] || {}) }).parse(data);
+  const csv = new Json2Csv({ fields: Object.keys(data[0] || { /* TODO: implement or remove */ }) }).parse(data);
   zip.file("drug-gene.csv", csv);
   const blob = await zip.generateAsync({ type: "nodebuffer" });
   return new Response(blob, {

@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 // src/lib/slug.ts
 export function slugify(input: string): string {
   return (input || "")

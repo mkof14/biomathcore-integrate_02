@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 // src/app/api/me/subscription/route.ts
 import { NextResponse } from "next/server";
 

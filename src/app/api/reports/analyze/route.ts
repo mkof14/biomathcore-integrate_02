@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { NextResponse } from "next/server";
 import { getReport } from "@/lib/repos/reportRepo";
 
@@ -18,7 +19,7 @@ const base = apiIdx >= 0 ? parts.slice(apiIdx + 1) : parts;
 
 /* end preamble */
 
-  const body = await req.json().catch(()=>({} as any));
+  const body = await req.json().catch(()=>({ /* TODO: implement or remove */ } as unknown));
   const id = (body && typeof body.id === "string") ? body.id : undefined;
   if (!id) return NextResponse.json({ ok:false, error:"id_required" }, { status:400 });
 
@@ -34,4 +35,4 @@ const base = apiIdx >= 0 ? parts.slice(apiIdx + 1) : parts;
   return NextResponse.json({ ok:true, data: { id, summary, recommendations } });
 }
 
-export {};
+export { /* TODO: implement or remove */ };

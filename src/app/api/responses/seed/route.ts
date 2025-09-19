@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
@@ -33,7 +34,7 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json({ ok: true, id: s.id, questionnaireId: q.id, status: s.status, visibility: s.visibility });
-  } catch (e: any) {
+  } catch (e: unknown) {
     return NextResponse.json({ ok: false, error: e?.message || "Unexpected error" }, { status: 500 });
   }
 }

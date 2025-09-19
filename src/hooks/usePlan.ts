@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 "use client";
 import { useEffect, useState } from "react";
 
@@ -24,7 +25,7 @@ export function usePlan() {
         if (mounted) setData(j);
       })
       .catch(() => {
-        if (mounted) setData({ ok: false } as any);
+        if (mounted) setData({ ok: false } as unknown);
       })
       .finally(() => {
         if (mounted) setLoading(false);

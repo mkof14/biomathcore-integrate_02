@@ -1,4 +1,5 @@
-type QuestionnaireMeta={ id:string; version:number; title:string; description?:string; minAge?:number; requiresPlan?:"free"|"standard"|"premium"; sections:any[]; };
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
+type QuestionnaireMeta={ id:string; version:number; title:string; description?:string; minAge?:number; requiresPlan?:"free"|"standard"|"premium"; sections: unknown[]; };
 export type User = {
   id: string;
   age?: number;

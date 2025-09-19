@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 // File: PLACEHOLDER
 import { NextRequest } from "next/server";
 import { PrismaClient } from "@prisma/client";
