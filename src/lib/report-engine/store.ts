@@ -1,36 +1,13 @@
-/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
-import type { Report } from "./report-schema";
-import { generateReport } from "./generate";
+import type { ReportResult } from "@/lib/report-engine/contracts/reportSchemas";
 
-const mem: Report[] = [];
-let seeded = false;
+const mem = new Map<string, ReportResult>();
 
-async function ensureSeed() {
-  if (seeded || mem.length > 0) return;
-  seeded = true;
-  try {
-    const r1 = await generateReport("U1001", {
-      includeQuestionnaires: ["patient"],
-      includeDevices: true,
-      includeLabs: true,
-      includeSexualHealth: false
-    });
-    const r2 = await generateReport("U1001", {
-      includeQuestionnaires: ["patient","lifestyle","medical-history"],
-      includeDevices: false,
-      includeLabs: true,
-      includeSexualHealth: true
-    });
-    mem.unshift(r2, r1);
-  } catch (e) {
-    // swallow seed errors in dev
-  }
+export async function saveReport(r: ReportResult): Promise<void> {
+  mem.set(r.id, r);
 }
-ensureSeed();
-
-export function saveReport(r: Report) {
-  const i = mem.findIndex(x => x.id === r.id);
-  if (i >= 0) mem[i] = r; else mem.unshift(r);
+export async function getReport(id: string): Promise<ReportResult | null> {
+  return mem.get(id) ?? null;
 }
-export function getReport(id: string): Report | undefined { return mem.find(r => r.id === id); }
-export function listReports(userId: string): Report[] { return mem.filter(r => r.userId === userId); }
+export async function listReports(): Promise<ReportResult[]> {
+  return Array.from(mem.values());
+}
