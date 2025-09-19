@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { NextResponse } from "next/server";
 export const runtime = "nodejs";
 /** POST /api/admin/ping/stripe — лёгкая проверка наличия ключа STRIPE_SECRET_KEY. */
@@ -9,4 +10,4 @@ export async function POST() {
   );
 }
 
-export {};
+export { /* TODO: implement or remove */ };

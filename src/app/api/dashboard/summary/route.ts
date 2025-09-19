@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { NextResponse } from "next/server";
 import { listBlackbox } from "@/lib/repos/blackboxRepo";
 import { listDevices } from "@/lib/repos/deviceRepo";
@@ -18,11 +19,11 @@ export async function GET() {
   return NextResponse.json({
     ok: true,
     data: {
-      ai: (ai as any).data?.length ?? 0,
-      voice: (voice as any).data?.length ?? 0,
-      dg: (dg as any).data?.length ?? 0,
-      blackbox: (bb as any).data?.length ?? 0,
-      devices: (dev as any).data?.length ?? 0,
+      ai: (ai as unknown).data?.length ?? 0,
+      voice: (voice as unknown).data?.length ?? 0,
+      dg: (dg as unknown).data?.length ?? 0,
+      blackbox: (bb as unknown).data?.length ?? 0,
+      devices: (dev as unknown).data?.length ?? 0,
     },
   });
 }

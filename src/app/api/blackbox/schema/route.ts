@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 // src/app/api/blackbox/schema/route.ts
 import { NextResponse } from "next/server";
 

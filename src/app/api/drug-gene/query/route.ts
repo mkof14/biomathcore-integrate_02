@@ -1,7 +1,7 @@
-// @ts-nocheck
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 export const runtime = "nodejs";
 export async function POST(req: Request) {
-  const body = await req.json().catch(()=>({}));
+  const body = await req.json().catch(()=>({ /* TODO: implement or remove */ }));
   const gene = String(body?.gene ?? "").toUpperCase();
   const drug = String(body?.drug ?? "");
   const resp = {

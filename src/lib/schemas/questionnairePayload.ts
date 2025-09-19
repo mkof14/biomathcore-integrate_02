@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { z } from "zod";
 
 export const AnswerPayload = z.object({

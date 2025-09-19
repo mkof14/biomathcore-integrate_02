@@ -1,4 +1,4 @@
-// @ts-nocheck
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 // simple 16-bit PCM WAV beep (0.6s, 440Hz)
 export const runtime = "nodejs";
 function wav(bytes: Uint8Array, sampleRate=44100, numChannels=1) {
@@ -20,7 +20,7 @@ function wav(bytes: Uint8Array, sampleRate=44100, numChannels=1) {
   return buffer;
 }
 export async function POST(req: Request) {
-  const body = await req.json().catch(()=>({}));
+  const body = await req.json().catch(()=>({ /* TODO: implement or remove */ }));
   const text = String(body?.text ?? "beep");
   const dur = 0.6, sr=44100, hz=440;
   const samples = Math.floor(dur*sr);

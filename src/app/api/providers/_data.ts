@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 // src/app/api/providers/_data.ts
 // Single source of truth colocated with the API route to avoid import path issues.
 

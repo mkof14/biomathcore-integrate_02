@@ -1,17 +1,18 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { randomUUID as uuid } from "node:crypto";
 export type Base = { id: string; title: string; status: "draft"|"ready"|"archived"; createdAt: Date; updatedAt: Date; content?: string };
 type ListArgs = { q?: string; status?: string; from?: string; to?: string; limit?: number; cursor?: string };
 
-const g = globalThis as any;
+const g = globalThis as unknown;
 if (!g.__DG__) g.__DG__ = new Map<string, Base>();
 function toArr(){ return Array.from(g.__DG__.values()) as Base[]; }
 
 export async function createDG(partial: Partial<Base>): Promise<Base> {
   const now = new Date();
-  const row: Base = { id: uuid(), title: partial.title || "Untitled DG", status: (partial.status as any)||"draft", content: partial.content||"", createdAt: now, updatedAt: now };
+  const row: Base = { id: uuid(), title: partial.title || "Untitled DG", status: (partial.status as unknown)||"draft", content: partial.content||"", createdAt: now, updatedAt: now };
   g.__DG__.set(row.id, row); return row;
 }
-export async function listDG(args: ListArgs = {}) {
+export async function listDG(args: ListArgs = { /* TODO: implement or remove */ }) {
   const { q, status, from, to, limit=20, cursor } = args;
   let rows = toArr();
   if (q) rows = rows.filter(r => (r.title + " " + (r.content||"")).toLowerCase().includes(q.toLowerCase()));

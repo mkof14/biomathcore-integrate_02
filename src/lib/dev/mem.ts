@@ -1,6 +1,7 @@
-type Row = { id: string; createdAt: Date; updatedAt: Date; [k: string]: any };
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
+type Row = { id: string; createdAt: Date; updatedAt: Date; [k: string]: unknown };
 
-const g = globalThis as any;
+const g = globalThis as unknown;
 if (!g.__MEM__) g.__MEM__ = {
   ai: new Map<string, Row>(),
   voice: new Map<string, Row>(),

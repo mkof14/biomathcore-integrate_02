@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 export type PlanCode = "basic"|"premium"|"sexual-health-package"|"mental-health-package";
 export type Audience = "all"|"adult";
 

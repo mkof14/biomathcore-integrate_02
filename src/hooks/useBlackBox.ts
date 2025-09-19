@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 // src/hooks/useBlackBox.ts
 "use client";
 
@@ -36,7 +37,7 @@ export function useBlackBox() {
         "/api/blackbox",
       );
       setData(resp.notes || []);
-    } catch (e: any) {
+    } catch (e: unknown) {
       setError(e?.message || "Failed to load");
     } finally {
       setLoading(false);

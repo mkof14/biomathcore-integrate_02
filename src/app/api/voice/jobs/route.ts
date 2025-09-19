@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { listVoiceJobs } from "@/lib/repos/voiceRepo";
 export const runtime = "nodejs";
 export async function GET(req: Request) {

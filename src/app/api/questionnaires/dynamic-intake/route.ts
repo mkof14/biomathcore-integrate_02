@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { NextResponse } from "next/server";
 
 type Field =
@@ -35,8 +36,8 @@ const EXTRA_BY_CATEGORY: Record<string, Field[]> = {
 };
 
 export async function POST(req: Request) {
-  const body = await req.json().catch(() => ({}));
-  const categories = Array.isArray((body as any).categories) ? (body as any).categories as string[] : [];
+  const body = await req.json().catch(() => ({ /* TODO: implement or remove */ }));
+  const categories = Array.isArray((body as unknown).categories) ? (body as unknown).categories as string[] : [];
 
   // собрать уникальные extra-поля по выбранным категориям
   const extras: Field[] = [];

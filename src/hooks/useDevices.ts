@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 // src/hooks/useDevices.ts
 "use client";
 
@@ -34,7 +35,7 @@ export function useDevices() {
     try {
       const resp = await api<{ ok: true; devices: Device[] }>("/api/devices");
       setData(resp.devices || []);
-    } catch (e: any) {
+    } catch (e: unknown) {
       setError(e?.message || "Failed to load devices");
     } finally {
       setLoading(false);

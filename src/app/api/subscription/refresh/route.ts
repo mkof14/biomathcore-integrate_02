@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 // src/app/api/subscription/refresh/route.ts
 import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
@@ -20,7 +21,7 @@ export async function POST(req: Request) {
     return bad(401, "UNAUTHORIZED");
   }
 
-  const { email, subscriptionId } = await req.json().catch(() => ({}));
+  const { email, subscriptionId } = await req.json().catch(() => ({ /* TODO: implement or remove */ }));
 
   try {
     if (!email && !subscriptionId) return bad(400, "MISSING_IDENTIFIER");
@@ -32,7 +33,7 @@ export async function POST(req: Request) {
       let emailLc: string | null = null;
 
       if (customerId) {
-        const customer = (await stripe.customers.retrieve(customerId)) as any;
+        const customer = (await stripe.customers.retrieve(customerId)) as unknown;
         if (!("deleted" in customer)) {
           emailLc = customer?.email?.toLowerCase?.() ?? null;
         }
@@ -41,14 +42,14 @@ export async function POST(req: Request) {
 
       const user = await prisma.user.upsert({
         where: { email: emailLc },
-        update: {},
+        update: { /* TODO: implement or remove */ },
         create: { email: emailLc },
         select: { id: true },
       });
 
       const item = sub.items?.data?.[0];
       const priceId: string | null = item?.price?.id ?? null;
-      const nickname: string | null = (item?.price as any)?.nickname ?? null;
+      const nickname: string | null = (item?.price as unknown)?.nickname ?? null;
       const end = sub.current_period_end
         ? new Date(sub.current_period_end * 1000)
         : null;
@@ -94,14 +95,14 @@ export async function POST(req: Request) {
 
       const user = await prisma.user.upsert({
         where: { email: emailLc },
-        update: {},
+        update: { /* TODO: implement or remove */ },
         create: { email: emailLc },
         select: { id: true },
       });
 
       const item = sub.items?.data?.[0];
       const priceId: string | null = item?.price?.id ?? null;
-      const nickname: string | null = (item?.price as any)?.nickname ?? null;
+      const nickname: string | null = (item?.price as unknown)?.nickname ?? null;
       const end = sub.current_period_end
         ? new Date(sub.current_period_end * 1000)
         : null;
@@ -128,7 +129,7 @@ export async function POST(req: Request) {
     }
 
     return bad(400, "INVALID_REQUEST");
-  } catch (e: any) {
+  } catch (e: unknown) {
     return bad(500, e?.message || "SERVER_ERROR");
   }
 }

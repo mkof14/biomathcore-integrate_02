@@ -1,10 +1,11 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions"; // adjust if your file path differs
 import { headers } from "next/headers";
 
 /** Returns an email from session; in dev allows X-User-Email header fallback. */
 export async function getUserEmail() {
-  const session = await getServerSession(authOptions as any).catch(() => null);
+  const session = await getServerSession(authOptions as unknown).catch(() => null);
   const emailFromSession = session?.user?.email;
   if (emailFromSession) return emailFromSession;
 

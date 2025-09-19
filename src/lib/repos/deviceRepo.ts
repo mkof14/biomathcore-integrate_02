@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { randomUUID as uuid } from "crypto";
 
 export type Device = {
@@ -11,7 +12,7 @@ export type Device = {
 
 type ListOpts = { limit?: number; cursor?: string | null | undefined; };
 
-const g = globalThis as any;
+const g = globalThis as unknown;
 if (!g.__DEVICES__) g.__DEVICES__ = new Map<string, Device>();
 
 export async function listDevices({ limit=50, cursor }: ListOpts) {

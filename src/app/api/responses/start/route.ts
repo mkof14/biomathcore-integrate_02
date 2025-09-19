@@ -1,9 +1,10 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
 export async function POST(req: Request) {
   try {
-    const body = await req.json().catch(() => ({}));
+    const body = await req.json().catch(() => ({ /* TODO: implement or remove */ }));
     const key = String(body.questionnaireKey || "").trim();
     const visibility = (body.visibility === "anonymous" ? "anonymous" : "identified") as "anonymous" | "identified";
     if (!key) return NextResponse.json({ ok: false, error: "Missing questionnaireKey" }, { status: 400 });

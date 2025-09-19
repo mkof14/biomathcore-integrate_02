@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { NextResponse } from "next/server";
 import { createReport } from "@/lib/repos/reportRepo";
 import { withLog } from "@/lib/api/log";
@@ -9,8 +10,8 @@ export const POST = withLog(async () => {
     { title: "Device telemetry", status: "draft" },
     { title: "Clinical note", status: "archived" },
   ];
-  for (const s of samples) await createReport(s as any);
+  for (const s of samples) await createReport(s as unknown);
   return NextResponse.json({ ok:true, created: samples.length });
 }, "reports.dev.seed");
 
-export {};
+export { /* TODO: implement or remove */ };

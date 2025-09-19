@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { NextResponse } from "next/server";
 
 export function withLog(handler: (req: Request) => Promise<Response> | Response, name: string) {
@@ -12,7 +13,7 @@ export function withLog(handler: (req: Request) => Promise<Response> | Response,
         status: res.status,
         headers: new Headers(res.headers),
       });
-    } catch (e:any) {
+    } catch (e: unknown) {
       const ms = Date.now() - start;
       console.error(`[api] ${name} ERROR id=${reqId} ${ms}ms`, e?.message || e);
       return NextResponse.json({ ok:false, error:"internal_error", id:reqId }, { status: 500 });

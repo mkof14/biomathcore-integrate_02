@@ -1,4 +1,6 @@
-// @ts-nocheck
+import type { ReportInput, ReportResult } from "@/lib/report-engine/contracts/reportSchemas";
+import type { ReportInput, ReportResult } from "@/lib/report-engine/contracts/reportSchemas";
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { randomUUID as uuid } from "crypto";
 
 // --- In-memory fallback storage ---
@@ -17,17 +19,17 @@ declare global {
   // eslint-disable-next-line no-var
   var __REPORTS__: Map<string, Report> | undefined;
 }
-const g = globalThis as any;
+const g = globalThis as unknown;
 if (!g.__REPORTS__) g.__REPORTS__ = new Map<string, Report>();
 
 // --- Optional Prisma client (if configured) ---
-let prisma: any = null;
+let prisma: unknown = null;
 try {
   // your project likely has prisma at @/lib/prisma or @/lib/db; try both
   prisma = (await import("@/lib/prisma")).default ?? null;
-} catch {}
+} catch { /* TODO: implement or remove */ }
 if (!prisma) {
-  try { prisma = (await import("@/lib/db")).prisma ?? null; } catch {}
+  try { prisma = (await import("@/lib/db")).prisma ?? null; } catch { /* TODO: implement or remove */ }
 }
 
 // ---- Helpers ----
@@ -48,7 +50,7 @@ export async function listReports(params: {
   // Try Prisma first
   if (prisma?.report) {
     try {
-      const where: any = {};
+      const where: unknown = { /* TODO: implement or remove */ };
       if (params.id)  where.id = params.id;
       if (params.status) where.status = params.status;
       if (params.q) where.OR = [
@@ -68,7 +70,7 @@ export async function listReports(params: {
         skip: params.cursor ? 1 : 0,
       });
       const hasMore = rows.length > limit;
-      const data = (hasMore ? rows.slice(0, limit) : rows).map((r: any) => ({
+      const data = (hasMore ? rows.slice(0, limit) : rows).map((r: unknown) => ({
         id: r.id, title: r.title, content: r.content ?? "",
         status: r.status, createdAt: r.createdAt.toISOString(), updatedAt: r.updatedAt.toISOString(),
       }));
@@ -99,7 +101,7 @@ export async function createReport(input: Partial<Report>) {
     try {
       const r = await prisma.report.create({ data: { id, title, content, status } });
       return { ...row, createdAt: r.createdAt.toISOString(), updatedAt: r.updatedAt.toISOString() };
-    } catch {}
+    } catch { /* TODO: implement or remove */ }
   }
   g.__REPORTS__.set(id, row);
   return row;
@@ -112,7 +114,7 @@ export async function getReport(id: string) {
       if (!r) return null;
       return { id: r.id, title: r.title, content: r.content ?? "", status: r.status,
         createdAt: r.createdAt.toISOString(), updatedAt: r.updatedAt.toISOString() };
-    } catch {}
+    } catch { /* TODO: implement or remove */ }
   }
   return g.__REPORTS__.get(id) ?? null;
 }
@@ -128,7 +130,7 @@ export async function updateReport(id: string, patch: Partial<Report>) {
       const r = await prisma.report.update({ where: { id }, data: upd });
       return { id: r.id, title: r.title, content: r.content ?? "", status: r.status,
         createdAt: r.createdAt.toISOString(), updatedAt: r.updatedAt.toISOString() };
-    } catch {}
+    } catch { /* TODO: implement or remove */ }
   }
   const cur = g.__REPORTS__.get(id);
   if (!cur) throw new Error("not_found");
@@ -139,7 +141,7 @@ export async function updateReport(id: string, patch: Partial<Report>) {
 
 export async function deleteReport(id: string) {
   if (prisma?.report) {
-    try { await prisma.report.delete({ where: { id } }); return { id }; } catch {}
+    try { await prisma.report.delete({ where: { id } }); return { id }; } catch { /* TODO: implement or remove */ }
   }
   const cur = g.__REPORTS__.get(id);
   if (!cur) throw new Error("not_found");
@@ -150,7 +152,7 @@ export async function deleteReport(id: string) {
 // Utilities for seeding & reset
 export async function resetReports() {
   if (prisma?.report) {
-    try { await prisma.report.deleteMany({}); } catch {}
+    try { await prisma.report.deleteMany({ /* TODO: implement or remove */ }); } catch { /* TODO: implement or remove */ }
   }
   g.__REPORTS__.clear();
 }

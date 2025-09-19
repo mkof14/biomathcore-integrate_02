@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 // src/lib/subscription.ts
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();

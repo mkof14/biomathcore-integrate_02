@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import prisma from "@/lib/prisma";
 import { getServerSessionSafe } from "@/lib/auth";
 import Stripe from "stripe";
@@ -36,7 +37,7 @@ export async function requireActive(minTier: "core" | "daily" | "max" = "core"):
   const local = await readLatestLocal(user.id);
   if (!local) return { ok: false, reason: "NO_SUBSCRIPTION" };
 
-  let tier = local.plan as any as "core" | "daily" | "max" | null;
+  let tier = local.plan as unknown as "core" | "daily" | "max" | null;
   let status = local.status ?? null;
 
   try {
@@ -62,7 +63,7 @@ export async function requireActive(minTier: "core" | "daily" | "max" = "core"):
 
   const order = ["core", "daily", "max"];
   const needIdx = order.indexOf(minTier);
-  const haveIdx = tier ? order.indexOf(String(tier) as any) : -1;
+  const haveIdx = tier ? order.indexOf(String(tier) as unknown) : -1;
   const active = status === "active" || status === "trialing";
 
   if (!active) return { ok: false, reason: "INACTIVE", tier, status };

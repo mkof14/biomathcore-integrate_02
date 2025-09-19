@@ -1,7 +1,8 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { NextRequest, NextResponse } from "next/server";
 export const runtime = "nodejs";
 export async function POST(req: NextRequest) {
-  const body = await req.json().catch(() => ({}));
+  const body = await req.json().catch(() => ({ /* TODO: implement or remove */ }));
   const password = String(body.password || "");
   const expected = process.env.ADMIN_DASH_PASSWORD || "";
   if (!expected) return NextResponse.json({ error: "ADMIN_DASH_PASSWORD is not configured" }, { status: 500 });
@@ -11,4 +12,4 @@ export async function POST(req: NextRequest) {
   return res;
 }
 
-export {};
+export { /* TODO: implement or remove */ };

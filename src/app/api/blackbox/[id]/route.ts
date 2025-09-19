@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
 import { auth } from "@/lib/auth/server";
@@ -5,11 +6,11 @@ import { auth } from "@/lib/auth/server";
 const prisma = new PrismaClient();
 
 function ok<T>(data: T, init?: ResponseInit) {
-  return NextResponse.json({ ok: true, ...data } as any, init);
+  return NextResponse.json({ ok: true, ...data } as unknown, init);
 }
 function bad(status: number, code: string, extra?: Record<string, unknown>) {
   return NextResponse.json(
-    { ok: false, error: code, ...(extra || {}) },
+    { ok: false, error: code, ...(extra || { /* TODO: implement or remove */ }) },
     { status },
   );
 }
@@ -41,10 +42,10 @@ export async function PATCH(req: Request, { params }: Params) {
   const updated = await prisma.blackBoxNote.updateMany({
     where: { id: params.id, userId: user.id },
     data: {
-      ...(patch.title !== undefined ? { title: patch.title } : {}),
-      ...(patch.body !== undefined ? { body: patch.body } : {}),
-      ...(patch.tags !== undefined ? { tags: patch.tags } : {}),
-      ...(patch.status !== undefined ? { status: patch.status } : {}),
+      ...(patch.title !== undefined ? { title: patch.title } : { /* TODO: implement or remove */ }),
+      ...(patch.body !== undefined ? { body: patch.body } : { /* TODO: implement or remove */ }),
+      ...(patch.tags !== undefined ? { tags: patch.tags } : { /* TODO: implement or remove */ }),
+      ...(patch.status !== undefined ? { status: patch.status } : { /* TODO: implement or remove */ }),
       updatedAt: new Date(),
     },
   });

@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { cookies } from "next/headers";
 
 type Plan = "free"|"standard"|"premium";
@@ -8,13 +9,13 @@ async function getFromNextAuth(): Promise<CurrentUser> {
    
     const { getServerSession } = await import("next-auth");
    
-    let authOptions: any = undefined;
-    try { authOptions = (await import("@/app/api/auth/[...nextauth]/route")).authOptions; } catch {}
+    let authOptions: unknown = undefined;
+    try { authOptions = (await import("@/app/api/auth/[...nextauth]/route")).authOptions; } catch { /* TODO: implement or remove */ }
     const session = await getServerSession(authOptions);
     if (!session) return null;
 
    
-    const u = session.user as any;
+    const u = session.user as unknown;
     return {
       id: u?.id || "user",
       age: typeof u?.age === "number" ? u.age : undefined,

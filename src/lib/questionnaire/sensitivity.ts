@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { QUESTIONNAIRE_REGISTRY } from "./registry";
 
 export function getSensitiveSet(key: string, version: number): Set<string> {

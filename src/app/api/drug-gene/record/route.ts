@@ -1,7 +1,8 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { createDrugGene } from "@/lib/repos/drugGeneRepo";
 export const runtime = "nodejs";
 export async function POST(req: Request) {
-  const body = await req.json().catch(()=>({}));
+  const body = await req.json().catch(()=>({ /* TODO: implement or remove */ }));
   const drug = (body?.drug ?? "Metformin") as string;
   const gene = (body?.gene ?? "SLC22A1") as string;
   const effect = (body?.effect ?? "increased efficacy") as string;

@@ -1,8 +1,9 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { NextResponse } from "next/server";
 export const runtime = "nodejs";
 
 function seriesDaily() {
-  const out:any[] = [];
+  const out: unknown[] = [];
   const today = new Date();
   for (let i=13;i>=0;i--) {
     const d = new Date(today); d.setDate(today.getDate()-i);
@@ -11,7 +12,7 @@ function seriesDaily() {
   return out;
 }
 function seriesMonthly() {
-  const out:any[] = [];
+  const out: unknown[] = [];
   const now = new Date();
   for (let i=11;i>=0;i--) {
     const dt = new Date(now.getFullYear(), now.getMonth()-i, 1);
@@ -20,7 +21,7 @@ function seriesMonthly() {
   return out;
 }
 function seriesYearly() {
-  const out:any[] = [];
+  const out: unknown[] = [];
   const y = new Date().getFullYear();
   for (let i=4;i>=0;i--) {
     const yy = y - i;

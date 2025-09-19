@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 // src/hooks/useSubscription.ts
 "use client";
 
@@ -52,7 +53,7 @@ export function useSubscription() {
           error: null,
           data: { user: json.user, subscription: json.subscription },
         });
-      } catch (e: any) {
+      } catch (e: unknown) {
         if (!alive) return;
         setState({
           loading: false,

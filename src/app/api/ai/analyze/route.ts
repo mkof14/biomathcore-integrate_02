@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 // src/app/api/ai/route.ts
 import { NextRequest, NextResponse } from "next/server";
 
@@ -91,7 +92,7 @@ export async function POST(req: NextRequest) {
       "Sorry, I couldn't generate a response.";
 
     return NextResponse.json({ content }, { status: 200 });
-  } catch (err: any) {
+  } catch (err: unknown) {
     return NextResponse.json(
       {
         error: "Unexpected server error",

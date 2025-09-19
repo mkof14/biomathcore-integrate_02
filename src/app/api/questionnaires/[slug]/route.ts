@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { getServerSession } from 'next-auth';
@@ -38,4 +39,4 @@ export async function GET(_req: Request, { params }: { params: Promise<{ slug: s
   }
 }
 
-export {};
+export { /* TODO: implement or remove */ };

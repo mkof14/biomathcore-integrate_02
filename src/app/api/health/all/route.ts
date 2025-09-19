@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { NextResponse } from "next/server";
 
 async function ping(url: string) {
@@ -5,7 +6,7 @@ async function ping(url: string) {
     const r = await fetch(url, { cache: "no-store" });
     const body = await r.text().catch(() => "");
     return { ok: r.ok, status: r.status, body: body.slice(0, 300) };
-  } catch (e: any) {
+  } catch (e: unknown) {
     return { ok: false, status: 0, body: String(e?.message || e) };
   }
 }

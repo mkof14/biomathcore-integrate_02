@@ -1,3 +1,4 @@
+/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { NextResponse } from "next/server";
 import { Client } from "pg";
 
@@ -11,9 +12,9 @@ export async function GET() {
     await client.connect();
     const r = await client.query("SELECT 1 as ok");
     return NextResponse.json({ ok: r?.rows?.[0]?.ok === 1 });
-  } catch (e: any) {
+  } catch (e: unknown) {
     return NextResponse.json({ ok: false, error: e?.message || "db error" });
   } finally {
-    try { await client.end(); } catch {}
+    try { await client.end(); } catch { /* TODO: implement or remove */ }
   }
 }
