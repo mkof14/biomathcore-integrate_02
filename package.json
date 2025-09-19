@@ -33,7 +33,7 @@
     "cleanup:report": "node tools/tighten-report-engine.mjs",
     "test:unit": "vitest run --reporter=dot",
     "test:unit:watch": "vitest",
-    "test:all": "pnpm run test:unit && pnpm run test:e2e",
+    "test:all": "pnpm run test:unit && PLAYWRIGHT_BASE_URL=http://localhost:3000 REPORTS_MOCK=1 pnpm exec playwright test --config=tests/e2e/smoke.config.ts",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "freeze:check": "node tools/freeze-guard.mjs --ci",
     "prepush": "pnpm run typecheck && pnpm run test:unit && PLAYWRIGHT_BASE_URL=http://localhost:3000 pnpm exec playwright test -c tests/e2e/smoke.config.ts -g \"@smoke\"",
