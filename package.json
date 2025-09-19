@@ -22,7 +22,7 @@
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev --name init_or_sync",
     "db:reset": "prisma migrate reset --force",
-    "db:seed": "node prisma/seed.mjs",
+    "db:seed": "node prisma/seed.mjs || true",
     "lint:strict": "eslint src --ext .ts,.tsx --max-warnings=0",
     "cleanup:api": "node tools/api-surface-cleanup.mjs",
     "lint:active": "eslint src/lib src/app/api --ext .ts,.tsx --max-warnings=0",
@@ -34,7 +34,15 @@
     "test:unit": "vitest run --reporter=dot",
     "test:unit:watch": "vitest",
     "test:all": "pnpm run test:unit && pnpm exec playwright test --config=tests/e2e/smoke.config.ts",
-    "typecheck": "tsc --noEmit -p tsconfig.json"
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "freeze:check": "node tools/freeze-guard.mjs --ci",
+    "prepush": "pnpm run typecheck && pnpm run test:unit && PLAYWRIGHT_BASE_URL=http://localhost:3000 pnpm exec playwright test -c tests/e2e/smoke.config.ts -g \"@smoke\"",
+    "prepare": "husky",
+    "db:up": "docker compose up -d db",
+    "db:down": "docker compose down -v",
+    "db:wait": "until docker compose exec -T db pg_isready -U biomath -d biomath_core; do sleep 1; done",
+    "prisma:migrate:deploy": "prisma migrate deploy",
+    "prisma:migrate:dev": "prisma migrate dev --name sync"
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
@@ -73,6 +81,8 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
     "@playwright/test": "^1.55.0",
     "@types/node": "20.12.12",
     "@types/nodemailer": "^7.0.1",
