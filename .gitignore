@@ -43,3 +43,11 @@ tests/e2e/playwright-report/
  test-results/
 in-memory
 biomathcore-integrate_02/
+
+# local & artifacts
+.env
+playwright-report/
+tests/e2e/playwright-report/
+test-results/
+in-memory
+biomathcore-integrate_02/
