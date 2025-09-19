@@ -1,9 +1,10 @@
-import pkg from '@prisma/client';
+import pkg from "@prisma/client";
 const { PrismaClient } = pkg;
 const prisma = new PrismaClient();
+
 async function main() {
-  console.log('Seed: nothing to do (no-op).');
-  // TODO: добавь реальные insert-ы под модели когда будет нужно
+  // пример сидов, закомментируй/замени на реальные таблицы
+  // await prisma.questionnaire.upsert({ ... })
+  console.log("Seed: (placeholder) done");
 }
-main().catch((e) => { console.error(e); process.exit(1); })
-  .finally(async () => { await prisma.$disconnect(); });
+main().finally(() => prisma.$disconnect());

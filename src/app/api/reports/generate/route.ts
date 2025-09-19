@@ -1,23 +1,19 @@
 import { NextResponse } from "next/server";
-import { randomUUID } from "crypto";
+import { reportRepo } from "@/lib/repos/reportRepo.memory";
 
-export const dynamic = "force-dynamic";
-
-// Простое in-memory хранилище между запросами в рамках процесса
-const g = globalThis as unknown as { __reports?: Map<string, any> };
-g.__reports ||= new Map();
+export const runtime = "nodejs";
 
 export async function POST(req: Request) {
-  const body = await req.json().catch(() => ({}));
-  const { userId, title } = body || {};
-  if (!userId || !title) {
-    return NextResponse.json({ ok: false, error: "bad input" }, { status: 400 });
+  try {
+    const body = await req.json().catch(() => ({}));
+    const { userId, title, params } = body || {};
+    if (!userId || !title) {
+      return NextResponse.json({ ok: false, error: "userId and title required" }, { status: 400 });
+    }
+    const lines = Array.isArray(params?.lines) ? params.lines : [];
+    const r = await reportRepo.create({ userId, title, lines, meta: { source: "mock" } });
+    return NextResponse.json({ ok: true, id: r.id, title: r.title, lines: r.lines, createdAt: r.createdAt });
+  } catch (e: any) {
+    return NextResponse.json({ ok: false, error: e?.message ?? "internal" }, { status: 500 });
   }
-
-  const id = randomUUID();
-  const rec = { ok: true, id, report: { id, title, lines: [] } };
-  g.__reports!.set(id, rec);
-
-  // Твой смоук ждёт хотя бы { id, ok }
-  return NextResponse.json({ id, ok: true }, { status: 200 });
 }

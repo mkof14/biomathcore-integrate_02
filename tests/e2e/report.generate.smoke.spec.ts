@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test.fixme('@smoke report create + fetch', async ({ request, baseURL }) => {
+test('@smoke report create + fetch', async ({ request, baseURL }) => {
   const create = await request.post(`${baseURL}/api/reports/generate`, {
     data: { userId: 'u-smoke', title: 'Smoke Report' },
   });

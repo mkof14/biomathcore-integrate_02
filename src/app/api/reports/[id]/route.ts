@@ -1,10 +1,12 @@
-/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
-import { NextResponse } from "next/server";
-import { getReport } from "@/lib/report-engine/store";
 export const runtime = "nodejs";
-export async function GET(_req: Request, ctx: { params: { id: string } }) {
-  const id = ctx.params?.id;
-  const rep = id ? getReport(id) : undefined;
-  if (!rep) return NextResponse.json({ error: "not found" }, { status: 404 });
-  return NextResponse.json({ report: rep });
+import { NextResponse } from "next/server";
+import { getReportRepo } from "@/lib/repos/reportRepo";
+
+export async function GET(_req: Request, ctx: { params: Promise<{ id: string }> }) {
+  const params = await ctx.params;
+  const id = params?.id;
+  const repo = getReportRepo();
+  const report = id ? await repo.get(id) : null;
+  if (!report) return NextResponse.json({ ok:false, error:"not_found" }, { status:404 });
+  return NextResponse.json({ ok:true, report });
 }
