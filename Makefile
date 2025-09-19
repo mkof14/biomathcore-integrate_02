@@ -30,3 +30,7 @@ dev:
 
 smoke:
 	PLAYWRIGHT_BASE_URL="http://localhost:3000" pnpm exec playwright test --config=tests/e2e/smoke.config.ts -g '@smoke'
+
+.PHONY: fast
+fast:
+	pnpm prisma generate && pnpm prisma migrate dev --name sync && pnpm run db:seed || true && pnpm run test:unit && PLAYWRIGHT_BASE_URL="http://localhost:3000" pnpm exec playwright test --config=tests/e2e/smoke.config.ts
