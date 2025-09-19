@@ -35,3 +35,11 @@ pnpm-debug.log*
 *.bak
 *_backup/
 .vercel
+
+# local & artifacts
+.env
+playwright-report/
+tests/e2e/playwright-report/
+ test-results/
+in-memory
+biomathcore-integrate_02/
