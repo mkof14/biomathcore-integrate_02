@@ -1,19 +1,30 @@
 import { NextResponse } from "next/server";
-import { reportRepo } from "@/lib/repos/reportRepo.memory";
+import { ReportInputSchema, type ReportInput } from "@/lib/report-engine/contracts/reportSchemas";
+import { getReportRepo } from "@/lib/repos/reportRepo";
+import { generateReport } from "@/lib/report-engine/geminiGenerate";
 
 export const runtime = "nodejs";
 
 export async function POST(req: Request) {
   try {
-    const body = await req.json().catch(() => ({}));
-    const { userId, title, params } = body || {};
-    if (!userId || !title) {
-      return NextResponse.json({ ok: false, error: "userId and title required" }, { status: 400 });
-    }
-    const lines = Array.isArray(params?.lines) ? params.lines : [];
-    const r = await reportRepo.create({ userId, title, lines, meta: { source: "mock" } });
-    return NextResponse.json({ ok: true, id: r.id, title: r.title, lines: r.lines, createdAt: r.createdAt });
+    const body = (await req.json().catch(() => ({}))) as unknown;
+    const input = ReportInputSchema.parse(body) as ReportInput;
+
+    const preLines = input.params?.lines;
+    const gen = preLines?.length
+      ? { title: input.title, lines: preLines, meta: { source: "client" } }
+      : await generateReport(input);
+
+    const repo = getReportRepo();
+    const row = await repo.create({
+      userId: input.userId,
+      title: input.title,
+      lines: gen.lines,
+      meta: { ...(input.params?.meta ?? {}), ...(gen.meta ?? {}) },
+    });
+
+    return NextResponse.json({ ok: true, id: row.id, title: row.title });
   } catch (e: any) {
-    return NextResponse.json({ ok: false, error: e?.message ?? "internal" }, { status: 500 });
+    return NextResponse.json({ ok: false, error: e?.message ?? "bad_request" }, { status: 400 });
   }
 }

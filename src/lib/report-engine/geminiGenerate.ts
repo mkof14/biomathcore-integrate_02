@@ -1,79 +1,47 @@
-import { z } from "zod";
-import { getGemini } from "@/lib/ai/gemini";
-import { ReportInputSchema, ReportResultSchema, type ReportInput, type ReportResult } from "@/lib/report-engine/contracts/reportSchemas";
+import { ReportInput, ReportResultSchema } from "@/lib/report-engine/contracts/reportSchemas";
 
-const JsonReportSchema = z.object({
-  id: z.string(),
-  title: z.string(),
-  createdAt: z.union([z.string(), z.number()]),
-  lines: z.array(z.string()),
-  meta: z.record(z.unknown()).optional().default({}),
-});
+export async function generateReport(input: ReportInput) {
+  const forceMock = !!process.env.REPORTS_MOCK && process.env.REPORTS_MOCK !== "0";
+  const key = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
+  const prompt =
+    input.params?.prompt ??
+    `Generate 5 short bullet insights for a report titled "${input.title}".`;
 
-export async function generateReport(input: ReportInput): Promise<ReportResult> {
-  if (process.env.REPORTS_MOCK === "1") {
-    const mock: ReportResult = {
-      id: `mock-${Date.now()}`,
+  if (forceMock || !key) {
+    const mock = {
       title: input.title,
-      createdAt: new Date().toISOString(),
       lines: [
-        "This is a mocked report (REPORTS_MOCK=1).",
-        `userId=${input.userId}`,
-        `params=${JSON.stringify(input.params)}`,
+        `(${input.title}) mock line 1`,
+        `(${input.title}) mock line 2`,
+        `(${input.title}) mock line 3`,
       ],
-      meta: { mock: true },
+      meta: { source: "mock", reason: forceMock ? "FORCED" : "NO_API_KEY", mock: true },
     };
     return ReportResultSchema.parse(mock);
   }
 
-  const model = getGemini();
-  if (!model) throw new Error("Gemini model not available");
+  const { GoogleGenerativeAI } = await import("@google/generative-ai");
+  const genAI = new GoogleGenerativeAI(key);
+  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-  const prompt = [
-    "You are a reporting engine. Produce concise bullet lines (max 8).",
-    "Return strictly JSON matching this schema: {id,title,createdAt,lines[],meta{}}.",
-    `Title: ${input.title}`,
-    `UserId: ${input.userId}`,
-    `Params: ${JSON.stringify(input.params ?? {})}`,
-  ].join("\n");
+  const resp = await model.generateContent([{ role: "user", parts: [{ text: prompt }] }]);
+  const text = resp.response?.text?.() ?? "";
 
-  const result = await model.generateContent({
-    contents: [{ role: "user", parts: [{ text: prompt }] }],
-    generationConfig: {
-      temperature: 0.2,
-      maxOutputTokens: 1024,
-      responseMimeType: "application/json",
-      responseSchema: {
-        type: "object",
-        properties: {
-          id: { type: "string" },
-          title: { type: "string" },
-          createdAt: { oneOf: [{ type: "string" }, { type: "number" }] },
-          lines: { type: "array", items: { type: "string" } },
-          meta: { type: "object", additionalProperties: true },
-        },
-        required: ["id", "title", "createdAt", "lines"],
-        additionalProperties: true,
-      } as any,
-    } as any,
-  });
+  const rawLines = text
+    .split(/\r?\n/)
+    .map((s) => s.replace(/^[\-\*\d\.\)\s]+/, "").trim())
+    .filter(Boolean)
+    .slice(0, 10);
 
-  const text = result.response.text();
-  const parsed = JsonReportSchema.parse(JSON.parse(text));
-  const normalized: ReportResult = {
-    id: String(parsed.id),
-    title: parsed.title,
-    createdAt: typeof parsed.createdAt === "number"
-      ? new Date(parsed.createdAt).toISOString()
-      : parsed.createdAt,
-    lines: parsed.lines,
-    meta: parsed.meta ?? {},
+  const out = {
+    title: input.title,
+    lines: rawLines.length ? rawLines : [text.trim()].filter(Boolean),
+    meta: { source: "gemini" },
   };
-
-  return ReportResultSchema.parse(normalized);
+  return ReportResultSchema.parse(out);
 }
 
-export async function runReport(inputUnknown: unknown) {
-  const input = ReportInputSchema.parse(inputUnknown);
+/** совместимость со старым именем */
+export async function generateWithGemini(input: ReportInput) {
   return generateReport(input);
 }

@@ -1,22 +1,11 @@
-/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
-// src/app/api/blackbox/jobs/[id]/route.ts
 import { NextResponse } from "next/server";
-import { getJob } from "@/lib/blackbox/jobs";
+import { getBlackboxRepo } from "@/lib/repos/blackboxRepo";
 
-export async function GET(_req: Request, ctx: { params: { id: string } }) {
-  try {
-    const job = getJob(ctx.params.id);
-    if (!job) {
-      return NextResponse.json(
-        { ok: false, error: "NOT_FOUND" },
-        { status: 404 },
-      );
-    }
-    return NextResponse.json({ ok: true, job });
-  } catch (e: unknown) {
-    return NextResponse.json(
-      { ok: false, error: e?.message || "SERVER_ERROR" },
-      { status: 500 },
-    );
-  }
+export const runtime = "nodejs";
+
+export async function GET(_req: Request, ctx: { params: Promise<{ id: string }> }) {
+  const { id } = await ctx.params;
+  const row = await getBlackboxRepo().get(id);
+  if (!row) return NextResponse.json({ ok:false, error:"not_found" }, { status:404 });
+  return NextResponse.json({ ok:true, job: row });
 }
