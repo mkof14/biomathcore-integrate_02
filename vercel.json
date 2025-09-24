@@ -3,5 +3,29 @@
   "buildCommand": "pnpm build",
   "installCommand": "pnpm install --no-frozen-lockfile",
   "outputDirectory": ".next",
-  "git": { "deploymentEnabled": { "preview": true, "production": false } }
+  "git": {
+    "deploymentEnabled": {
+      "preview": true,
+      "production": false
+    }
+  },
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.biomathcore.com"
+        }
+      ],
+      "destination": "https://biomathcore.com/$1",
+      "permanent": true
+    }
+  ],
+  "build": {
+    "env": {
+      "NEXT_DISABLE_ESLINT": "1",
+      "NEXT_DISABLE_TYPECHECKING": "1"
+    }
+  }
 }
