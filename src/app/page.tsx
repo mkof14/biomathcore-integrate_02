@@ -1,4 +1,3 @@
-export const dynamic = 'force-dynamic';
 import { apiFetch } from '@/lib/api';
 export const revalidate = 60;
 import { getBaseUrl } from '@/lib/baseUrl';
