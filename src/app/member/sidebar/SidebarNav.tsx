@@ -9,6 +9,7 @@ const nav = [
   { href: "/member/billing",        label: "Billing" },
   { href: "/member/settings",       label: "Settings" },
   { href: "/member/support",        label: "Support" },
+  { href: "/member/health-blackbox", label: "Health Black Box" },
 ];
 
 export default function SidebarNav() {

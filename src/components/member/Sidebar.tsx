@@ -7,9 +7,10 @@ const items = [
   { href: "/member/profile", label: "Profile" },
   { href: "/member/catalog", label: "Catalog" },
   { href: "/member/reports", label: "Reports" },
+  { href: "/member/health-blackbox", label: "Health Black Box" },
   { href: "/member/questionnaires", label: "Questionnaires" },
   { href: "/member/connect-devices", label: "Connect Devices" },
-  { href: "/member/voice-assistant", label: "Voice Assistant" },
+  { href: "/member/health-assistant", label: "Health Assistant" },
   { href: "/member/billing", label: "Billing" }
 ];
 

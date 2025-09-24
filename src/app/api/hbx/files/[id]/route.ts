@@ -1,24 +1,20 @@
 import { NextResponse } from "next/server";
-import { getHbxRepo } from "@/lib/repos/hbxFileRepo";
+import { hbxStore } from "@/lib/hbx/store.memory";
 
 export const runtime = "nodejs";
 
-export async function GET(_req: Request, ctx: { params: Promise<{ id: string }> }) {
+export async function GET(req: Request, ctx: { params: Promise<{ id: string }> }) {
   const { id } = await ctx.params;
-  const repo = getHbxRepo();
-  const row = await repo.get(id);
-  if (!row) return NextResponse.json({ ok:false, error:"not_found" }, { status:404 });
-  return NextResponse.json({
-    ok: true,
-    file: {
-      id: row.id,
-      userId: row.userId,
-      filename: row.filename,
-      mime: row.mime,
-      size: row.size,
-      tags: row.tags,
-      createdAt: row.createdAt,
-      downloadUrl: `/api/hbx/files/${row.id}/download`,
-    }
-  });
+  const { searchParams } = new URL(req.url);
+  const userId = searchParams.get("userId") || "U1001";
+  const it = hbxStore.get(userId, id);
+  if (!it) return NextResponse.json({ ok: false, error: "not_found" }, { status: 404 });
+  return new NextResponse(it.data, {
+    status: 200,
+    headers: {
+      "content-type": it.mime || "application/octet-stream",
+      "content-disposition": `attachment; filename*=UTF-8''${encodeURIComponent(it.filename)}`,
+      "x-hbx-id": it.id,
+    },
+  } as any);
 }

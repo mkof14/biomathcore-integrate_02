@@ -8,6 +8,7 @@ const items = [
   { href: "/member/questionnaires", label: "Questionnaires" },
   { href: "/member/catalog", label: "Catalog" },
   { href: "/member/reports", label: "Reports" },
+  { href: "/member/health-blackbox", label: "Health Black Box" },
   { href: "/member/profile", label: "Profile" },
 ];
 

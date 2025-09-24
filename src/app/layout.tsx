@@ -1,3 +1,4 @@
+import WidgetMount from "@/components/assistant/WidgetMount";
 import { I18nProvider } from "@/lib/i18n";
 import RouteBack from "@/components/common/RouteBack";
 // src/app/layout.tsx
@@ -63,7 +64,9 @@ export default function RootLayout({
           <Footer />
         </DarkModeProvider>
             </I18nProvider>
-    </body>
+      <WidgetMount />
+    <WidgetMount />
+  </body>
     </html>
   );
 }

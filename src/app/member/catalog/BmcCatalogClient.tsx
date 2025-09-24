@@ -1,5 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { useState, useMemo } from "react";
 
 type Category = { id:string; slug:string; title:string; price:number; priority:number };
@@ -12,6 +13,7 @@ const PALETTE = [
   "from-rose-400 to-amber-300",
   "from-indigo-500 to-blue-400",
   "from-lime-400 to-emerald-300",
+  { href: "/member/health-blackbox", label: "Health Black Box" },
 ];
 
 export default function BmcCatalogClient({ categories }:{ categories:Category[] }) {

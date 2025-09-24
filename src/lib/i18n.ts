@@ -1,38 +1,87 @@
-/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
-import en from "@/i18n/forms/en/forms.json";
-import es from "@/i18n/forms/es/forms.json";
-import ru from "@/i18n/forms/ru/forms.json";
+export type Lang = "en" | "es" | "de" | "fr" | "ru";
 
-type Dict = typeof en;
+export const i18n = {
+  en: {
+    title: "AI Health Assistant",
+    subtitle: "Talk, type, and get guidance. (Voice in/out supported)",
+    inputPlaceholder: "Type your message…",
+    send: "Send",
+    speaking: "Speaking…",
+    listening: "Listening…",
+    mic: "Mic",
+    stop: "Stop",
+    ttsOn: "Voice",
+    ttsOff: "Mute",
+    clear: "Clear",
+    language: "Language",
+    intro_assistant: "Hello! I’m your AI Health Assistant. How can I help you today?",
+  },
+  es: {
+    title: "Asistente de Salud IA",
+    subtitle: "Habla, escribe y recibe ayuda. (Voz in/out)",
+    inputPlaceholder: "Escribe tu mensaje…",
+    send: "Enviar",
+    speaking: "Hablando…",
+    listening: "Escuchando…",
+    mic: "Micrófono",
+    stop: "Detener",
+    ttsOn: "Voz",
+    ttsOff: "Silencio",
+    clear: "Limpiar",
+    language: "Idioma",
+    intro_assistant: "¡Hola! Soy tu asistente de salud con IA. ¿En qué puedo ayudarte?",
+  },
+  de: {
+    title: "KI-Gesundheitsassistent",
+    subtitle: "Sprechen, schreiben, Hilfe erhalten. (Stimme in/out)",
+    inputPlaceholder: "Nachricht eingeben…",
+    send: "Senden",
+    speaking: "Spricht…",
+    listening: "Hört zu…",
+    mic: "Mikro",
+    stop: "Stopp",
+    ttsOn: "Stimme",
+    ttsOff: "Stumm",
+    clear: "Leeren",
+    language: "Sprache",
+    intro_assistant: "Hallo! Ich bin dein KI-Gesundheitsassistent. Wobei kann ich helfen?",
+  },
+  fr: {
+    title: "Assistant de santé IA",
+    subtitle: "Parlez, écrivez et obtenez de l'aide. (Voix in/out)",
+    inputPlaceholder: "Tapez votre message…",
+    send: "Envoyer",
+    speaking: "Parole…",
+    listening: "Écoute…",
+    mic: "Micro",
+    stop: "Arrêter",
+    ttsOn: "Voix",
+    ttsOff: "Muet",
+    clear: "Effacer",
+    language: "Langue",
+    intro_assistant: "Bonjour ! Je suis votre assistant santé IA. Comment puis-je aider ?",
+  },
+  ru: {
+    title: "AI Health Assistant",
+    subtitle: "Разговаривайте и пишите. (Голос in/out)",
+    inputPlaceholder: "Введите сообщение…",
+    send: "Отправить",
+    speaking: "Говорю…",
+    listening: "Слушаю…",
+    mic: "Микрофон",
+    stop: "Стоп",
+    ttsOn: "Голос",
+    ttsOff: "Без звука",
+    clear: "Очистить",
+    language: "Язык",
+    intro_assistant: "Здравствуйте! Я ваш AI Health Assistant. Чем могу помочь?",
+  },
+} as const;
 
-const MAP: Record<string, Dict> = { en, es, ru };
-
-export function normalizeLang(input?: string): "en"|"es"|"ru" {
-  const v = (input||"").toLowerCase();
-  if (v.startsWith("es")) return "es";
-  if (v.startsWith("ru")) return "ru";
-  return "en";
+export function t(lang: Lang, key: keyof typeof i18n["en"]) {
+  const pack = (i18n as any)[lang] ?? i18n.en;
+  return (pack as any)[key] ?? (i18n.en as any)[key];
 }
 
-export function localizeForm(form: unknown, slug: string, lang: string) {
-  const L = MAP[normalizeLang(lang)]?.[slug];
-  if (!L) return form;
-
-  const clone = structuredClone(form);
-
-  // Заголовок
-  if (L.title) clone.title = L.title;
-
-  // Заголовки секций по title
-  if (L.sections && Array.isArray(clone.sections)) {
-    clone.sections = clone.sections.map((s: unknown) => {
-      const nt = L.sections[s.title] || s.title;
-      return { ...s, title: nt };
-    });
-  }
-
-  // Вопросы: если заданы ключи (например, question.key), можно маппить по key.
-  // Если ключей нет — оставляем как есть. Для примера маппим базовые по умолчанию (без key).
-  // Здесь демонстрационно ничего не меняем в label (кроме будущей поддержки key).
-  return clone;
-}
+const defaultExport = { t, i18n };
+export default defaultExport;

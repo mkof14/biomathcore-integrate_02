@@ -68,6 +68,7 @@
     "next": "15.4.6",
     "next-auth": "^4.24.11",
     "nodemailer": "^6.10.1",
+    "openai": "^5.22.1",
     "pdf-lib": "^1.17.1",
     "rate-limiter-flexible": "7.2.0",
     "react": "18.3.1",
