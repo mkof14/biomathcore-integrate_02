@@ -1,119 +1,129 @@
-import { Suspense } from "react";
-
-async function getJSON(url: string) {
-  try {
-    const res = await fetch(url, { cache: "no-store" });
-    if (!res.ok) return null;
-    return await res.json();
-  } catch {
-    return null;
-  }
-}
-
-async function loadData() {
-  const [reports, files, ctx] = await Promise.all([
-    getJSON(`${process.env.NEXT_PUBLIC_BASE_URL || ""}/api/reports/list?userId=U1001`) ?? getJSON(`/api/reports/list?userId=U1001`),
-    getJSON(`${process.env.NEXT_PUBLIC_BASE_URL || ""}/api/hbx/files?userId=U1001`) ?? getJSON(`/api/hbx/files?userId=U1001`),
-    getJSON(`${process.env.NEXT_PUBLIC_BASE_URL || ""}/api/assistant/context?userId=U1001`) ?? getJSON(`/api/assistant/context?userId=U1001`),
-  ]);
-
-  return {
-    reports: Array.isArray(reports?.items) ? reports.items : [],
-    files: Array.isArray(files?.items) ? files.items : [],
-    user: ctx?.user ?? null,
-    stats: ctx?.stats ?? { forms: 0, reports: 0, files: 0 },
-  };
-}
-
 export const dynamic = "force-dynamic";
-export const runtime = "nodejs";
+import DashboardAddons from "@/components/dashboard/DashboardAddons";
 
-export default async function MemberDashboardPage() {
-  const data = await loadData();
+import Link from "next/link";
+import AssistantTimelineMount from "@/components/assistant/AssistantTimelineMount";
+import ActivityCharts from "@/components/assistant/ActivityCharts";
 
+type FileItem = { id:string; name?:string; title?:string; createdAt?:string };
+type ReportItem = { id:string; title?:string; createdAt?:string };
+
+async function getJSON<T>(url: string): Promise<T | null> {
+  try {
+    const res = await fetch(url, { cache: "no-store", next: { revalidate: 0 } });
+    if (!res.ok) return null;
+    return (await res.json()) as T;
+  } catch { return null; }
+}
+
+async function RecentFiles({ userId }: { userId: string }) {
+  const data = await getJSON<{items: FileItem[]}>(
+    `/api/hbx/files?userId=${encodeURIComponent(userId)}`
+  );
+  const items = data?.items ?? [];
   return (
-    <div className="p-6 space-y-6">
-      <div className="flex items-baseline justify-between">
-        <h1 className="text-2xl font-bold">Dashboard</h1>
-        <span className="text-sm text-gray-500">Member Zone</span>
-      </div>
-
-      {/* User summary */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="rounded-2xl shadow p-4 bg-white">
-          <div className="text-xs uppercase text-gray-500">User</div>
-          <div className="mt-1 font-semibold">{data.user?.name ?? "—"}</div>
-          <div className="text-sm text-gray-600">
-            {data.user?.gender ? `Gender: ${data.user.gender}` : ""}
-          </div>
-        </div>
-        <div className="rounded-2xl shadow p-4 bg-white">
-          <div className="text-xs uppercase text-gray-500">Forms</div>
-          <div className="mt-1 text-2xl font-semibold">{data.stats?.forms ?? 0}</div>
-        </div>
-        <div className="rounded-2xl shadow p-4 bg-white">
-          <div className="text-xs uppercase text-gray-500">Reports</div>
-          <div className="mt-1 text-2xl font-semibold">{data.stats?.reports ?? 0}</div>
-        </div>
-      </div>
-
-      {/* Recent Reports */}
-      <div className="rounded-2xl shadow bg-white overflow-hidden">
-        <div className="px-4 py-3 border-b">
-          <div className="font-semibold">Recent Reports</div>
-        </div>
-        <div className="divide-y">
-          {data.reports.slice(0, 10).map((r: any) => (
-            <div key={r.id} className="px-4 py-3 flex items-center justify-between">
-              <div>
-                <div className="font-medium">{r.title}</div>
-                <div className="text-xs text-gray-500">{r.createdAt ? new Date(r.createdAt).toLocaleString() : ""}</div>
-              </div>
-              <a href={`/member/reports/${r.id}`} className="text-sm underline">Open</a>
-            </div>
+    <div className="rounded-2xl border border-slate-800 bg-slate-900/50">
+      <div className="px-4 py-3 border-b border-slate-800 text-sm font-semibold text-slate-200">Recent Files</div>
+      {items.length === 0 ? (
+        <div className="px-4 py-3 text-sm text-slate-400">No files yet.</div>
+      ) : (
+        <ul className="divide-y divide-slate-800">
+          {items.slice(0,8).map(f=>(
+            <li key={f.id} className="px-4 py-3 text-sm flex items-center justify-between">
+              <span className="text-slate-200">{f.name ?? f.title ?? f.id}</span>
+              {f.createdAt && <span className="text-xs text-slate-500">{new Date(f.createdAt).toLocaleString()}</span>}
+            </li>
           ))}
-          {!data.reports.length && (
-            <div className="px-4 py-6 text-sm text-gray-500">No reports yet.</div>
-          )}
-        </div>
-      </div>
-
-      {/* Recent Files */}
-      <div className="rounded-2xl shadow bg-white overflow-hidden">
-        <div className="px-4 py-3 border-b">
-          <div className="font-semibold">Recent Files</div>
-        </div>
-        <div className="divide-y">
-          {data.files.slice(0, 10).map((f: any) => (
-            <div key={f.id} className="px-4 py-3 flex items-center justify-between">
-              <div>
-                <div className="font-medium">{f.name}</div>
-                <div className="text-xs text-gray-500">{f.mime || ""}</div>
-              </div>
-              <a href={`/member/files`} className="text-sm underline">Files</a>
-            </div>
-          ))}
-          {!data.files.length && (
-            <div className="px-4 py-6 text-sm text-gray-500">No files yet.</div>
-          )}
-        </div>
-      </div>
-
-      {/* Quick actions */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <a href="/member/health-assistant" className="rounded-2xl shadow p-4 bg-white hover:bg-gray-50">
-          <div className="font-medium">Health Assistant</div>
-          <div className="text-sm text-gray-500">Ask questions with your data in context</div>
-        </a>
-        <a href="/member/health-blackbox" className="rounded-2xl shadow p-4 bg-white hover:bg-gray-50">
-          <div className="font-medium">Health Black Box</div>
-          <div className="text-sm text-gray-500">Advanced analytics</div>
-        </a>
-        <a href="/member/questionnaires" className="rounded-2xl shadow p-4 bg-white hover:bg-gray-50">
-          <div className="font-medium">Questionnaires</div>
-          <div className="text-sm text-gray-500">Fill or review your forms</div>
-        </a>
+        </ul>
+      )}
+      <div className="px-4 py-3">
+        <Link href="/member/health-blackbox" className="inline-block text-xs px-2 py-1 rounded-md bg-emerald-600/80 hover:bg-emerald-600 text-white">
+          Upload File
+        </Link>
       </div>
     </div>
+  );
+}
+
+async function Reports({ userId }: { userId: string }) {
+  const data = await getJSON<{items: ReportItem[]}>(
+    `/api/reports/list?userId=${encodeURIComponent(userId)}`
+  );
+  const items = data?.items ?? [];
+  return (
+    <div className="rounded-2xl border border-slate-800 bg-slate-900/50">
+      <div className="px-4 py-3 border-b border-slate-800 text-sm font-semibold text-slate-200">Reports</div>
+      {items.length === 0 ? (
+        <div className="px-4 py-3 text-sm text-slate-400">No reports yet.</div>
+      ) : (
+        <ul className="divide-y divide-slate-800">
+          {items.slice(0,8).map(r=>(
+            <li key={r.id} className="px-4 py-3 text-sm flex items-center justify-between">
+              <span className="text-slate-200">{r.title ?? r.id}</span>
+              {r.createdAt && <span className="text-xs text-slate-500">{new Date(r.createdAt).toLocaleString()}</span>}
+            </li>
+          ))}
+        </ul>
+      )}
+      <div className="px-4 py-3">
+        <Link href="/member/reports" className="inline-block text-xs px-2 py-1 rounded-md bg-indigo-600/80 hover:bg-indigo-600 text-white">
+          Open Reports
+        </Link>
+      </div>
+    </div>
+  );
+}
+
+export default async function Dashboard() {
+  const userId = "U1001";
+  return (
+    <main
+      className="min-h-screen bg-slate-950 text-slate-200"
+      style={{ backgroundColor: "#0b1220" }} /* fallback, если что-то перебивает классы */
+    >
+      <div className="mx-auto max-w-6xl px-4 py-6">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="text-2xl font-semibold">Dashboard</h1>
+          <div className="flex items-center gap-2">
+            <Link href="/member/health-assistant" className="text-xs px-2 py-1 rounded-md bg-sky-600/80 hover:bg-sky-600 text-white">Ask Assistant</Link>
+            <Link href="/member/health-blackbox" className="text-xs px-2 py-1 rounded-md bg-emerald-600/80 hover:bg-emerald-600 text-white">Upload File</Link>
+            <Link href="/member/questionnaires" className="text-xs px-2 py-1 rounded-md bg-amber-600/80 hover:bg-amber-600 text-white">Questionnaires</Link>
+          </div>
+        </div>
+
+        {/* Charts */}
+        <div className="rounded-2xl border border-slate-800 bg-slate-900/50 p-4 mb-6">
+          <div className="text-sm font-semibold text-slate-200 mb-2">Assistant Metrics</div>
+          <ActivityCharts userId={userId} />
+
+{/* Dashboard extra widgets */}
+<div className="mt-6">
+  <DashboardAddons userId={userId} />
+</div>
+
+        </div>
+
+        {/* 2 columns */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Timeline */}
+          <div className="rounded-2xl border border-slate-800 bg-slate-900/50">
+            <div className="px-4 py-3 border-b border-slate-800 text-sm font-semibold text-slate-200">Assistant Activity</div>
+            <div className="p-4">
+              {/* модель намеренно не показываем */}
+              <AssistantTimelineMount userId={userId} />
+            </div>
+          </div>
+
+          {/* Files + Reports */}
+          <div className="flex flex-col gap-6">
+            {/* @ts-expect-error Async Server Component */}
+            <RecentFiles userId={userId} />
+            {/* @ts-expect-error Async Server Component */}
+            <Reports userId={userId} />
+          </div>
+        </div>
+      </div>
+    </main>
   );
 }

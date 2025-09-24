@@ -21,3 +21,4 @@ biomathcore-jules/
 # test artifacts
 playwright-report/
 tests/**/playwright-report/
+.vercel

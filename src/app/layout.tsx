@@ -40,7 +40,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       {/* "dark" class will be toggled by DarkModeProvider (client) */}
-      <body className="min-h-dvh antialiased bg-[var(--bg-dark)] text-[var(--fg-dark)]">
+      <body className="\1 min-h-screen bg-slate-950 text-slate-200">
       <I18nProvider>
         <DarkModeProvider>
           {/* Skip link for a11y */}

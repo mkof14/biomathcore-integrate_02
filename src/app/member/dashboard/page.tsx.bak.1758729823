@@ -1,0 +1,166 @@
+import ActivityCharts from "@/components/assistant/ActivityCharts";
+export const dynamic = "force-dynamic";
+import { Suspense } from "react";
+import AssistantTimelineMount from "@/components/assistant/AssistantTimelineMount";
+        </div>
+
+        <!-- charts inserted -->
+        <div className="mt-6">
+          <ActivityCharts userId={userId} />
+        </div>
+        <div className="mt-6">
+
+async function j<T>(u: string): Promise<T> {
+  const r = await fetch(u, { cache: "no-store" });
+  if (!r.ok) throw new Error(`HTTP ${r.status}`);
+  return r.json();
+}
+
+async function getContext(userId: string) {
+  return j<any>(`/api/assistant/context?userId=${encodeURIComponent(userId)}`);
+}
+async function getReports(userId: string) {
+  return j<{items: {id:string;title:string;createdAt:string}[]}>(`/api/reports/list?userId=${encodeURIComponent(userId)}`);
+}
+async function getFiles(userId: string) {
+  return j<{items: {id:string;name:string;createdAt:string}[]}>(`/api/hbx/files?userId=${encodeURIComponent(userId)}`);
+}
+
+function Card({ title, children }: { title: string; children?: React.ReactNode }) {
+  return (
+    <div className="rounded-2xl border border-slate-800/60 bg-slate-800/40 backdrop-blur-sm">
+      <div className="px-4 py-3 border-b border-slate-800/60 text-sm font-semibold text-slate-200">{title}</div>
+      <div className="p-4">{children}</div>
+    </div>
+  );
+}
+
+function StatCard({ label, value }: { label: string; value: string | number }) {
+  return (
+    <div className="rounded-2xl border border-slate-800/60 bg-slate-800/40 backdrop-blur-sm p-4">
+      <div className="text-[11px] uppercase tracking-wide text-slate-400">{label}</div>
+      <div className="mt-1 text-3xl font-semibold text-slate-100">{value}</div>
+    </div>
+  );
+}
+
+export default async function Page() {
+  const userId = "U1001";
+
+  const [ctx, reports, files] = await Promise.all([
+    getContext(userId).catch(() => null),
+    getReports(userId).catch(() => ({ items: [] })),
+    getFiles(userId).catch(() => ({ items: [] })),
+  ]);
+
+  const user = ctx?.user ?? { name: "Demo User", gender: "unspecified" };
+  const counts = {
+    forms: ctx?.stats?.forms ?? 0,
+    reports: ctx?.stats?.reports ?? 0,
+  };
+
+  return (
+    <div className="dark min-h-screen bg-slate-900 text-slate-100">
+      <div className="mx-auto w-full max-w-6xl px-4 py-6">
+        <div className="flex items-center justify-between">
+          <h1 className="text-2xl font-bold">Dashboard</h1>
+          <div className="text-sm text-slate-400">Member Zone</div>
+        </div>
+
+        {/* Top stats */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+          <div className="rounded-2xl border border-slate-800/60 bg-slate-800/40 backdrop-blur-sm p-4">
+            <div className="text-[11px] uppercase tracking-wide text-slate-400">User</div>
+            <div className="mt-1 text-lg font-medium text-slate-100">{user?.name ?? "—"}</div>
+            <div className="text-sm text-slate-400">Gender: {user?.gender ?? "—"}</div>
+          </div>
+          <StatCard label="Forms" value={counts.forms} />
+          <StatCard label="Reports" value={counts.reports} />
+        </div>
+
+        {/* Recent reports */}
+        <div className="mt-6">
+          <Card title="Recent Reports">
+            {(!reports?.items || reports.items.length === 0) && (
+              <div className="text-sm text-slate-400">No reports yet.</div>
+            )}
+            {reports?.items?.length > 0 && (
+              <ul className="divide-y divide-slate-800/60">
+                {reports.items.slice(0, 6).map((r) => (
+                  <li key={r.id} className="py-3 flex items-center justify-between">
+                    <div>
+                      <div className="text-slate-100">{r.title}</div>
+                      <div className="text-xs text-slate-400">{new Date(r.createdAt).toLocaleString()}</div>
+                    </div>
+                    <a
+                      className="text-sm text-sky-300 hover:text-sky-200"
+                      href={`/reports/${encodeURIComponent(r.id)}`}
+                    >
+                      Open
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </Card>
+        </div>
+
+        {/* Recent files */}
+        <div className="mt-6">
+          <Card title="Recent Files">
+            {(!files?.items || files.items.length === 0) && (
+              <div className="text-sm text-slate-400">No files yet.</div>
+            )}
+            {files?.items?.length > 0 && (
+              <ul className="divide-y divide-slate-800/60">
+                {files.items.slice(0, 6).map((f) => (
+                  <li key={f.id} className="py-3 flex items-center justify-between">
+                    <div>
+                      <div className="text-slate-100">{f.name}</div>
+                      <div className="text-xs text-slate-400">{new Date(f.createdAt).toLocaleString()}</div>
+                    </div>
+                    <a
+                      className="text-sm text-sky-300 hover:text-sky-200"
+                      href={`/member/health-blackbox?file=${encodeURIComponent(f.id)}`}
+                    >
+                      View
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </Card>
+        </div>
+
+        {/* Assistant timeline */}
+        <div className="mt-6">
+          <AssistantTimelineMount userId={userId} />
+        </div>
+
+        <!-- charts inserted -->
+        <div className="mt-6">
+          <ActivityCharts userId={userId} />
+        </div>
+        <div className="mt-6">
+        </div>
+
+        {/* Tiles */}
+        <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+          <a href="/member/health-assistant" className="rounded-2xl border border-slate-800/60 bg-slate-800/40 backdrop-blur-sm p-4 hover:bg-slate-800/60 transition">
+            <div className="text-[11px] uppercase tracking-wide text-slate-400">Health Assistant</div>
+            <div className="mt-1 text-slate-100 text-sm">Ask questions with your data in context</div>
+          </a>
+          <a href="/member/health-blackbox" className="rounded-2xl border border-slate-800/60 bg-slate-800/40 backdrop-blur-sm p-4 hover:bg-slate-800/60 transition">
+            <div className="text-[11px] uppercase tracking-wide text-slate-400">Health Black Box</div>
+            <div className="mt-1 text-slate-100 text-sm">Advanced analytics</div>
+          </a>
+          <a href="/member/questionnaires" className="rounded-2xl border border-slate-800/60 bg-slate-800/40 backdrop-blur-sm p-4 hover:bg-slate-800/60 transition">
+            <div className="text-[11px] uppercase tracking-wide text-slate-400">Questionnaires</div>
+            <div className="mt-1 text-slate-100 text-sm">Fill or review your forms</div>
+          </a>
+        </div>
+
+      </div>
+    </div>
+  );
+}

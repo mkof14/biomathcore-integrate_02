@@ -1,3 +1,4 @@
+"use client";
 // src/app/refer/page.tsx
 import type { Metadata } from "next";
 

@@ -1,0 +1,83 @@
+=== PRISMA SCHEMA ===
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+=== ASSISTANT API ===
+
+=== SERVER (assistant/rag) ===
+
+=== CONTEXT BUILDERS ===
+
+=== LLM CALLS ===
+src/lib/ai.ts:17:    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+src/lib/ai/gemini.ts:5:export function getGemini(modelName = "gemini-1.5-pro") {
+src/lib/services-data.ts:300:      "Curated list of vetted digital therapeutics apps and tools.",
+src/server/aiServer.ts:16:  const provider = (process.env.AI_PROVIDER || "openai").toLowerCase();
+src/server/aiServer.ts:19:    case "openai":
+src/server/aiServer.ts:21:    case "azure-openai":
+src/server/aiServer.ts:23:    case "anthropic":
+src/server/aiServer.ts:25:    case "gemini":
+src/server/aiServer.ts:39:  const res = await fetch("https://api.openai.com/v1/chat/completions", {
+src/server/aiServer.ts:70:  const url = `${endpoint}/openai/deployments/${deployment}/chat/completions?api-version=2024-02-15-preview`;
+src/server/aiServer.ts:101:  const res = await fetch("https://api.anthropic.com/v1/messages", {
+src/server/aiServer.ts:105:      "anthropic-version": "2023-06-01",
+src/server/aiServer.ts:128:  const model = env("GEMINI_MODEL", "gemini-1.5-flash");
+src/app/investors/page.tsx:129:                "Free tier with core tools",
+src/_frozen/pages/investors/investors/page.tsx:129:                "Free tier with core tools",
+src/lib/report-engine/gemini.ts:26:  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+src/lib/report-engine/gemini.ts:43:  return { lines: rawLines.length ? rawLines : [text.trim()].filter(Boolean), meta: { source: "gemini" } };
+src/_frozen/pages/investors/page.tsx:129:                "Free tier with core tools",
+src/lib/report-engine/geminiGenerate.ts:25:  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+src/lib/report-engine/geminiGenerate.ts:39:    meta: { source: "gemini" },
+src/app/about/page.tsx:170:                  Explore curated tools and guidance for {c.name}.
+src/app/auth/ai/route.ts:51:    const openaiRes = await fetch(
+src/app/auth/ai/route.ts:52:      "https://api.openai.com/v1/chat/completions",
+src/app/auth/ai/route.ts:71:    if (openaiRes.status === 429) {
+src/app/auth/ai/route.ts:72:      const text = await openaiRes.text().catch(() => "");
+src/app/auth/ai/route.ts:82:    if (!openaiRes.ok) {
+src/app/auth/ai/route.ts:83:      const text = await openaiRes.text().catch(() => "");
+src/app/auth/ai/route.ts:86:          error: `Upstream error from OpenAI: ${openaiRes.status}`,
+src/app/auth/ai/route.ts:93:    const data = await openaiRes.json();
+src/app/services/page.mono.tsx:296:    `Explore ${service.title} — part of our precision‑health toolkit.`;
+src/components/data/allCategories.ts:25:      "Explore personalized tools to support your emotional and cognitive health.",
+src/components/data/allCategories.ts:73:        id: "anxiety-tool",
+src/app/ai-assistant/page.tsx:11:          member tools.
+src/app/page.tsx:296:          subtitle="Real guidance. Real results. Modern health tools that fit your day and help you feel great longer."
+src/_frozen/pages/about/page.tsx:170:                  Explore curated tools and guidance for {c.name}.
+src/app/admin/service/page.tsx:17:      <AdminHeader title="Service Links" desc="Quick access to internal tools." />
+src/_frozen/pages/about/about/page.tsx:170:                  Explore curated tools and guidance for {c.name}.
+src/app/admin/integrations/page.tsx:16:  const [gemini, setGemini] = useState<string>("");
+src/app/admin/integrations/page.tsx:39:              onClick={async ()=> setGemini(await ping("/api/admin/ping/gemini"))}
+src/app/admin/integrations/page.tsx:43:            <div className="small mt-2">{gemini}</div>
+src/app/faq/page.tsx:192:    a: "Apps, programs, AI tools for health.",
+src/app/api/assistant/reply/route.ts:2:import OpenAI from "openai";
+src/app/api/admin/route.ts:18:      "/api/admin/ping/gemini",
+src/app/api/admin/ping/gemini/route.ts:4:/** POST /api/admin/ping/gemini — лёгкая проверка наличия ключа GEMINI_API_KEY. */
+src/app/api/ai/analyze/route.ts:48:    const openaiRes = await fetch(
+src/app/api/ai/analyze/route.ts:49:      "https://api.openai.com/v1/chat/completions",
+src/app/api/ai/analyze/route.ts:67:    if (openaiRes.status === 429) {
+src/app/api/ai/analyze/route.ts:68:      const text = await openaiRes.text().catch(() => "");
+src/app/api/ai/analyze/route.ts:78:    if (!openaiRes.ok) {
+src/app/api/ai/analyze/route.ts:79:      const text = await openaiRes.text().catch(() => "");
+src/app/api/ai/analyze/route.ts:82:          error: `OpenAI upstream error: ${openaiRes.status}`,
+src/app/api/ai/analyze/route.ts:89:    const data = await openaiRes.json();
+src/app/api/ai/analyze/stream/route.ts:55:        const openaiRes = await fetch(
+src/app/api/ai/analyze/stream/route.ts:56:          "https://api.openai.com/v1/chat/completions",
+src/app/api/ai/analyze/stream/route.ts:75:        if (!openaiRes.ok || !openaiRes.body) {
+src/app/api/ai/analyze/stream/route.ts:76:          const txt = await openaiRes.text().catch(() => "");
+src/app/api/ai/analyze/stream/route.ts:79:              `ERROR: OpenAI upstream error ${openaiRes.status}. ${txt.slice(0, 400)}`,
+src/app/api/ai/analyze/stream/route.ts:86:        const reader = openaiRes.body.getReader();

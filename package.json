@@ -45,7 +45,10 @@
     "prisma:migrate:dev": "prisma migrate dev --name sync",
     "test:e2e": "playwright test --config=tests/e2e/smoke.config.ts",
     "fast": "pnpm install && pnpm prisma generate && pnpm prisma migrate dev --name sync || true && pnpm run db:seed || true && PLAYWRIGHT_BASE_URL=http://localhost:3000 pnpm run test:all && pnpm run dev",
-    "retention": "ts-node scripts/retention.ts"
+    "retention": "ts-node scripts/retention.ts",
+    "generate:prisma": "prisma generate",
+    "vercel-build": "pnpm run generate:prisma && next build",
+    "postinstall": "prisma generate || true"
   },
   "dependencies": {
     "@google-cloud/storage": "^7.17.1",
