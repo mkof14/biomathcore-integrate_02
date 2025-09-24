@@ -8,27 +8,28 @@ generator client {
 }
 
 model User {
-  id                   String   @id @default(cuid())
-  email                String   @unique
+  id                   String    @id @default(cuid())
+  email                String    @unique
   name                 String?
   gender               String?
   birthDate            DateTime?
-  allowPersonalization Boolean  @default(true)
+  allowPersonalization Boolean   @default(true)
 
   // списки храним как Json в sqlite
-  conditions           Json?
-  allergies            Json?
-  medications          Json?
+  conditions  Json?
+  allergies   Json?
+  medications Json?
 
-  createdAt            DateTime @default(now())
-  updatedAt            DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   // связи
-  forms                Form[]
-  reports              Report[]
-  files                File[]
-  chunks               Chunk[]
-  chats                ChatMessage[]
+  forms   Form[]
+  reports Report[]
+  files   File[]
+  chunks  Chunk[]
+  chats   ChatMessage[]
+  AIRun   AIRun[]
 }
 
 model Form {
@@ -47,7 +48,7 @@ model Report {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String
   title     String
-  kind      String    // summary / labs / etc
+  kind      String // summary / labs / etc
   summary   String?
   data      Json?
   createdAt DateTime @default(now())
@@ -73,7 +74,7 @@ model Chunk {
   user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     String
   sourceId   String
-  sourceType String    // "form" | "report" | "file"
+  sourceType String // "form" | "report" | "file"
   text       String
   embedding  Json
   createdAt  DateTime @default(now())
@@ -86,8 +87,38 @@ model ChatMessage {
   id        String   @id @default(cuid())
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String
-  role      String   // "user" | "assistant"
+  role      String // "user" | "assistant"
   content   String
+  createdAt DateTime @default(now())
+
+  @@index([userId, createdAt])
+}
+
+model AIRun {
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  model     String?
+  duration  Int
+  tokensIn  Int?
+  tokensOut Int?
+  fallback  Boolean  @default(false)
+  status    String
+  createdAt DateTime @default(now())
+
+  @@index([userId, createdAt])
+}
+
+model AIRun {
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  model     String?
+  duration  Int
+  tokensIn  Int?
+  tokensOut Int?
+  fallback  Boolean  @default(false)
+  status    String
   createdAt DateTime @default(now())
 
   @@index([userId, createdAt])
