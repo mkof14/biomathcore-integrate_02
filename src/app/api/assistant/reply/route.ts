@@ -6,6 +6,7 @@ import { buildSystemPrompt } from "@/server/assistant/prompt";
 import { buildFallbackReply } from "@/server/assistant/fallback";
 import { safeParseAssistantJSON, AssistantJSON } from "@/server/assistant/schemas";
 import { rateLimit } from "@/server/util/rateLimit";
+import { getPrisma } from "@/server/util/prisma";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -14,6 +15,7 @@ const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY! });
 
 export async function POST(req: Request) {
   const startedAt = Date.now();
+  const prisma = getPrisma();
 
   // === Rate limit ===
   let userIdForKey = "anon";
@@ -27,6 +29,12 @@ export async function POST(req: Request) {
   const key = `assist:${userIdForKey}:${ip}`;
   const { ok: allowed, remaining, resetMs } = rateLimit(key, 8, 60_000);
   if (!allowed) {
+    // пишем лог про rate-limit
+    try {
+      await prisma.aIRun.create({
+        data: { userId: userIdForKey, model: process.env.AI_MODEL || null, duration: Date.now() - startedAt, status: "rate-limit", fallback: false }
+      });
+    } catch {}
     return NextResponse.json(
       { reply: "Too many requests. Please wait a bit and try again.", debug: { rateLimit: true, resetMs } },
       {
@@ -41,12 +49,25 @@ export async function POST(req: Request) {
     );
   }
 
-  const respondOK = (
+  const respondOK = async (
     reply: string,
     facts: Array<{ sourceId: string; sourceType: string; text: string; score?: number }>,
-    meta: Record<string, any>
-  ) =>
-    NextResponse.json(
+    meta: Record<string, any>,
+    log: { userId: string; model?: string | null; duration: number; tokensIn?: number | null; tokensOut?: number | null; fallback: boolean; status: "ok" | "fallback" | "error" }
+  ) => {
+    // fire-and-forget лог (не блокируем ответ)
+    prisma.aIRun.create({
+      data: {
+        userId: log.userId,
+        model: log.model ?? null,
+        duration: log.duration,
+        tokensIn: log.tokensIn ?? null,
+        tokensOut: log.tokensOut ?? null,
+        fallback: log.fallback,
+        status: log.status,
+      },
+    }).catch(()=>{});
+    return NextResponse.json(
       {
         reply,
         facts: facts.map((f, i) => ({
@@ -60,6 +81,7 @@ export async function POST(req: Request) {
       },
       { status: 200 }
     );
+  };
 
   try {
     const body = await req.json().catch(() => ({} as any));
@@ -77,7 +99,9 @@ export async function POST(req: Request) {
     // Без ключа — офлайн-фолбэк
     if (!process.env.OPENAI_API_KEY) {
       const fb = buildFallbackReply(ctx, facts, lang, message);
-      return respondOK(fb.answer, facts, { fallback: true, reason: "NO_KEY" });
+      return respondOK(fb.answer, facts, { fallback: true, reason: "NO_KEY" }, {
+        userId, model: null, duration: Date.now() - startedAt, tokensIn: null, tokensOut: null, fallback: true, status: "fallback"
+      });
     }
 
     // 3) System prompt (строгий JSON)
@@ -110,32 +134,31 @@ export async function POST(req: Request) {
 
     const raw = completion.choices?.[0]?.message?.content?.trim() || "";
     let parsed: AssistantJSON | null = safeParseAssistantJSON(raw);
-
     if (!parsed) {
       const m = raw.match(/\{[\s\S]*\}$/);
       if (m) parsed = safeParseAssistantJSON(m[0]);
     }
 
+    const usage = (completion as any)?.usage || {};
+    const tokensIn = usage?.prompt_tokens ?? null;
+    const tokensOut = usage?.completion_tokens ?? null;
+
     if (parsed) {
-      return NextResponse.json(
-        {
-          reply: parsed.answer,
-          citations: Array.isArray(parsed.citations) ? parsed.citations : [],
-          facts: facts.map((f, i) => ({
-            n: i + 1,
-            sourceId: f.sourceId,
-            sourceType: f.sourceType,
-            score: f.score != null ? Math.round(f.score * 1000) / 1000 : undefined,
-            text: f.text.slice(0, 500),
-          })),
-          debug: { model: process.env.AI_MODEL || "gpt-4o-mini", json: true, ms: Date.now() - startedAt },
-        },
-        { status: 200 }
+      return respondOK(
+        parsed.answer,
+        facts,
+        { model: process.env.AI_MODEL || "gpt-4o-mini", json: true },
+        { userId, model: process.env.AI_MODEL || null, duration: Date.now() - startedAt, tokensIn, tokensOut, fallback: false, status: "ok" }
       );
     }
 
     const replyText = raw || "Thanks — I’m here to help.";
-    return respondOK(replyText, facts, { model: process.env.AI_MODEL || "gpt-4o-mini", json: false });
+    return respondOK(
+      replyText,
+      facts,
+      { model: process.env.AI_MODEL || "gpt-4o-mini", json: false },
+      { userId, model: process.env.AI_MODEL || null, duration: Date.now() - startedAt, tokensIn, tokensOut, fallback: false, status: "ok" }
+    );
 
   } catch (err: any) {
     console.error("[assistant/reply] ERROR:", {
@@ -153,6 +176,14 @@ export async function POST(req: Request) {
       const ctx = await buildPatientContext(userId);
       const facts = await retrieveUserContext(userId, message || "health summary", 8);
       const fb = buildFallbackReply(ctx, facts, lang, message);
+
+      // лог ошибки+фолбэка
+      try {
+        await prisma.aIRun.create({
+          data: { userId, model: process.env.AI_MODEL || null, duration: Date.now() - startedAt, tokensIn: null, tokensOut: null, fallback: true, status: "fallback" }
+        });
+      } catch {}
+
       return NextResponse.json(
         {
           reply: fb.answer,
@@ -168,6 +199,12 @@ export async function POST(req: Request) {
         { status: 200 }
       );
     } catch (e) {
+      // финальный лог
+      try {
+        await getPrisma().aIRun.create({
+          data: { userId: userIdForKey, model: process.env.AI_MODEL || null, duration: Date.now() - startedAt, tokensIn: null, tokensOut: null, fallback: true, status: "error" }
+        });
+      } catch {}
       let hint = "AI backend is not reachable.";
       if (err?.status === 401) hint = "API key is invalid or missing.";
       if (err?.status === 429) hint = "Rate limited. Try again later.";
