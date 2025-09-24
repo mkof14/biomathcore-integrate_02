@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 // src/app/page.tsx
 import Link from "next/link";
 import type { Metadata } from "next";
