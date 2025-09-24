@@ -1,28 +1,119 @@
-import HealthBlackBox from "@/components/health/HealthBlackBox";
+import { Suspense } from "react";
 
-async function getUsage() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || ""}/api/blackbox/usage`, { cache: "no-store" });
-  if (!res.ok) return null;
-  return res.json();
+async function getJSON(url: string) {
+  try {
+    const res = await fetch(url, { cache: "no-store" });
+    if (!res.ok) return null;
+    return await res.json();
+  } catch {
+    return null;
+  }
 }
 
+async function loadData() {
+  const [reports, files, ctx] = await Promise.all([
+    getJSON(`${process.env.NEXT_PUBLIC_BASE_URL || ""}/api/reports/list?userId=U1001`) ?? getJSON(`/api/reports/list?userId=U1001`),
+    getJSON(`${process.env.NEXT_PUBLIC_BASE_URL || ""}/api/hbx/files?userId=U1001`) ?? getJSON(`/api/hbx/files?userId=U1001`),
+    getJSON(`${process.env.NEXT_PUBLIC_BASE_URL || ""}/api/assistant/context?userId=U1001`) ?? getJSON(`/api/assistant/context?userId=U1001`),
+  ]);
+
+  return {
+    reports: Array.isArray(reports?.items) ? reports.items : [],
+    files: Array.isArray(files?.items) ? files.items : [],
+    user: ctx?.user ?? null,
+    stats: ctx?.stats ?? { forms: 0, reports: 0, files: 0 },
+  };
+}
+
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
+
 export default async function MemberDashboardPage() {
-  const usage = await getUsage();
-  const props = usage ? {
-    usedBytes: usage.totalBytes,
-    files: usage.files,
-    quotaBytes: usage.quotaBytes,
-    userId: usage.userId,
-    lastBackup: usage.lastBackup,
-    anomaly: usage.anomaly,
-    encrypted: usage.encrypted,
-    // Добавь картинку, если есть ассет:
-    // imageUrl: "/images/blackbox.png",
-  } : {};
+  const data = await loadData();
 
   return (
     <div className="p-6 space-y-6">
-      <HealthBlackBox {...props} />
+      <div className="flex items-baseline justify-between">
+        <h1 className="text-2xl font-bold">Dashboard</h1>
+        <span className="text-sm text-gray-500">Member Zone</span>
+      </div>
+
+      {/* User summary */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="rounded-2xl shadow p-4 bg-white">
+          <div className="text-xs uppercase text-gray-500">User</div>
+          <div className="mt-1 font-semibold">{data.user?.name ?? "—"}</div>
+          <div className="text-sm text-gray-600">
+            {data.user?.gender ? `Gender: ${data.user.gender}` : ""}
+          </div>
+        </div>
+        <div className="rounded-2xl shadow p-4 bg-white">
+          <div className="text-xs uppercase text-gray-500">Forms</div>
+          <div className="mt-1 text-2xl font-semibold">{data.stats?.forms ?? 0}</div>
+        </div>
+        <div className="rounded-2xl shadow p-4 bg-white">
+          <div className="text-xs uppercase text-gray-500">Reports</div>
+          <div className="mt-1 text-2xl font-semibold">{data.stats?.reports ?? 0}</div>
+        </div>
+      </div>
+
+      {/* Recent Reports */}
+      <div className="rounded-2xl shadow bg-white overflow-hidden">
+        <div className="px-4 py-3 border-b">
+          <div className="font-semibold">Recent Reports</div>
+        </div>
+        <div className="divide-y">
+          {data.reports.slice(0, 10).map((r: any) => (
+            <div key={r.id} className="px-4 py-3 flex items-center justify-between">
+              <div>
+                <div className="font-medium">{r.title}</div>
+                <div className="text-xs text-gray-500">{r.createdAt ? new Date(r.createdAt).toLocaleString() : ""}</div>
+              </div>
+              <a href={`/member/reports/${r.id}`} className="text-sm underline">Open</a>
+            </div>
+          ))}
+          {!data.reports.length && (
+            <div className="px-4 py-6 text-sm text-gray-500">No reports yet.</div>
+          )}
+        </div>
+      </div>
+
+      {/* Recent Files */}
+      <div className="rounded-2xl shadow bg-white overflow-hidden">
+        <div className="px-4 py-3 border-b">
+          <div className="font-semibold">Recent Files</div>
+        </div>
+        <div className="divide-y">
+          {data.files.slice(0, 10).map((f: any) => (
+            <div key={f.id} className="px-4 py-3 flex items-center justify-between">
+              <div>
+                <div className="font-medium">{f.name}</div>
+                <div className="text-xs text-gray-500">{f.mime || ""}</div>
+              </div>
+              <a href={`/member/files`} className="text-sm underline">Files</a>
+            </div>
+          ))}
+          {!data.files.length && (
+            <div className="px-4 py-6 text-sm text-gray-500">No files yet.</div>
+          )}
+        </div>
+      </div>
+
+      {/* Quick actions */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <a href="/member/health-assistant" className="rounded-2xl shadow p-4 bg-white hover:bg-gray-50">
+          <div className="font-medium">Health Assistant</div>
+          <div className="text-sm text-gray-500">Ask questions with your data in context</div>
+        </a>
+        <a href="/member/health-blackbox" className="rounded-2xl shadow p-4 bg-white hover:bg-gray-50">
+          <div className="font-medium">Health Black Box</div>
+          <div className="text-sm text-gray-500">Advanced analytics</div>
+        </a>
+        <a href="/member/questionnaires" className="rounded-2xl shadow p-4 bg-white hover:bg-gray-50">
+          <div className="font-medium">Questionnaires</div>
+          <div className="text-sm text-gray-500">Fill or review your forms</div>
+        </a>
+      </div>
     </div>
   );
 }
