@@ -1,8 +1,5 @@
+export const revalidate = 300;
 import { apiFetch } from '@/lib/api';
-export const revalidate = 60;
-import { getBaseUrl } from '@/lib/baseUrl';
-const base = getBaseUrl();
-// src/app/page.tsx
 import Link from "next/link";
 import type { Metadata } from "next";
 import AskAiButton from "@/components/AskAiButton";
@@ -217,34 +214,19 @@ const ADVANTAGES = [
 
 /* ---------- Data loader (API-based) ---------- */
 async function fetchCategories(): Promise<CategoryUi[]> {
-  // Note: using a relative URL works in Next.js App Router on the server
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL ?? ""}/api/categories`,
-    {
-      // Revalidate every 5 minutes; adjust as needed
-      next: { revalidate: 300 },
-      // You can also pass { cache: "no-store" } to always fetch fresh data
-    },
-  ).catch((e) => {
-    console.error("Fetch /api/categories failed:", e);
-    throw e;
+  const res = await apiFetch("/api/categories", {
+    next: { revalidate: 300 },
   });
-
   if (!res.ok) {
-    console.error("Fetch /api/categories status:", res.status);
     throw new Error("Failed to fetch categories");
   }
-
   const data: { ok: boolean; categories?: CategoryApi[] } = await res.json();
   if (!data.ok || !data.categories) {
     throw new Error("Invalid categories payload");
   }
-
-  // Map API rows into UI-ready structs
   return data.categories.map((r) => {
     const Icon = (r.iconKey && ICONS[r.iconKey]) || Stars;
-    const tint =
-      TINTS[r.slug] || "from-white/10 to-transparent border-white/10";
+    const tint = TINTS[r.slug] || "from-white/10 to-transparent border-white/10";
     return {
       slug: r.slug,
       name: r.name,
@@ -257,28 +239,6 @@ async function fetchCategories(): Promise<CategoryUi[]> {
 
 /* ---------- Page (Server Component) ---------- */
 export default async function HomePage() {
-  // For server environments without NEXT_PUBLIC_BASE_URL, fall back to relative fetch
-  if (!process.env.NEXT_PUBLIC_BASE_URL) {
-    // Relative fetch variant
-    const res = await fetch("/api/categories", { next: { revalidate: 300 } });
-    if (!res.ok) throw new Error("Failed to fetch categories");
-    const data: { ok: boolean; categories?: CategoryApi[] } = await res.json();
-    const categories = (data.categories ?? []).map((r) => {
-      const Icon = (r.iconKey && ICONS[r.iconKey]) || Stars;
-      const tint =
-        TINTS[r.slug] || "from-white/10 to-transparent border-white/10";
-      return {
-        slug: r.slug,
-        name: r.name,
-        blurb: r.blurb ?? "",
-        Icon,
-        tint,
-      };
-    });
-
-    return <HomePageView categories={categories} />;
-  }
-
   const categories = await fetchCategories();
   return <HomePageView categories={categories} />;
 }
@@ -319,9 +279,7 @@ function HomePageView({ categories }: { categories: CategoryUi[] }) {
           {ADVANTAGES.map((a) => (
             <div
               key={a.title}
-              className={
-                "rounded-2xl border bg-gradient-to-br p-5 sm:p-6 " + a.tint
-              }
+              className={"rounded-2xl border bg-gradient-to-br p-5 sm:p-6 " + a.tint}
             >
               <div className="text-3xl mb-3">{a.emoji}</div>
               <h3 className="text-white font-semibold text-lg mb-1 leading-tight">
