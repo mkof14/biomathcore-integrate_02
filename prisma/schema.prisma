@@ -8,9 +8,87 @@ generator client {
 }
 
 model User {
+  id                   String   @id @default(cuid())
+  email                String   @unique
+  name                 String?
+  gender               String?
+  birthDate            DateTime?
+  allowPersonalization Boolean  @default(true)
+
+  // списки храним как Json в sqlite
+  conditions           Json?
+  allergies            Json?
+  medications          Json?
+
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  // связи
+  forms                Form[]
+  reports              Report[]
+  files                File[]
+  chunks               Chunk[]
+  chats                ChatMessage[]
+}
+
+model Form {
   id        String   @id @default(cuid())
-  email     String   @unique
-  name      String?
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  title     String
+  data      Json?
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+
+  @@index([userId, createdAt])
+}
+
+model Report {
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  title     String
+  kind      String    // summary / labs / etc
+  summary   String?
+  data      Json?
+  createdAt DateTime @default(now())
+
+  @@index([userId, createdAt])
+}
+
+model File {
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  name      String
+  mime      String?
+  size      Int?
+  text      String?
+  createdAt DateTime @default(now())
+
+  @@index([userId, createdAt])
+}
+
+model Chunk {
+  id         String   @id @default(cuid())
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     String
+  sourceId   String
+  sourceType String    // "form" | "report" | "file"
+  text       String
+  embedding  Json
+  createdAt  DateTime @default(now())
+
+  @@index([userId, createdAt])
+  @@index([userId, sourceType])
+}
+
+model ChatMessage {
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  role      String   // "user" | "assistant"
+  content   String
+  createdAt DateTime @default(now())
+
+  @@index([userId, createdAt])
 }

@@ -30,9 +30,11 @@ export async function GET(req: Request) {
     });
   }
 
-  const forms = await prisma.form.count({ where: { userId } });
-  const reports = await prisma.report.count({ where: { userId } });
-  const files = await prisma.file.count({ where: { userId } });
+  const [forms, reports, files] = await Promise.all([
+    prisma.form.count({ where: { userId } }),
+    prisma.report.count({ where: { userId } }),
+    prisma.file.count({ where: { userId } }),
+  ]);
 
   return NextResponse.json({
     user: {

@@ -1,5 +1,8 @@
 import { NextResponse } from "next/server";
 import OpenAI from "openai";
+import { buildPatientContext } from "@/server/assistant/context";
+import { retrieveUserContext } from "@/server/rag/retriever";
+import { buildSystemPrompt } from "@/server/assistant/prompt";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -9,45 +12,71 @@ const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY! });
 export async function POST(req: Request) {
   const startedAt = Date.now();
   try {
-    // --- входные данные
     const body = await req.json().catch(() => ({} as any));
-    const message = typeof body?.message === "string" ? body.message : "";
+    const message = typeof body?.message === "string" ? body.message.trim() : "";
     const lang = (typeof body?.lang === "string" ? body.lang : "en").toLowerCase();
 
-    // --- базовые проверки
     if (!process.env.OPENAI_API_KEY) {
-      console.error("[assistant/reply] missing OPENAI_API_KEY");
       return NextResponse.json({ reply: "AI key is missing.", debug: { code: "NO_KEY" } }, { status: 200 });
     }
-    if (!message.trim()) {
+    if (!message) {
       return NextResponse.json({ reply: "Please type your message." }, { status: 200 });
     }
 
-    // --- лог входа
-    console.log("[assistant/reply] IN:", { len: message.length, lang, model: process.env.AI_MODEL || "gpt-4o-mini" });
+    // TODO: заменить демо-набросок на реальную авторизацию (next-auth/guard)
+    const userId = body?.userId || "U1001";
 
-    // --- запрос к OpenAI
+    // 1) Полный контекст пациента из БД
+    const ctx = await buildPatientContext(userId);
+
+    // 2) RAG: релевантные факты под вопрос
+    const facts = await retrieveUserContext(userId, message, 8);
+
+    // 3) System prompt на базе профиля и фактов
+    const age = ctx.user.birthDate ? Math.max(0, Math.floor((Date.now() - Date.parse(ctx.user.birthDate)) / (365.25 * 24 * 3600 * 1000))) : undefined;
+    const system = buildSystemPrompt(
+      {
+        name: ctx.user.name ?? undefined,
+        gender: ctx.user.gender ?? undefined,
+        age,
+        conditions: ctx.user.conditions,
+        allergies: ctx.user.allergies,
+        medications: ctx.user.medications,
+        locale: lang,
+      },
+      facts.map(f => ({ text: f.text, sourceId: f.sourceId, sourceType: f.sourceType }))
+    );
+
+    // 4) Вызов модели
     const completion = await client.chat.completions.create({
       model: process.env.AI_MODEL || "gpt-4o-mini",
+      temperature: 0.3,
       messages: [
-        {
-          role: "system",
-          content:
-            "You are an AI Health Assistant in an English UI. Be concise and supportive. You do NOT provide diagnosis or treatment. For symptoms or emergencies advise contacting a clinician or emergency services.",
-        },
+        { role: "system", content: system },
         { role: "user", content: message },
       ],
-      temperature: 0.4,
     });
 
     const reply = completion.choices?.[0]?.message?.content?.trim() || "Thanks — I’m here to help.";
 
-    // --- лог успеха
-    console.log("[assistant/reply] OK:", { ms: Date.now() - startedAt, chars: reply.length });
-
-    return NextResponse.json({ reply }, { status: 200 });
+    return NextResponse.json(
+      {
+        reply,
+        facts: facts.map((f, i) => ({
+          n: i + 1,
+          sourceId: f.sourceId,
+          sourceType: f.sourceType,
+          score: Math.round(f.score * 1000) / 1000,
+          text: f.text.slice(0, 500),
+        })),
+        debug: {
+          ms: Date.now() - startedAt,
+          model: process.env.AI_MODEL || "gpt-4o-mini",
+        },
+      },
+      { status: 200 }
+    );
   } catch (err: any) {
-    // --- детальный лог ошибки
     const log = {
       name: err?.name,
       status: err?.status,
@@ -57,7 +86,6 @@ export async function POST(req: Request) {
     };
     console.error("[assistant/reply] ERROR:", log);
 
-    // --- человекочитаемая причина
     let hint = "AI backend is not reachable.";
     if (err?.status === 401) hint = "API key is invalid or missing.";
     if (err?.status === 429) hint = "Rate limited. Try again later.";
