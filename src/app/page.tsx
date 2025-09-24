@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 export const revalidate = 60;
 import { getBaseUrl } from '@/lib/baseUrl';
 const base = getBaseUrl();
