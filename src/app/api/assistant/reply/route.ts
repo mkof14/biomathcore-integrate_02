@@ -5,6 +5,7 @@ import { retrieveUserContext } from "@/server/rag/retriever";
 import { buildSystemPrompt } from "@/server/assistant/prompt";
 import { buildFallbackReply } from "@/server/assistant/fallback";
 import { safeParseAssistantJSON, AssistantJSON } from "@/server/assistant/schemas";
+import { rateLimit } from "@/server/util/rateLimit";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -13,6 +14,32 @@ const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY! });
 
 export async function POST(req: Request) {
   const startedAt = Date.now();
+
+  // === Rate limit ===
+  let userIdForKey = "anon";
+  try {
+    const clone = req.clone();
+    const body = await clone.json().catch(()=> ({} as any));
+    userIdForKey = typeof body?.userId === "string" && body.userId.trim() ? body.userId.trim() : "anon";
+  } catch {}
+  const fwd = (req.headers.get("x-forwarded-for") || "").split(",")[0].trim();
+  const ip = fwd || req.headers.get("x-real-ip") || "0.0.0.0";
+  const key = `assist:${userIdForKey}:${ip}`;
+  const { ok: allowed, remaining, resetMs } = rateLimit(key, 8, 60_000);
+  if (!allowed) {
+    return NextResponse.json(
+      { reply: "Too many requests. Please wait a bit and try again.", debug: { rateLimit: true, resetMs } },
+      {
+        status: 429,
+        headers: {
+          "Retry-After": String(Math.ceil(resetMs / 1000)),
+          "X-RateLimit-Limit": "8",
+          "X-RateLimit-Remaining": String(remaining),
+          "X-RateLimit-Reset": String(Math.ceil((Date.now() + resetMs) / 1000)),
+        },
+      }
+    );
+  }
 
   const respondOK = (
     reply: string,
@@ -84,14 +111,12 @@ export async function POST(req: Request) {
     const raw = completion.choices?.[0]?.message?.content?.trim() || "";
     let parsed: AssistantJSON | null = safeParseAssistantJSON(raw);
 
-    // Быстрый «фаззи»-парс: иногда модель окружает JSON мусором → попробуем вырезать {...}
     if (!parsed) {
       const m = raw.match(/\{[\s\S]*\}$/);
       if (m) parsed = safeParseAssistantJSON(m[0]);
     }
 
     if (parsed) {
-      // валидный JSON-пакет
       return NextResponse.json(
         {
           reply: parsed.answer,
@@ -109,7 +134,6 @@ export async function POST(req: Request) {
       );
     }
 
-    // Если модель вернула не-JSON — отдаём как текст
     const replyText = raw || "Thanks — I’m here to help.";
     return respondOK(replyText, facts, { model: process.env.AI_MODEL || "gpt-4o-mini", json: false });
 
@@ -121,7 +145,6 @@ export async function POST(req: Request) {
       data: err?.response?.data ?? err?.error ?? null,
     });
 
-    // Фолбэк без LLM
     try {
       const body = await req.json().catch(() => ({} as any));
       const message = typeof body?.message === "string" ? body.message.trim() : "";
