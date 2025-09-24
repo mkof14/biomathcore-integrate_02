@@ -17,3 +17,7 @@ dist/
 # nested repos (ignored)
 biomathcore-integrate_02/
 biomathcore-jules/
+
+# test artifacts
+playwright-report/
+tests/**/playwright-report/
