@@ -109,17 +109,3 @@ model AIRun {
   @@index([userId, createdAt])
 }
 
-model AIRun {
-  id        String   @id @default(cuid())
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    String
-  model     String?
-  duration  Int
-  tokensIn  Int?
-  tokensOut Int?
-  fallback  Boolean  @default(false)
-  status    String
-  createdAt DateTime @default(now())
-
-  @@index([userId, createdAt])
-}
