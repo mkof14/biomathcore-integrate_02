@@ -1,4 +1,6 @@
-export const dynamic = 'force-dynamic';
+export const revalidate = 60;
+import { getBaseUrl } from '@/lib/baseUrl';
+const base = getBaseUrl();
 // src/app/page.tsx
 import Link from "next/link";
 import type { Metadata } from "next";
