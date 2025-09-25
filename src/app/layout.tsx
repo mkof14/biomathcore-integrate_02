@@ -1,3 +1,4 @@
+import FloatingAssistant from '@/components/assistant/FloatingAssistant';
 import WidgetMount from "@/components/assistant/WidgetMount";
 import { I18nProvider } from "@/lib/i18n";
 import RouteBack from "@/components/common/RouteBack";
@@ -66,7 +67,8 @@ export default function RootLayout({
             </I18nProvider>
       <WidgetMount />
     <WidgetMount />
-  </body>
+    <FloatingAssistant />
+</body>
     </html>
   );
 }
