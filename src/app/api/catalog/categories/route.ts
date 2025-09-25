@@ -1,25 +1,16 @@
 export const runtime = "nodejs";
-/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
-import { NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth/options";
-import { prisma } from "@/lib/prisma";
-
-export const dynamic = "force-dynamic";
+import { NextResponse } from 'next/server';
+import { prisma } from '@/lib/prisma';
 
 export async function GET() {
-  // If you want public catalog, you can remove the session check.
-  const session = await getServerSession(authOptions);
-  if (!session?.user?.email) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  try {
+    const categories = await prisma.category.findMany({
+      select: { slug: true, name: true, blurb: true, iconKey: true },
+      orderBy: { name: 'asc' }
+    });
+    return NextResponse.json({ ok: true, categories });
+  } catch (e: any) {
+    console.error('GET /api/catalog/categories failed:', e);
+    return NextResponse.json({ ok: false, error: 'internal' }, { status: 500 });
   }
-
-  const categories = await prisma.category.findMany({
-    orderBy: { title: "asc" },
-    select: { id: true, title: true, isCoreIncluded: true },
-  });
-
-  return NextResponse.json({ categories });
 }
-
-export { /* TODO: implement or remove */ };
