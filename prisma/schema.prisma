@@ -1,83 +1,78 @@
-datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
-}
-
 generator client {
   provider = "prisma-client-js"
 }
 
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
 model User {
-  id                   String    @id @default(cuid())
-  email                String    @unique
+  id                   String        @id @default(cuid())
+  email                String        @unique
   name                 String?
   gender               String?
   birthDate            DateTime?
-  allowPersonalization Boolean   @default(true)
-
-  // списки храним как Json в sqlite
-  conditions  Json?
-  allergies   Json?
-  medications Json?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  // связи
-  forms   Form[]
-  reports Report[]
-  files   File[]
-  chunks  Chunk[]
-  chats   ChatMessage[]
-  AIRun   AIRun[]
+  allowPersonalization Boolean       @default(true)
+  conditions           Json?
+  allergies            Json?
+  medications          Json?
+  createdAt            DateTime      @default(now())
+  updatedAt            DateTime      @updatedAt
+  AIRun                AIRun[]
+  chats                ChatMessage[]
+  chunks               Chunk[]
+  files                File[]
+  forms                Form[]
+  reports              Report[]
 }
 
 model Form {
   id        String   @id @default(cuid())
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String
   title     String
   data      Json?
   createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId, createdAt])
 }
 
 model Report {
   id        String   @id @default(cuid())
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String
   title     String
-  kind      String // summary / labs / etc
+  kind      String
   summary   String?
   data      Json?
   createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId, createdAt])
 }
 
 model File {
   id        String   @id @default(cuid())
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String
   name      String
   mime      String?
   size      Int?
   text      String?
   createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId, createdAt])
 }
 
 model Chunk {
   id         String   @id @default(cuid())
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     String
   sourceId   String
-  sourceType String // "form" | "report" | "file"
+  sourceType String
   text       String
   embedding  Json
   createdAt  DateTime @default(now())
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId, createdAt])
   @@index([userId, sourceType])
@@ -85,18 +80,17 @@ model Chunk {
 
 model ChatMessage {
   id        String   @id @default(cuid())
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String
-  role      String // "user" | "assistant"
+  role      String
   content   String
   createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId, createdAt])
 }
 
 model AIRun {
   id        String   @id @default(cuid())
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String
   model     String?
   duration  Int
@@ -105,7 +99,7 @@ model AIRun {
   fallback  Boolean  @default(false)
   status    String
   createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId, createdAt])
 }
-
