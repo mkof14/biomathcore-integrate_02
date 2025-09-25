@@ -1,8 +1,14 @@
 import { PrismaClient } from '@prisma/client';
 
-let prisma: PrismaClient | null = null;
-export function getPrisma(): PrismaClient {
-  if (!prisma) prisma = new PrismaClient();
-  return prisma;
+const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
+
+export const prisma =
+  globalForPrisma.prisma ??
+  new PrismaClient({
+    // логирование по вкусу
+    // log: ['query', 'error', 'warn']
+  });
+
+if (process.env.NODE_ENV !== 'production') {
+  globalForPrisma.prisma = prisma;
 }
-export default getPrisma();

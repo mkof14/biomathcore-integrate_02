@@ -214,7 +214,7 @@ const ADVANTAGES = [
 
 /* ---------- Data loader (API-based) ---------- */
 async function fetchCategories(): Promise<CategoryUi[]> {
-  const res = await apiFetch("/api/categories", {
+  const res = await apiFetch("/api/catalog/categories", {
     next: { revalidate: 300 },
   });
   if (!res.ok) {
