@@ -103,3 +103,11 @@ model AIRun {
 
   @@index([userId, createdAt])
 }
+
+model Category {
+  id      Int     @id @default(autoincrement())
+  slug    String  @unique
+  name    String
+  blurb   String?
+  iconKey String?
+}
