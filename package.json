@@ -93,6 +93,7 @@
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
     "@playwright/test": "^1.55.0",
+    "@types/bcrypt": "^6.0.0",
     "@types/node": "20.12.12",
     "@types/nodemailer": "^7.0.1",
     "@types/react": "18.3.5",

@@ -1,42 +1,117 @@
-/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
-// src/app/auth/page.tsx
-import type { Metadata } from "next";
+"use client";
 
-export const metadata: Metadata = {
-  title: "Sign In / Up • BioMath Core",
-  description: "Authenticate to access your BioMath Core account.",
-};
+import { useState } from "react";
+import Image from "next/image";
+import AuthShell from "@/components/AuthShell";
 
-export default function AuthPage() {
+export default function SignInPage() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [show, setShow] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [message, setMessage] = useState("");
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setSubmitting(true);
+    setMessage("");
+    try {
+      const res = await fetch("/api/auth/callback/credentials", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({
+          email,
+          password,
+          callbackUrl: "/member/questionnaires",
+        }).toString(),
+      });
+      if (res.ok) {
+        window.location.href = "/member/questionnaires";
+      } else {
+        setMessage("Sign in failed. Check your email or password.");
+      }
+    } catch (err) {
+      console.error(err);
+      setMessage("Sign in failed.");
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
   return (
-    <div className="min-h-screen bg-white text-gray-900">
-      <div className="max-w-md mx-auto px-6 py-12">
-        <h1 className="text-3xl font-extrabold tracking-tight">
-          Sign In / Sign Up
-        </h1>
-        <p className="mt-2 text-gray-600">
-          Demo UI — connect to your auth later.
-        </p>
-
-        <form className="mt-6 grid gap-3">
-          <input
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
-            placeholder="Email"
-            type="email"
-          />
-          <input
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
-            placeholder="Password"
-            type="password"
-          />
-          <button
-            type="button"
-            className="mt-2 inline-flex justify-center rounded-md bg-indigo-600 px-4 py-2 text-white text-sm hover:bg-indigo-700"
-          >
-            Continue
-          </button>
-        </form>
+    <AuthShell>
+      <div className="flex flex-col items-center mb-6">
+        <Image
+          src="/images/BMCore-Logo-33.png"
+          alt="BioMath Core"
+          width={180}
+          height={64}
+          priority
+        />
+        <h1 className="mt-4 text-2xl font-semibold text-white">Sign In</h1>
       </div>
-    </div>
+
+      {message && (
+        <div className="mb-4 rounded bg-red-500/20 text-red-200 px-4 py-2 text-sm">
+          {message}
+        </div>
+      )}
+
+      <form onSubmit={handleSubmit} className="space-y-5">
+        <div>
+          <label className="block text-sm mb-1 text-slate-200">Email</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            className="w-full rounded-xl bg-white text-black px-4 py-3 shadow focus:outline-none"
+            placeholder="you@example.com"
+            autoComplete="email"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm mb-1 text-slate-200">Password</label>
+          <div className="relative">
+            <input
+              type={show ? "text" : "password"}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              minLength={8}
+              required
+              className="w-full rounded-xl bg-white text-black px-4 py-3 pr-12 shadow focus:outline-none"
+              placeholder="••••••••"
+              autoComplete="current-password"
+            />
+            <button
+              type="button"
+              onClick={() => setShow((s) => !s)}
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-700"
+              aria-label="Toggle password visibility"
+            >
+              {show ? "Hide" : "Show"}
+            </button>
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          disabled={submitting}
+          className="rounded-xl bg-gradient-to-r from-sky-500 to-emerald-400 text-white font-semibold py-3 disabled:opacity-60"
+        >
+          {submitting ? "Signing in…" : "Sign In"}
+        </button>
+
+        <div className="mt-2 flex items-center justify-between text-sm">
+          <a href="/auth/forgot-password" className="text-sky-300 hover:text-sky-200">
+            Forgot password?
+          </a>
+          <a href="/auth/sign-up" className="text-sky-300 hover:text-sky-200">
+            Sign Up
+          </a>
+        </div>
+      </form>
+    </AuthShell>
   );
 }
