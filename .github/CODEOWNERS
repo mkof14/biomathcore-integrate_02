@@ -1,15 +1,5 @@
-# freeze UI/pages without your approval
-/src/app/**                         @mkof14
-!/src/app/api/**                    *
-
-# explicit frozen areas
-/src/app/member/**                  @mkof14
-/src/app/admin/**                   @mkof14
-/src/app/monitoring/**              @mkof14
-/src/app/services/**                @mkof14
-/src/app/catalog/**                 @mkof14
-/src/app/Анкеты/**                  @mkof14
-/src/app/Центр\ Управления/**       @mkof14
-
-# default owners (fallback)
-/*                                  @mkof14
+/src/app/member/          @mkof14
+/src/components/          @mkof14
+/src/lib/assistant/       @mkof14
+/src/lib/reports/         @mkof14
+/src/app/catalog/         @mkof14
