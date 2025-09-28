@@ -1,0 +1,231 @@
+"use client";
+import { useEffect, useMemo, useRef, useState } from "react";
+import type { CompiledItem, MetricMode, ModuleConfig, QuestionnaireState, Question } from "../types";
+
+type Props = {
+  modules: ModuleConfig[];
+  initialMetric?: MetricMode;
+  storageKey?: string;
+  onSubmit?: (payload: { 
+    answers: Record<string, string|number>; 
+    metricMode: MetricMode;
+    elapsedSec: number;
+    changes: number;
+  }) => Promise<void> | void;
+};
+
+function flatten(mods: ModuleConfig[]): CompiledItem[] {
+  const items: CompiledItem[] = [];
+  for (const m of mods) for (const q of m.questions) items.push({ moduleKey: m.key, q });
+  return items;
+}
+
+function isAnswered(q: Question, v: unknown): boolean {
+  if (q.type === "text") return typeof v === "string" && v.trim().length > 0;
+  if (q.type === "select") return typeof v === "string" && v.length > 0;
+  if (q.type === "scale") return typeof v === "number";
+  return false;
+}
+
+function prettyValue(q: Question, v: unknown): string {
+  if (v == null) return "—";
+  if (q.type === "select") {
+    const opt = q.options.find(o => o.value === v);
+    return opt ? opt.label : String(v);
+  }
+  if (q.type === "scale") return String(v);
+  return String(v);
+}
+
+export default function QuestionnaireEngine({ modules, initialMetric = "percent", storageKey = "bmc.qna", onSubmit }: Props) {
+  const [state, setState] = useState<QuestionnaireState>(() => {
+    if (typeof window !== "undefined") {
+      const raw = localStorage.getItem(storageKey);
+      if (raw) { try { return JSON.parse(raw) as QuestionnaireState; } catch {} }
+    }
+    return { metricMode: initialMetric, answers: {}, currentIndex: 0 };
+  });
+  const [showSummary, setShowSummary] = useState(false);
+
+  // ⏱ tracking
+  const [startTime] = useState(() => Date.now());
+  const [changeCount, setChangeCount] = useState(0);
+
+  // persist localStorage
+  const savingRef = useRef<number | null>(null);
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (savingRef.current) cancelAnimationFrame(savingRef.current);
+    savingRef.current = requestAnimationFrame(() => {
+      localStorage.setItem(storageKey, JSON.stringify(state));
+    });
+  }, [state, storageKey]);
+
+  // autosave beacon → API every 10 changes
+  useEffect(() => {
+    if (changeCount > 0 && changeCount % 10 === 0) {
+      fetch("/api/questionnaires/autosave", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          answers: state.answers,
+          metricMode: state.metricMode,
+          elapsedSec: Math.floor((Date.now() - startTime)/1000),
+          changes: changeCount,
+        })
+      }).catch(()=>{});
+    }
+  }, [changeCount, state.answers, state.metricMode, startTime]);
+
+  // Compile with skip-logic for Sexual Health
+  const compiled = useMemo(() => {
+    const items = flatten(modules);
+    const consent = state.answers["sh.consent"];
+    if (consent === "no") {
+      return items.filter(it => !it.q.id.startsWith("sh.") || it.q.id === "sh.consent");
+    }
+    return items;
+  }, [modules, state.answers]);
+
+  const total = compiled.length;
+  const requiredTotal = useMemo(() => compiled.filter(i => !!i.q.required).length, [compiled]);
+  const answeredRequired = useMemo(() => {
+    let count = 0;
+    for (const it of compiled) {
+      if (!it.q.required) continue;
+      const v = state.answers[it.q.id];
+      if (isAnswered(it.q, v)) count++;
+    }
+    return count;
+  }, [compiled, state.answers]);
+
+  const current = compiled[state.currentIndex] ?? null;
+
+  const progressOverall = total ? Math.round(((state.currentIndex + 1) / total) * 100) : 0;
+  const progressRequired = requiredTotal ? Math.round((answeredRequired / requiredTotal) * 100) : 100;
+
+  function setAnswer(id: string, value: string | number) {
+    setState(s => ({ ...s, answers: { ...s.answers, [id]: value } }));
+    setChangeCount(c => c + 1);
+  }
+
+  function next() {
+    if (current?.q?.required) {
+      const v = state.answers[current.q.id];
+      if (!isAnswered(current.q, v)) return;
+    }
+    setState(s => ({ ...s, currentIndex: Math.min(s.currentIndex + 1, total - 1) }));
+  }
+  function prev() {
+    if (showSummary) { setShowSummary(false); return; }
+    setState(s => ({ ...s, currentIndex: Math.max(s.currentIndex - 1, 0) }));
+  }
+  function toggleMetric() {
+    setState(s => {
+      const order: MetricMode[] = ["percent","score","level"];
+      const i = order.indexOf(s.metricMode);
+      const next = order[(i+1) % order.length];
+      return { ...s, metricMode: next };
+    });
+  }
+
+  const currentRequiredUnanswered = (() => {
+    if (!current?.q?.required) return false;
+    const v = state.answers[current.q.id];
+    return !isAnswered(current.q, v);
+  })();
+  const canSubmit = requiredTotal === 0 || answeredRequired === requiredTotal;
+
+  async function handleSubmit() {
+    if (!canSubmit) return;
+    if (onSubmit) await onSubmit({ 
+      answers: state.answers, 
+      metricMode: state.metricMode,
+      elapsedSec: Math.floor((Date.now() - startTime)/1000),
+      changes: changeCount
+    });
+  }
+
+  const summary = useMemo(() => {
+    const groups: Record<string, { title: string; items: { label: string; value: string }[] }> = {};
+    for (const m of modules) groups[m.key] = { title: m.title, items: [] };
+    for (const it of compiled) {
+      const m = modules.find(mm => mm.key === it.moduleKey);
+      if (!m) continue;
+      const val = prettyValue(it.q, state.answers[it.q.id]);
+      groups[m.key].items.push({ label: it.q.label + (it.q.required ? " *" : ""), value: val });
+    }
+    return Object.values(groups).filter(g => g.items.length > 0);
+  }, [modules, compiled, state.answers]);
+
+  return (
+    <div className="w-full">
+      {!showSummary && (
+        <>
+          <div className="mb-2">{progressOverall}%</div>
+          <div className="mb-4">Required: {progressRequired}%</div>
+        </>
+      )}
+      <div className="mb-4">
+        <button type="button" onClick={toggleMetric}>Metric: {state.metricMode}</button>
+      </div>
+
+      {showSummary ? (
+        <div className="mb-4">
+          <div className="mb-2 font-semibold">Review Answers</div>
+          {summary.map((g, i) => (
+            <div key={i} className="mb-3">
+              <div className="font-semibold">{g.title}</div>
+              {g.items.map((row, j) => (
+                <div key={j} className="flex justify-between gap-4 text-sm">
+                  <div>{row.label}</div>
+                  <div>{row.value}</div>
+                </div>
+              ))}
+            </div>
+          ))}
+          <div className="flex gap-2 mt-4">
+            <button type="button" onClick={prev}>Back</button>
+            <button type="button" onClick={handleSubmit} disabled={!canSubmit}>Confirm & Submit</button>
+          </div>
+        </div>
+      ) : (
+        <>
+          {current ? (
+            <div className="mb-4">
+              <div className="mb-2 font-semibold">{current.q.label}{current.q.required ? " *" : ""}</div>
+              {current.q.type === "text" && (
+                <input type="text" placeholder={current.q.placeholder || ""} value={(state.answers[current.q.id] as string) || ""}
+                  onChange={(e) => setAnswer(current.q.id, e.target.value)} className="w-full" aria-required={!!current.q.required}/>
+              )}
+              {current.q.type === "select" && (
+                <select value={(state.answers[current.q.id] as string) || ""} onChange={(e) => setAnswer(current.q.id, e.target.value)}
+                  className="w-full" aria-required={!!current.q.required}>
+                  <option value="" disabled>{current.q.required ? "Select an option *" : "Select an option"}</option>
+                  {current.q.options.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
+                </select>
+              )}
+              {current.q.type === "scale" && (
+                <div>
+                  <input type="range" min={q.min} max={q.max} step={q.step || 1}
+                    value={Number(state.answers[current.q.id] ?? q.min)} onChange={(e) => setAnswer(current.q.id, Number(e.target.value))}
+                    className="w-full" aria-required={!!current.q.required}/>
+                  <div className="flex justify-between text-xs opacity-80">
+                    <span>{q.leftLabel ?? q.min}</span>
+                    <span>{q.rightLabel ?? q.max}</span>
+                  </div>
+                </div>
+              )}
+              {currentRequiredUnanswered && <div className="mt-2 text-xs" role="alert">This field is required.</div>}
+            </div>
+          ) : <div>No questions</div>}
+          <div className="flex gap-2">
+            <button type="button" onClick={prev} disabled={state.currentIndex === 0}>Back</button>
+            <button type="button" onClick={next} disabled={currentRequiredUnanswered || state.currentIndex >= total - 1}>Next</button>
+            <button type="button" onClick={() => setShowSummary(true)} disabled={!(state.currentIndex === total - 1 && canSubmit)}>Review</button>
+          </div>
+        </>
+      )}
+    </div>
+  );
+}

@@ -1,0 +1,321 @@
+=== TREE: assistant & rag (paths) ===
+  src/server/rag/embedding.ts:1:import { createHash } from "crypto";
+  src/server/rag/embedding.ts:2:
+  src/server/rag/embedding.ts:3:export type Embedder = (text: string) => Promise<number[]>;
+  src/server/rag/embedding.ts:4:
+  src/server/rag/embedding.ts:5:// Заглушка: подключи здесь свой эмбеддер (OpenAI text-embedding-3-large/small)
+  src/server/rag/embedding.ts:6:export const embed: Embedder = async (text: string) => {
+  src/server/rag/embedding.ts:7:  // TODO: replace with real embedding API call
+  src/server/rag/embedding.ts:8:  // временно делаем псевдо-вектор, чтобы не падало
+  src/server/rag/embedding.ts:9:  const h = createHash("sha256").update(text).digest();
+  src/server/rag/embedding.ts:10:  const arr = Array.from(h.slice(0, 256)).map((b) => (b - 128) / 128);
+  src/server/rag/embedding.ts:11:  return arr;
+  src/server/rag/embedding.ts:12:};
+  src/server/assistant/prompt.ts:1:type Profile = {
+  src/server/assistant/prompt.ts:2:  name?: string;
+  src/server/assistant/prompt.ts:3:  gender?: string;
+  src/server/assistant/prompt.ts:4:  age?: number;
+  src/server/assistant/prompt.ts:5:  conditions?: string[];
+  src/server/assistant/prompt.ts:6:  allergies?: string[];
+  src/server/assistant/prompt.ts:7:  medications?: string[];
+  src/server/assistant/prompt.ts:8:  locale?: string;
+  src/server/assistant/prompt.ts:9:};
+  src/server/assistant/prompt.ts:10:
+  src/server/assistant/prompt.ts:11:export function buildSystemPrompt(profile: Profile, facts: {text: string, sourceId: string, sourceType: string}[]) {
+  src/server/assistant/prompt.ts:12:  const p = [
+  src/server/assistant/prompt.ts:13:    profile.name ? `Name: ${profile.name}` : null,
+  src/server/assistant/prompt.ts:14:    profile.gender ? `Gender: ${profile.gender}` : null,
+  src/server/assistant/prompt.ts:15:    profile.age ? `Age: ${profile.age}` : null,
+  src/server/assistant/prompt.ts:16:    profile.conditions?.length ? `Conditions: ${profile.conditions.join(", ")}` : null,
+  src/server/assistant/prompt.ts:17:    profile.allergies?.length ? `Allergies: ${profile.allergies.join(", ")}` : null,
+  src/server/assistant/prompt.ts:18:    profile.medications?.length ? `Medications: ${profile.medications.join(", ")}` : null,
+  src/server/assistant/prompt.ts:19:  ].filter(Boolean).join("\n");
+  src/server/assistant/prompt.ts:20:
+  src/server/assistant/prompt.ts:21:  const ctx = facts.map((f,i)=>`[${i+1}] (${f.sourceType} ${f.sourceId}) ${f.text}`).join("\n");
+  src/server/assistant/prompt.ts:22:
+  src/server/assistant/prompt.ts:23:  return `You are an AI Health Assistant. Personalize responses based on the user's profile and the provided context.
+  src/server/assistant/prompt.ts:24:- Be concise, empathetic, and evidence-oriented.
+  src/server/assistant/prompt.ts:25:- If information is insufficient, ask a brief follow-up.
+  src/server/assistant/prompt.ts:26:- Never reveal other users' data. Only use facts listed below.
+  src/server/assistant/prompt.ts:27:- If unsure, say "I don't have enough information".
+  src/server/assistant/prompt.ts:28:- Provide actionable next steps and safety guidance when appropriate.
+  src/server/assistant/prompt.ts:29:
+  src/server/assistant/prompt.ts:30:USER PROFILE:
+  src/server/assistant/prompt.ts:31:${p || "(no profile data)"} 
+  src/server/assistant/prompt.ts:32:
+  src/server/assistant/prompt.ts:33:RETRIEVED FACTS:
+  src/server/assistant/prompt.ts:34:${ctx || "(no context)"}
+  src/server/assistant/prompt.ts:35:
+  src/server/assistant/prompt.ts:36:When citing, reference [n] from the facts list when a statement directly relies on a retrieved fact.`;
+  src/server/assistant/prompt.ts:37:}
+  src/app/api/assistant/reply/route.ts:1:import { NextResponse } from "next/server";
+  src/app/api/assistant/reply/route.ts:2:import OpenAI from "openai";
+  src/app/api/assistant/reply/route.ts:3:
+  src/app/api/assistant/reply/route.ts:4:export const runtime = "nodejs";
+  src/app/api/assistant/reply/route.ts:5:export const dynamic = "force-dynamic";
+  src/app/api/assistant/reply/route.ts:6:
+  src/app/api/assistant/reply/route.ts:7:const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY! });
+  src/app/api/assistant/reply/route.ts:8:
+  src/app/api/assistant/reply/route.ts:9:export async function POST(req: Request) {
+  src/app/api/assistant/reply/route.ts:10:  const startedAt = Date.now();
+  src/app/api/assistant/reply/route.ts:11:  try {
+  src/app/api/assistant/reply/route.ts:12:    // --- входные данные
+  src/app/api/assistant/reply/route.ts:13:    const body = await req.json().catch(() => ({} as any));
+  src/app/api/assistant/reply/route.ts:14:    const message = typeof body?.message === "string" ? body.message : "";
+  src/app/api/assistant/reply/route.ts:15:    const lang = (typeof body?.lang === "string" ? body.lang : "en").toLowerCase();
+  src/app/api/assistant/reply/route.ts:16:
+  src/app/api/assistant/reply/route.ts:17:    // --- базовые проверки
+  src/app/api/assistant/reply/route.ts:18:    if (!process.env.OPENAI_API_KEY) {
+  src/app/api/assistant/reply/route.ts:19:      console.error("[assistant/reply] missing OPENAI_API_KEY");
+  src/app/api/assistant/reply/route.ts:20:      return NextResponse.json({ reply: "AI key is missing.", debug: { code: "NO_KEY" } }, { status: 200 });
+  src/app/api/assistant/reply/route.ts:21:    }
+  src/app/api/assistant/reply/route.ts:22:    if (!message.trim()) {
+  src/app/api/assistant/reply/route.ts:23:      return NextResponse.json({ reply: "Please type your message." }, { status: 200 });
+  src/app/api/assistant/reply/route.ts:24:    }
+  src/app/api/assistant/reply/route.ts:25:
+  src/app/api/assistant/reply/route.ts:26:    // --- лог входа
+  src/app/api/assistant/reply/route.ts:27:    console.log("[assistant/reply] IN:", { len: message.length, lang, model: process.env.AI_MODEL || "gpt-4o-mini" });
+  src/app/api/assistant/reply/route.ts:28:
+  src/app/api/assistant/reply/route.ts:29:    // --- запрос к OpenAI
+  src/app/api/assistant/reply/route.ts:30:    const completion = await client.chat.completions.create({
+  src/app/api/assistant/reply/route.ts:31:      model: process.env.AI_MODEL || "gpt-4o-mini",
+  src/app/api/assistant/reply/route.ts:32:      messages: [
+  src/app/api/assistant/reply/route.ts:33:        {
+  src/app/api/assistant/reply/route.ts:34:          role: "system",
+  src/app/api/assistant/reply/route.ts:35:          content:
+  src/app/api/assistant/reply/route.ts:36:            "You are an AI Health Assistant in an English UI. Be concise and supportive. You do NOT provide diagnosis or treatment. For symptoms or emergencies advise contacting a clinician or emergency services.",
+  src/app/api/assistant/reply/route.ts:37:        },
+  src/app/api/assistant/reply/route.ts:38:        { role: "user", content: message },
+  src/app/api/assistant/reply/route.ts:39:      ],
+  src/app/api/assistant/reply/route.ts:40:      temperature: 0.4,
+  src/app/api/assistant/reply/route.ts:41:    });
+  src/app/api/assistant/reply/route.ts:42:
+  src/app/api/assistant/reply/route.ts:43:    const reply = completion.choices?.[0]?.message?.content?.trim() || "Thanks — I’m here to help.";
+  src/app/api/assistant/reply/route.ts:44:
+  src/app/api/assistant/reply/route.ts:45:    // --- лог успеха
+  src/app/api/assistant/reply/route.ts:46:    console.log("[assistant/reply] OK:", { ms: Date.now() - startedAt, chars: reply.length });
+  src/app/api/assistant/reply/route.ts:47:
+  src/app/api/assistant/reply/route.ts:48:    return NextResponse.json({ reply }, { status: 200 });
+  src/app/api/assistant/reply/route.ts:49:  } catch (err: any) {
+  src/app/api/assistant/reply/route.ts:50:    // --- детальный лог ошибки
+  src/app/api/assistant/reply/route.ts:51:    const log = {
+  src/app/api/assistant/reply/route.ts:52:      name: err?.name,
+  src/app/api/assistant/reply/route.ts:53:      status: err?.status,
+  src/app/api/assistant/reply/route.ts:54:      message: err?.message,
+  src/app/api/assistant/reply/route.ts:55:      data: err?.response?.data ?? err?.error ?? null,
+  src/app/api/assistant/reply/route.ts:56:      ms: Date.now() - startedAt,
+  src/app/api/assistant/reply/route.ts:57:    };
+  src/app/api/assistant/reply/route.ts:58:    console.error("[assistant/reply] ERROR:", log);
+  src/app/api/assistant/reply/route.ts:59:
+  src/app/api/assistant/reply/route.ts:60:    // --- человекочитаемая причина
+  src/app/api/assistant/reply/route.ts:61:    let hint = "AI backend is not reachable.";
+  src/app/api/assistant/reply/route.ts:62:    if (err?.status === 401) hint = "API key is invalid or missing.";
+  src/app/api/assistant/reply/route.ts:63:    if (err?.status === 429) hint = "Rate limited. Try again later.";
+  src/app/api/assistant/reply/route.ts:64:    if (err?.status === 404) hint = "Model not found. Check AI_MODEL.";
+  src/app/api/assistant/reply/route.ts:65:
+  src/app/api/assistant/reply/route.ts:66:    return NextResponse.json(
+  src/app/api/assistant/reply/route.ts:67:      { reply: "Sorry, I’m offline right now.", debug: { hint, status: err?.status ?? 500 } },
+  src/app/api/assistant/reply/route.ts:68:      { status: 200 }
+  src/app/api/assistant/reply/route.ts:69:    );
+  src/app/api/assistant/reply/route.ts:70:  }
+  src/app/api/assistant/reply/route.ts:71:}
+  src/app/api/assistant/context/route.ts:1:export const runtime = "nodejs";
+  src/app/api/assistant/context/route.ts:2:
+  src/app/api/assistant/context/route.ts:3:import { NextResponse } from "next/server";
+  src/app/api/assistant/context/route.ts:4:import { getPrisma } from "@/server/util/prisma";
+  src/app/api/assistant/context/route.ts:5:
+  src/app/api/assistant/context/route.ts:6:function toStrArr(v: any): string[] {
+  src/app/api/assistant/context/route.ts:7:  if (Array.isArray(v)) return v.map(String);
+  src/app/api/assistant/context/route.ts:8:  return [];
+  src/app/api/assistant/context/route.ts:9:}
+  src/app/api/assistant/context/route.ts:10:
+  src/app/api/assistant/context/route.ts:11:export async function GET(req: Request) {
+  src/app/api/assistant/context/route.ts:12:  const prisma = getPrisma();
+  src/app/api/assistant/context/route.ts:13:
+  src/app/api/assistant/context/route.ts:14:  const url = new URL(req.url);
+  src/app/api/assistant/context/route.ts:15:  const userId = url.searchParams.get("userId") || "U1001";
+  src/app/api/assistant/context/route.ts:16:
+  src/app/api/assistant/context/route.ts:17:  let user = await prisma.user.findUnique({ where: { id: userId } });
+  src/app/api/assistant/context/route.ts:18:  if (!user) {
+  src/app/api/assistant/context/route.ts:19:    user = await prisma.user.create({
+  src/app/api/assistant/context/route.ts:20:      data: {
+  src/app/api/assistant/context/route.ts:21:        id: userId,
+  src/app/api/assistant/context/route.ts:22:        email: `${userId.toLowerCase()}@example.local`,
+  src/app/api/assistant/context/route.ts:23:        name: "Demo User",
+  src/app/api/assistant/context/route.ts:24:        gender: "unspecified",
+  src/app/api/assistant/context/route.ts:25:        allowPersonalization: true,
+  src/app/api/assistant/context/route.ts:26:        conditions: [],
+  src/app/api/assistant/context/route.ts:27:        allergies: [],
+  src/app/api/assistant/context/route.ts:28:        medications: [],
+  src/app/api/assistant/context/route.ts:29:      },
+  src/app/api/assistant/context/route.ts:30:    });
+  src/app/api/assistant/context/route.ts:31:  }
+  src/app/api/assistant/context/route.ts:32:
+  src/app/api/assistant/context/route.ts:33:  const forms = await prisma.form.count({ where: { userId } });
+  src/app/api/assistant/context/route.ts:34:  const reports = await prisma.report.count({ where: { userId } });
+  src/app/api/assistant/context/route.ts:35:  const files = await prisma.file.count({ where: { userId } });
+  src/app/api/assistant/context/route.ts:36:
+  src/app/api/assistant/context/route.ts:37:  return NextResponse.json({
+  src/app/api/assistant/context/route.ts:38:    user: {
+  src/app/api/assistant/context/route.ts:39:      id: user.id,
+  src/app/api/assistant/context/route.ts:40:      name: user.name,
+  src/app/api/assistant/context/route.ts:41:      gender: user.gender,
+  src/app/api/assistant/context/route.ts:42:      birthDate: user.birthDate,
+  src/app/api/assistant/context/route.ts:43:      conditions: toStrArr(user.conditions),
+  src/app/api/assistant/context/route.ts:44:      allergies: toStrArr(user.allergies),
+  src/app/api/assistant/context/route.ts:45:      medications: toStrArr(user.medications),
+  src/app/api/assistant/context/route.ts:46:      allowPersonalization: user.allowPersonalization,
+  src/app/api/assistant/context/route.ts:47:    },
+  src/app/api/assistant/context/route.ts:48:    stats: { forms, reports, files },
+  src/app/api/assistant/context/route.ts:49:  });
+  src/app/api/assistant/context/route.ts:50:}
+  src/server/rag/retriever.ts:1:import { getPrisma } from "@/server/util/prisma";
+  src/server/rag/retriever.ts:2:import { embed } from "./embedding";
+  src/server/rag/retriever.ts:3:
+  src/server/rag/retriever.ts:4:// cosine similarity fallback (если используешь pgvector ORDER BY <->, этот код не нужен)
+  src/server/rag/retriever.ts:5:function cosine(a: number[], b: number[]) {
+  src/server/rag/retriever.ts:6:  let dot = 0, na = 0, nb = 0;
+  src/server/rag/retriever.ts:7:  const n = Math.min(a.length, b.length);
+  src/server/rag/retriever.ts:8:  for (let i = 0; i < n; i++) { dot += a[i]*b[i]; na += a[i]*a[i]; nb += b[i]*b[i]; }
+  src/server/rag/retriever.ts:9:  return dot / (Math.sqrt(na) * Math.sqrt(nb) + 1e-9);
+  src/server/rag/retriever.ts:10:}
+  src/server/rag/retriever.ts:11:
+  src/server/rag/retriever.ts:12:export async function retrieveUserContext(userId: string, query: string, k = 6) {
+  src/server/rag/retriever.ts:13:  const prisma = getPrisma();
+  src/server/rag/retriever.ts:14:  const qEmb = await embed(query);
+  src/server/rag/retriever.ts:15:
+  src/server/rag/retriever.ts:16:  // Быстрый fallback: загружаем свежие чанки и сортируем по косинусу в приложении.
+  src/server/rag/retriever.ts:17:  // В продакшене лучше делать векторный поиск прямо в БД (pgvector).
+  src/server/rag/retriever.ts:18:  const chunks = await prisma.chunk.findMany({
+  src/server/rag/retriever.ts:19:    where: { userId },
+  src/server/rag/retriever.ts:20:    take: 200,
+  src/server/rag/retriever.ts:21:    orderBy: { createdAt: "desc" },
+  src/server/rag/retriever.ts:22:  });
+  src/server/rag/retriever.ts:23:
+  src/server/rag/retriever.ts:24:  const scored = chunks
+  src/server/rag/retriever.ts:25:    .map((c) => ({ c, score: cosine(qEmb, (c.embedding as unknown as number[]) || []) }))
+  src/server/rag/retriever.ts:26:    .sort((a, b) => b.score - a.score)
+  src/server/rag/retriever.ts:27:    .slice(0, k)
+  src/server/rag/retriever.ts:28:    .map(({ c, score }) => ({
+  src/server/rag/retriever.ts:29:      id: c.id,
+  src/server/rag/retriever.ts:30:      text: c.text,
+  src/server/rag/retriever.ts:31:      sourceId: c.sourceId,
+  src/server/rag/retriever.ts:32:      sourceType: c.sourceType,
+  src/server/rag/retriever.ts:33:      score,
+  src/server/rag/retriever.ts:34:    }));
+  src/server/rag/retriever.ts:35:
+  src/server/rag/retriever.ts:36:  return scored;
+  src/server/rag/retriever.ts:37:}
+  src/server/rag/ingest/chunker.ts:1:export function toChunks(text: string, chunkSize = 1200, overlap = 150) {
+  src/server/rag/ingest/chunker.ts:2:  const words = text.split(/\s+/);
+  src/server/rag/ingest/chunker.ts:3:  const out: string[] = [];
+  src/server/rag/ingest/chunker.ts:4:  for (let i=0; i<words.length; i += (chunkSize - overlap)) {
+  src/server/rag/ingest/chunker.ts:5:    const slice = words.slice(i, i + chunkSize).join(" ");
+  src/server/rag/ingest/chunker.ts:6:    if (slice.trim().length) out.push(slice);
+  src/server/rag/ingest/chunker.ts:7:  }
+  src/server/rag/ingest/chunker.ts:8:  return out;
+  src/server/rag/ingest/chunker.ts:9:}
+  src/app/api/assistant/ping/route.ts:1:import { NextResponse } from "next/server";
+  src/app/api/assistant/ping/route.ts:2:export const runtime = "nodejs";
+  src/app/api/assistant/ping/route.ts:3:export const dynamic = "force-dynamic";
+  src/app/api/assistant/ping/route.ts:4:export async function GET() {
+  src/app/api/assistant/ping/route.ts:5:  const key = process.env.OPENAI_API_KEY || "";
+  src/app/api/assistant/ping/route.ts:6:  return NextResponse.json({ ok: true, envLoaded: !!key, keyLen: key.length, model: process.env.AI_MODEL || "gpt-4o-mini" });
+  src/app/api/assistant/ping/route.ts:7:}
+  src/server/rag/ingest/indexer.ts:1:import { prisma } from "@/server/util/prisma";
+  src/server/rag/ingest/indexer.ts:2:import { embed } from "@/server/rag/embedding";
+  src/server/rag/ingest/indexer.ts:3:import { toChunks } from "./chunker";
+  src/server/rag/ingest/indexer.ts:4:
+  src/server/rag/ingest/indexer.ts:5:export async function indexDocument(userId: string, sourceId: string, sourceType: "form"|"report"|"file", text: string) {
+  src/server/rag/ingest/indexer.ts:6:  const chunks = toChunks(text);
+  src/server/rag/ingest/indexer.ts:7:  for (const t of chunks) {
+  src/server/rag/ingest/indexer.ts:8:    const e = await embed(t);
+  src/server/rag/ingest/indexer.ts:9:    await prisma.chunk.create({
+  src/server/rag/ingest/indexer.ts:10:      data: { userId, sourceId, sourceType, text: t, embedding: e as unknown as any },
+  src/server/rag/ingest/indexer.ts:11:    });
+  src/server/rag/ingest/indexer.ts:12:  }
+  src/server/rag/ingest/indexer.ts:13:}
+
+=== PRISMA schema.prisma (first 400 lines) ===
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+=== Assistant routes (content head) ===
+
+=== Server assistant/rag (content head) ===
+
+=== Any context builders ===
+
+=== LLM calls (summary) ===
+  src/app/investors/page.tsx:129:                "Free tier with core tools",
+  src/lib/ai.ts:17:    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+  src/lib/ai/gemini.ts:5:export function getGemini(modelName = "gemini-1.5-pro") {
+  src/app/services/page.mono.tsx:296:    `Explore ${service.title} — part of our precision‑health toolkit.`;
+  src/app/page.tsx:296:          subtitle="Real guidance. Real results. Modern health tools that fit your day and help you feel great longer."
+  src/app/auth/ai/route.ts:51:    const openaiRes = await fetch(
+  src/app/auth/ai/route.ts:52:      "https://api.openai.com/v1/chat/completions",
+  src/app/auth/ai/route.ts:71:    if (openaiRes.status === 429) {
+  src/app/auth/ai/route.ts:72:      const text = await openaiRes.text().catch(() => "");
+  src/app/auth/ai/route.ts:82:    if (!openaiRes.ok) {
+  src/app/auth/ai/route.ts:83:      const text = await openaiRes.text().catch(() => "");
+  src/app/auth/ai/route.ts:86:          error: `Upstream error from OpenAI: ${openaiRes.status}`,
+  src/app/auth/ai/route.ts:93:    const data = await openaiRes.json();
+  src/lib/services-data.ts:300:      "Curated list of vetted digital therapeutics apps and tools.",
+  src/_frozen/pages/investors/investors/page.tsx:129:                "Free tier with core tools",
+  src/_frozen/pages/investors/page.tsx:129:                "Free tier with core tools",
+  src/app/about/page.tsx:170:                  Explore curated tools and guidance for {c.name}.
+  src/app/ai-assistant/page.tsx:11:          member tools.
+  src/app/faq/page.tsx:192:    a: "Apps, programs, AI tools for health.",
+  src/_frozen/pages/about/page.tsx:170:                  Explore curated tools and guidance for {c.name}.
+  src/app/admin/integrations/page.tsx:16:  const [gemini, setGemini] = useState<string>("");
+  src/app/admin/integrations/page.tsx:39:              onClick={async ()=> setGemini(await ping("/api/admin/ping/gemini"))}
+  src/app/admin/integrations/page.tsx:43:            <div className="small mt-2">{gemini}</div>
+  src/lib/report-engine/gemini.ts:26:  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+  src/lib/report-engine/gemini.ts:43:  return { lines: rawLines.length ? rawLines : [text.trim()].filter(Boolean), meta: { source: "gemini" } };
+  src/_frozen/pages/about/about/page.tsx:170:                  Explore curated tools and guidance for {c.name}.
+  src/lib/report-engine/geminiGenerate.ts:25:  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+  src/lib/report-engine/geminiGenerate.ts:39:    meta: { source: "gemini" },
+  src/app/admin/service/page.tsx:17:      <AdminHeader title="Service Links" desc="Quick access to internal tools." />
+  src/server/aiServer.ts:16:  const provider = (process.env.AI_PROVIDER || "openai").toLowerCase();
+  src/server/aiServer.ts:19:    case "openai":
+  src/server/aiServer.ts:21:    case "azure-openai":
+  src/server/aiServer.ts:23:    case "anthropic":
+  src/server/aiServer.ts:25:    case "gemini":
+  src/server/aiServer.ts:39:  const res = await fetch("https://api.openai.com/v1/chat/completions", {
+  src/server/aiServer.ts:70:  const url = `${endpoint}/openai/deployments/${deployment}/chat/completions?api-version=2024-02-15-preview`;
+  src/server/aiServer.ts:101:  const res = await fetch("https://api.anthropic.com/v1/messages", {
+  src/server/aiServer.ts:105:      "anthropic-version": "2023-06-01",
+  src/server/aiServer.ts:128:  const model = env("GEMINI_MODEL", "gemini-1.5-flash");
+  src/components/data/allCategories.ts:25:      "Explore personalized tools to support your emotional and cognitive health.",
+  src/components/data/allCategories.ts:73:        id: "anxiety-tool",
+  src/app/api/admin/route.ts:18:      "/api/admin/ping/gemini",
+  src/app/api/assistant/reply/route.ts:2:import OpenAI from "openai";
+  src/app/api/ai/analyze/route.ts:48:    const openaiRes = await fetch(
+  src/app/api/ai/analyze/route.ts:49:      "https://api.openai.com/v1/chat/completions",
+  src/app/api/ai/analyze/route.ts:67:    if (openaiRes.status === 429) {
+  src/app/api/ai/analyze/route.ts:68:      const text = await openaiRes.text().catch(() => "");
+  src/app/api/ai/analyze/route.ts:78:    if (!openaiRes.ok) {
+  src/app/api/ai/analyze/route.ts:79:      const text = await openaiRes.text().catch(() => "");
+  src/app/api/ai/analyze/route.ts:82:          error: `OpenAI upstream error: ${openaiRes.status}`,
+  src/app/api/ai/analyze/route.ts:89:    const data = await openaiRes.json();
+  src/app/api/ai/analyze/stream/route.ts:55:        const openaiRes = await fetch(
+  src/app/api/ai/analyze/stream/route.ts:56:          "https://api.openai.com/v1/chat/completions",
+  src/app/api/ai/analyze/stream/route.ts:75:        if (!openaiRes.ok || !openaiRes.body) {
+  src/app/api/ai/analyze/stream/route.ts:76:          const txt = await openaiRes.text().catch(() => "");
+  src/app/api/ai/analyze/stream/route.ts:79:              `ERROR: OpenAI upstream error ${openaiRes.status}. ${txt.slice(0, 400)}`,
+  src/app/api/ai/analyze/stream/route.ts:86:        const reader = openaiRes.body.getReader();
+  src/app/api/admin/ping/gemini/route.ts:4:/** POST /api/admin/ping/gemini — лёгкая проверка наличия ключа GEMINI_API_KEY. */

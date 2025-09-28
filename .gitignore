@@ -1,0 +1,24 @@
+# node / next builds
+node_modules/
+.next/
+out/
+dist/
+.cache/
+
+# env
+.env
+.env.*
+!.env.example
+
+# logs & os
+*.log
+.DS_Store
+
+# nested repos (ignored)
+biomathcore-integrate_02/
+biomathcore-jules/
+
+# test artifacts
+playwright-report/
+tests/**/playwright-report/
+.vercel

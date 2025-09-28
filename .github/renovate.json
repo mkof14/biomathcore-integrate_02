@@ -1,0 +1,14 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended", ":semanticCommits"],
+  "labels": ["deps"],
+  "rangeStrategy": "bump",
+  "schedule": ["every weekend"],
+  "prHourlyLimit": 4,
+  "packageRules": [
+    { "matchPackageNames": ["next","react","react-dom"], "groupName": "react-next core" },
+    { "matchPackagePatterns": ["^@prisma/","^prisma$"], "groupName": "prisma" },
+    { "matchPackagePatterns": ["^@playwright/","^playwright$"], "groupName": "playwright" }
+  ],
+  "ignorePaths": ["src/app/**"] 
+}

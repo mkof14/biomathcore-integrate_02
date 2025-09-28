@@ -1,0 +1,15 @@
+node_modules
+.next
+dist
+coverage
+src/app/member/**
+src/app/admin/**
+src/app/monitoring/**
+src/app/control-center/**
+src/app/services/**
+src/app/investors/**
+src/app/legal/**
+src/app/internal/**
+src/app/**/_backup/**
+src/app/**/page.backup.*.tsx
+src/app/**/page.mono.tsx

@@ -1,0 +1,258 @@
+"use client";
+import { useEffect, useMemo, useRef, useState } from "react";
+import type {
+  CompiledItem,
+  MetricMode,
+  ModuleConfig,
+  QuestionnaireState,
+  Question,
+} from "../types";
+
+type Props = {
+  modules: ModuleConfig[];
+  initialMetric?: MetricMode;
+  storageKey?: string; // localStorage key
+  onSubmit?: (payload: {
+    answers: Record<string, string | number>;
+    metricMode: MetricMode;
+  }) => Promise<void> | void;
+};
+
+function flatten(mods: ModuleConfig[]): CompiledItem[] {
+  const items: CompiledItem[] = [];
+  for (const m of mods) for (const q of m.questions) items.push({ moduleKey: m.key, q });
+  return items;
+}
+
+function isAnswered(q: Question, v: unknown): boolean {
+  if (q.type === "text") return typeof v === "string" && v.trim().length > 0;
+  if (q.type === "select") return typeof v === "string" && v.length > 0;
+  if (q.type === "scale") return typeof v === "number";
+  return false;
+}
+
+export default function QuestionnaireEngine({
+  modules,
+  initialMetric = "percent",
+  storageKey = "bmc.qna",
+  onSubmit,
+}: Props) {
+  const compiled = useMemo(() => flatten(modules), [modules]);
+
+  const [state, setState] = useState<QuestionnaireState>(() => {
+    if (typeof window !== "undefined") {
+      const raw = localStorage.getItem(storageKey);
+      if (raw) {
+        try {
+          return JSON.parse(raw) as QuestionnaireState;
+        } catch {
+          /* ignore */
+        }
+      }
+    }
+    return { metricMode: initialMetric, answers: {}, currentIndex: 0 };
+  });
+
+  // throttle localStorage saves
+  const savingRef = useRef<number | null>(null);
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (savingRef.current) cancelAnimationFrame(savingRef.current);
+    savingRef.current = requestAnimationFrame(() => {
+      localStorage.setItem(storageKey, JSON.stringify(state));
+    });
+  }, [state, storageKey]);
+
+  const total = compiled.length;
+  const requiredTotal = useMemo(
+    () => compiled.filter((i) => !!i.q.required).length,
+    [compiled]
+  );
+
+  const answeredRequired = useMemo(() => {
+    let count = 0;
+    for (const it of compiled) {
+      if (!it.q.required) continue;
+      const v = state.answers[it.q.id];
+      if (isAnswered(it.q, v)) count++;
+    }
+    return count;
+  }, [compiled, state.answers]);
+
+  const current = compiled[state.currentIndex] ?? null;
+
+  // Progress: overall by position; required by answered required fields
+  const progressOverall = total
+    ? Math.round(((state.currentIndex + 1) / total) * 100)
+    : 0;
+  const progressRequired = requiredTotal
+    ? Math.round((answeredRequired / requiredTotal) * 100)
+    : 100;
+
+  function setAnswer(id: string, value: string | number) {
+    setState((s) => ({ ...s, answers: { ...s.answers, [id]: value } }));
+  }
+
+  function next() {
+    // gate: cannot go next if current is required and unanswered
+    if (current?.q?.required) {
+      const v = state.answers[current.q.id];
+      if (!isAnswered(current.q, v)) return;
+    }
+    setState((s) => ({
+      ...s,
+      currentIndex: Math.min(s.currentIndex + 1, total - 1),
+    }));
+  }
+
+  function prev() {
+    setState((s) => ({
+      ...s,
+      currentIndex: Math.max(s.currentIndex - 1, 0),
+    }));
+  }
+
+  function toggleMetric() {
+    setState((s) => {
+      const order: MetricMode[] = ["percent", "score", "level"];
+      const i = order.indexOf(s.metricMode);
+      const next = order[(i + 1) % order.length];
+      return { ...s, metricMode: next };
+    });
+  }
+
+  const currentRequiredUnanswered = (() => {
+    if (!current?.q?.required) return false;
+    const v = state.answers[current.q.id];
+    return !isAnswered(current.q, v);
+  })();
+
+  const canSubmit =
+    requiredTotal === 0 || answeredRequired === requiredTotal;
+
+  async function handleSubmit() {
+    if (!canSubmit) return;
+    if (onSubmit) await onSubmit({ answers: state.answers, metricMode: state.metricMode });
+  }
+
+  function renderQuestion(q: Question) {
+    if (q.type === "text") {
+      return (
+        <input
+          type="text"
+          placeholder={q.placeholder || ""}
+          value={(state.answers[q.id] as string) || ""}
+          onChange={(e) => setAnswer(q.id, e.target.value)}
+          className="w-full"
+          aria-required={!!q.required}
+        />
+      );
+    }
+    if (q.type === "select") {
+      return (
+        <select
+          value={(state.answers[q.id] as string) || ""}
+          onChange={(e) => setAnswer(q.id, e.target.value)}
+          className="w-full"
+          aria-required={!!q.required}
+        >
+          <option value="" disabled>
+            {q.required ? "Select an option *" : "Select an option"}
+          </option>
+          {q.options.map((o) => (
+            <option key={o.value} value={o.value}>
+              {o.label}
+            </option>
+          ))}
+        </select>
+      );
+    }
+    // scale
+    return (
+      <div>
+        <input
+          type="range"
+          min={q.min}
+          max={q.max}
+          step={q.step || 1}
+          value={Number(state.answers[q.id] ?? q.min)}
+          onChange={(e) => setAnswer(q.id, Number(e.target.value))}
+          className="w-full"
+          aria-required={!!q.required}
+        />
+        <div className="flex justify-between text-xs opacity-80">
+          <span>{q.leftLabel ?? q.min}</span>
+          <span>{q.rightLabel ?? q.max}</span>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="w-full">
+      {/* progress (logic only, no style changes) */}
+      <div aria-label="progress-overall" className="mb-2">
+        <div>{progressOverall}%</div>
+      </div>
+      <div aria-label="progress-required" className="mb-4">
+        <div>Required: {progressRequired}%</div>
+      </div>
+
+      {/* metric toggle */}
+      <div className="mb-4">
+        <button type="button" onClick={toggleMetric}>
+          Metric: {state.metricMode}
+        </button>
+      </div>
+
+      {/* current question */}
+      {current ? (
+        <div className="mb-4">
+          <div className="mb-2 font-semibold">
+            {current.q.label}
+            {current.q.required ? " *" : ""}
+          </div>
+          {renderQuestion(current.q)}
+          {current.q.helpText ? (
+            <div className="mt-1 text-xs opacity-80">{current.q.helpText}</div>
+          ) : null}
+          {currentRequiredUnanswered ? (
+            <div className="mt-2 text-xs" role="alert">
+              This field is required.
+            </div>
+          ) : null}
+        </div>
+      ) : (
+        <div>No questions</div>
+      )}
+
+      {/* nav buttons */}
+      <div className="flex gap-2">
+        <button
+          type="button"
+          onClick={prev}
+          disabled={state.currentIndex === 0}
+          aria-disabled={state.currentIndex === 0}
+        >
+          Back
+        </button>
+        <button
+          type="button"
+          onClick={next}
+          disabled={currentRequiredUnanswered || state.currentIndex >= total - 1}
+          aria-disabled={currentRequiredUnanswered || state.currentIndex >= total - 1}
+        >
+          Next
+        </button>
+        <button
+          type="button"
+          onClick={handleSubmit}
+          disabled={!canSubmit}
+          aria-disabled={!canSubmit}
+        >
+          Submit
+        </button>
+      </div>
+    </div>
+  );
+}

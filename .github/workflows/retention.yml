@@ -1,0 +1,50 @@
+name: Blackbox Retention
+
+on:
+  schedule:
+    - cron: '0 3 * * *'   # ежедневно 03:00 UTC
+  workflow_dispatch:
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16
+        ports: ["5432:5432"]
+        env:
+          POSTGRES_USER: biomath
+          POSTGRES_PASSWORD: biomath
+          POSTGRES_DB: biomath_core
+        options: >-
+          --health-cmd "pg_isready -U biomath -d biomath_core"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      DATABASE_URL: postgresql://biomath:biomath@127.0.0.1:5432/biomath_core?sslmode=disable
+      BLACKBOX_RETENTION_DAYS: 3
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: "pnpm"
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Prisma generate + migrate
+        run: |
+          pnpm prisma generate
+          pnpm prisma migrate deploy || true
+
+      - name: Run retention
+        run: pnpm run retention

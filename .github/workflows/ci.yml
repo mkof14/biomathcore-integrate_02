@@ -1,0 +1,63 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16
+        ports: ["5432:5432"]
+        env:
+          POSTGRES_USER: biomath
+          POSTGRES_PASSWORD: biomath
+          POSTGRES_DB: biomath_core
+        options: >-
+          --health-cmd "pg_isready -U biomath -d biomath_core"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      DATABASE_URL: postgresql://biomath:biomath@127.0.0.1:5432/biomath_core?sslmode=disable
+      PLAYWRIGHT_BASE_URL: http://localhost:3000
+      REPORTS_BACKEND: memory
+      BLACKBOX_BACKEND: memory
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: "pnpm"
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Prisma generate + migrate
+        run: |
+          pnpm prisma generate
+          pnpm prisma migrate deploy || true
+
+      - name: Unit tests
+        run: pnpm run test:unit
+
+      - name: Smoke tests (Playwright)
+        run: pnpm exec playwright test -c tests/e2e/smoke.config.ts -g "@smoke"
+
+      - name: Upload Playwright Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: tests/e2e/playwright-report
