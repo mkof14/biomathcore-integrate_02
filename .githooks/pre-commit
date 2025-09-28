@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -euo pipefail
+if git diff --name-only --cached | grep -E '^src/app/member/|^src/components/|^src/lib/assistant/|^src/lib/reports/|^src/app/(member|catalog)/' >/dev/null; then
+  if [ "${ALLOW_MEMBER_EDITS:-0}" != "1" ]; then
+    echo "Member Zone is frozen. To commit changes, set ALLOW_MEMBER_EDITS=1 for this commit." >&2
+    exit 1
+  fi
+fi

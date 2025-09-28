@@ -1,0 +1,17 @@
+name: Protect Member Zone
+on:
+  pull_request:
+  push:
+    branches: [ main ]
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - name: Fail if Member Zone changed without override
+        run: |
+          CHANGED="$(git diff --name-only origin/${GITHUB_BASE_REF:-main}...HEAD | grep -E '^src/app/member/|^src/components/|^src/lib/assistant/|^src/lib/reports/|^src/app/catalog/' || true)"
+          if [ -n "$CHANGED" ] && [ "${ALLOW_MEMBER_EDITS:-0}" != "1" ]; then
+            echo "Member Zone is frozen. Set ALLOW_MEMBER_EDITS=1 in workflow_dispatch or PR env to allow." && exit 1
+          fi
