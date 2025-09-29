@@ -1,0 +1,7 @@
+"use client";
+import Link from "next/link";
+type Props = { fallback?: string; label?: string; className?: string };
+export default function BackButton({ fallback="/", label="Back", className="" }: Props) {
+  if (process.env.NEXT_PUBLIC_HIDE_BACK === "1") return null;
+  return <Link href={fallback} className={className}>{label}</Link>;
+}

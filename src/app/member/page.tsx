@@ -1,5 +1,2 @@
 import { redirect } from "next/navigation";
-
-export default function MemberIndex() {
-  redirect("/member/dashboard");
-}
+export default function Page(){ redirect("/member/dashboard"); }
