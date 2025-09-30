@@ -26,9 +26,13 @@ export function middleware(req: Request) {
   res.headers.set("Permissions-Policy","geolocation=(), microphone=(), camera=()");
 
   // rate limit (skip _next/public/auth)
-  if (!url.pathname.startsWith("/_next") &&
-      !url.pathname.startsWith("/public") &&
-      !url.pathname.startsWith("/api/auth")) {
+  
+  if (
+    !url.pathname.startsWith("/_next") &&
+    !url.pathname.startsWith("/public") &&
+    !url.pathname.startsWith("/api")
+  )
+ {
     if (!rlOk(ip)) {
       return new NextResponse(JSON.stringify({ ok:false, error:"rate_limited" }), {
         status: 429,
