@@ -1,7 +1,9 @@
 import FloatingAssistant from '@/components/assistant/FloatingAssistant';
+import AiButtonBinder from "@/components/AiButtonBinder";
+import AiAssistantModal from "@/components/AiAssistantModal";
 import WidgetMount from "@/components/assistant/WidgetMount";
 import { I18nProvider } from "@/lib/i18n";
-import RouteBack from "@/components/common/RouteBack";
+import HideBack from "@/components/HideBack";
 // src/app/layout.tsx
 import type { Metadata } from "next";
 import "./globals.css";
@@ -45,15 +47,16 @@ export default function RootLayout({
       <I18nProvider>
         <DarkModeProvider>
           {/* Skip link for a11y */}
-          <a href="#main-content" className="skip-link">
-            Skip to content
-          </a>
+          
 
           {/* Global header (fixed) */}
           <Header />
-            <RouteBack />
-
-          {/* Main content (offset for fixed header height) */}
+            
+            
+            <AiButtonBinder />
+            <AiAssistantModal />
+<HideBack />
+{/* Main content (offset for fixed header height) */}
           <main id="main-content" className="pt-16">
             {children}
           </main>
