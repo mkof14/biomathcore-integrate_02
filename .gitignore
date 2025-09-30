@@ -22,3 +22,6 @@ biomathcore-jules/
 playwright-report/
 tests/**/playwright-report/
 .vercel
+
+.backups/
+**/*.bak*
