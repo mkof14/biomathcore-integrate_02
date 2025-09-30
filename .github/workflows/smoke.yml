@@ -21,4 +21,4 @@ jobs:
             [ "$code" = "200" ] && break
             sleep 1
           done
-      - run: bash tools/smoke-root.sh
+      - run: bash tools/smoke-root.sh && test "$(curl -sS -o /dev/null -w "%{http_code}" http://localhost:3000/api/_ops/health)" = "200"
