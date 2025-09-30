@@ -1,0 +1,297 @@
+== RUN: Tue Sep 30 16:08:02 UTC 2025
+== GIT ==
+main-1
+b69f5f5aa43ba6248348211d2281969957068bd7
+
+== ROUTES CODES ==
+/                          200
+/member                    307
+/member/dashboard          200
+/api/_ops/health           404
+
+== SANDBOX REFERENCES ==
+
+== REDIRECT CALLS ==
+
+== MIDDLEWARE SNAPSHOTS ==
+--- middleware.ts ---
+import { NextResponse } from "next/server";
+import { Ratelimit } from "next/dist/server/web/spec-extension/rate-limit"; // fallback type
+import { nanoid } from "nanoid";
+
+const windowMs = Number(process.env.RATE_LIMIT_WINDOW_MS || 60000);
+const maxReq = Number(process.env.RATE_LIMIT_MAX || 120);
+
+const buckets = new Map<string,{ reset:number; count:number }>();
+
+function rlOk(ip:string) {
+  const now = Date.now();
+  const b = buckets.get(ip) || { reset: now + windowMs, count: 0 };
+  if (now > b.reset) { b.reset = now + windowMs; b.count = 0; }
+  b.count++;
+  buckets.set(ip, b);
+  return b.count <= maxReq;
+}
+
+export function middleware(req: Request) {
+  const url = new URL(req.url);
+  const ip =
+    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    (req as any).ip ||
+    "0.0.0.0";
+
+  // Security headers
+  const res = NextResponse.next();
+  res.headers.set("X-Frame-Options","DENY");
+  res.headers.set("X-Content-Type-Options","nosniff");
+  res.headers.set("Referrer-Policy","no-referrer-when-downgrade");
+  res.headers.set("Permissions-Policy","geolocation=(), microphone=(), camera=()");
+
+  // Rate limit (skip static/_next)
+  if (!url.pathname.startsWith("/_next") && !url.pathname.startsWith("/public") && !url.pathname.startsWith("/api/auth")) {
+    if (!rlOk(ip)) {
+      return new NextResponse(JSON.stringify({ ok:false, error:"rate_limited" }), {
+        status: 429,
+        headers: { "Content-Type":"application/json" }
+      });
+    }
+  }
+
+  // DEV gate: блокируем демо-страницы если DEV_FEATURES!=1
+  if (!process.env.DEV_FEATURES && url.pathname.startsWith("/dev/")) {
+    return NextResponse.redirect(new URL("/", url));
+  }
+
+  return res;
+}
+
+export const config = {
+  matcher: ["/((?!_next|favicon.ico|robots.txt|sitemap.txt).*)"]
+};
+--- src/middleware.ts ---
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+
+export function middleware(req: NextRequest) {
+  const url = new URL(req.url);
+  const p = url.pathname;
+  if (p.startsWith("/Member") || p.startsWith("/member-zone") || p.startsWith("/Member%20Zone")) {
+    url.pathname = p.replace(/^\/Member/, "/member").replace(/^\/member-zone/, "/member").replace(/^\/Member%20Zone/, "/member");
+    return NextResponse.redirect(url);
+  }
+  return NextResponse.next();
+}
+
+export const config = {
+  matcher: ["/Member/:path*", "/member-zone/:path*", "/Member%20Zone/:path*"],
+};
+
+== NEXT CONFIG ==
+--- next.config.js ---
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  eslint: { ignoreDuringBuilds: true },
+  typescript: { ignoreBuildErrors: true },
+};
+module.exports = nextConfig;
+
+== ROOT FILES ==
+--- src/app/layout.tsx ---
+import FloatingAssistant from '@/components/assistant/FloatingAssistant';
+import AiButtonBinder from "@/components/AiButtonBinder";
+import AiAssistantModal from "@/components/AiAssistantModal";
+import WidgetMount from "@/components/assistant/WidgetMount";
+import { I18nProvider } from "@/lib/i18n";
+import HideBack from "@/components/HideBack";
+// src/app/layout.tsx
+import type { Metadata } from "next";
+import "./globals.css";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import { DarkModeProvider } from "@/context/DarkModeContext";
+import FloatingAiWidget from "@/components/FloatingAiWidget";
+
+/**
+ * RootLayout
+ * - Server component wrapper that hosts client DarkModeProvider
+ * - We don't read theme on the server; the provider sets "dark" on <html> on mount
+ * - suppressHydrationWarning avoids mismatch for class on <html>
+ */
+
+export const metadata: Metadata = {
+  title: "BioMath Core",
+  description:
+    "BioMath Core — predictive insights and personalized wellness powered by biomathematical modeling and AI.",
+  icons: {
+    icon: [
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+    ],
+    apple: [
+      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+  },
+  metadataBase: new URL("https://biomathcore.com"),
+};
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="en" suppressHydrationWarning>
+      {/* "dark" class will be toggled by DarkModeProvider (client) */}
+      <body className="\1 min-h-screen bg-slate-950 text-slate-200">
+      <I18nProvider>
+        <DarkModeProvider>
+          {/* Skip link for a11y */}
+          
+
+          {/* Global header (fixed) */}
+          <Header />
+            
+            
+            <AiButtonBinder />
+            <AiAssistantModal />
+<HideBack />
+{/* Main content (offset for fixed header height) */}
+          <main id="main-content" className="pt-16">
+            {children}
+          </main>
+
+          {/* Floating AI assistant on all pages */}
+          <FloatingAiWidget />
+
+          {/* Global footer */}
+          <Footer />
+        </DarkModeProvider>
+            </I18nProvider>
+      <WidgetMount />
+    <WidgetMount />
+    <FloatingAssistant />
+</body>
+    </html>
+  );
+}
+--- src/app/page.tsx ---
+export const dynamic = 'force-dynamic';
+import { apiFetch } from '@/lib/api';
+import Link from "next/link";
+import type { Metadata } from "next";
+import AskAiButton from "@/components/AskAiButton";
+
+// Icons (mapped by iconKey coming from API)
+import {
+  Activity,
+  Apple,
+  Brain,
+  Dumbbell,
+  Eye,
+  Flower,
+  HeartPulse,
+  Microscope,
+  Moon,
+  Scale,
+  ShieldPlus,
+  Smile,
+  Sprout,
+  Stethoscope,
+  SunMedium,
+  TestTube,
+  Users2,
+  Stars,
+  Syringe,
+} from "lucide-react";
+
+/* ---------- Page metadata ---------- */
+export const metadata: Metadata = {
+  title: "BioMath Core",
+  description:
+    "Personalized, math-driven health insights, daily guidance, and high-quality services—built for real life.",
+};
+
+/* ---------- Types ---------- */
+type CategoryApi = {
+  slug: string;
+  name: string;
+  blurb: string | null;
+  iconKey: string | null;
+};
+
+type CategoryUi = {
+  slug: string;
+  name: string;
+  blurb: string;
+  Icon: React.ElementType;
+  tint: string;
+};
+
+/* ---------- Icon map (iconKey -> component) ---------- */
+const ICONS: Record<string, React.ElementType> = {
+  ShieldPlus,
+  Activity,
+  Sprout,
+  Brain,
+  Dumbbell,
+  Smile,
+  SunMedium,
+  Stars,
+  Apple,
+  Moon,
+  Microscope,
+  Users2,
+  Stethoscope,
+  TestTube,
+  Syringe,
+  Eye,
+  HeartPulse,
+  Scale,
+  Flower,
+};
+
+/* ---------- Tint map (slug -> gradient + border) ---------- */
+const TINTS: Record<string, string> = {
+  "critical-health": "from-[#1f2937] to-[#111827] border-white/10",
+  "everyday-wellness": "from-[#0ea5e9]/20 to-[#0b0f1a] border-cyan-500/20",
+  "longevity-anti-aging": "from-[#f59e0b]/25 to-[#0b0f1a] border-amber-400/25",
+  "mental-wellness": "from-[#a78bfa]/25 to-[#0b0f1a] border-violet-400/25",
+  "fitness-performance": "from-[#ef4444]/20 to-[#0b0f1a] border-rose-400/25",
+  "womens-health": "from-[#f472b6]/25 to-[#0b0f1a] border-pink-400/25",
+  "mens-health": "from-[#60a5fa]/25 to-[#0b0f1a] border-blue-400/25",
+  "beauty-skincare": "from-[#f9a8d4]/25 to-[#0b0f1a] border-fuchsia-300/25",
+  "nutrition-diet": "from-[#34d399]/25 to-[#0b0f1a] border-emerald-400/25",
+  "sleep-recovery": "from-[#818cf8]/25 to-[#0b0f1a] border-indigo-400/25",
+  "environmental-health": "from-[#7dd3fc]/25 to-[#0b0f1a] border-sky-400/25",
+  "family-health": "from-[#93c5fd]/25 to-[#0b0f1a] border-blue-300/25",
+  "preventive-medicine": "from-[#22d3ee]/25 to-[#0b0f1a] border-cyan-300/25",
+  "biohacking-performance": "from-[#fb7185]/25 to-[#0b0f1a] border-rose-300/25",
+  "senior-care": "from-[#fbbf24]/25 to-[#0b0f1a] border-amber-300/25",
+  "eye-health-suite": "from-[#86efac]/25 to-[#0b0f1a] border-lime-300/25",
+  "general-sexual-longevity":
+    "from-[#fb7185]/25 to-[#0b0f1a] border-rose-300/25",
+  "mens-sexual-health": "from-[#60a5fa]/25 to-[#0b0f1a] border-blue-300/25",
+  "womens-sexual-health": "from-[#f472b6]/25 to-[#0b0f1a] border-pink-300/25",
+  "digital-therapeutics":
+    "from-[#a7f3d0]/25 to-[#0b0f1a] border-emerald-300/25",
+};
+
+/* ---------- UI bits ---------- */
+function SectionTitle({
+  kicker,
+  title,
+  subtitle,
+}: {
+  kicker?: string;
+  title: string;
+  subtitle?: string;
+}) {
+  return (
+    <header className="mx-auto max-w-5xl text-center pb-6">
+      {kicker && (
+        <p className="text-sm tracking-widest uppercase text-white/50">
+          {kicker}
+        </p>
+      )}
+      <h1 className="text-3xl sm:text-4xl md:text-3xl font-extrabold mb-3 text-brand-gradient">
+        {title}

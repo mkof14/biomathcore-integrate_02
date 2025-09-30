@@ -1,0 +1,24 @@
+name: Smoke
+on:
+  push:
+    branches: [ main-1 ]
+  pull_request:
+    branches: [ main-1 ]
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { version: 10 }
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - run: pnpm i --frozen-lockfile
+      - run: |
+          nohup pnpm dev > dev.log 2>&1 &
+          for i in {1..60}; do
+            code=$(curl -sS -o /dev/null -w '%{http_code}' http://localhost:3000/ || echo 000)
+            [ "$code" = "200" ] && break
+            sleep 1
+          done
+      - run: bash tools/smoke-root.sh
