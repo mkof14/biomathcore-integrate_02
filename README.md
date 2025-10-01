@@ -18,3 +18,11 @@ Restored snapshot 2025-09-22.
 [![Smoke (dev)](https://github.com/mkof14/biomathcore-integrate_02/actions/workflows/smoke.yml/badge.svg?branch=main-1)](https://github.com/mkof14/biomathcore-integrate_02/actions/workflows/smoke.yml)
 [![Smoke (prod)](https://github.com/mkof14/biomathcore-integrate_02/actions/workflows/smoke-prod.yml/badge.svg?branch=main-1)](https://github.com/mkof14/biomathcore-integrate_02/actions/workflows/smoke-prod.yml)
 [![E2E](https://github.com/mkof14/biomathcore-integrate_02/actions/workflows/e2e.yml/badge.svg?branch=main-1)](https://github.com/mkof14/biomathcore-integrate_02/actions/workflows/e2e.yml)
+
+[![Docker](https://github.com/mkof14/biomathcore-integrate_02/actions/workflows/docker.yml/badge.svg?branch=main-1)](https://github.com/mkof14/biomathcore-integrate_02/actions/workflows/docker.yml)
+
+### Pull & run
+```bash
+docker pull ghcr.io/mkof14/biomathcore-integrate_02:latest
+docker run --rm -p 3000:3000 ghcr.io/mkof14/biomathcore-integrate_02:latest
+```
