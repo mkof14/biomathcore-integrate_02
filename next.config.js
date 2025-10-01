@@ -4,7 +4,6 @@ const nextConfig = {
   typescript: { ignoreBuildErrors: true },
   async rewrites() {
     return [
-      { source: '/api/_ops/health', destination: '/api/ops/health' },
     ];
   },
   async redirects() {
