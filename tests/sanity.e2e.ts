@@ -10,8 +10,10 @@ test('health is 200 and payload sane', async ({ request }) => {
   expect(typeof j.commit).toBe('string');
 });
 
-test('Member redirect canonicalizes', async ({ page }) => {
-  const res = await page.goto('/Member', { waitUntil: 'domcontentloaded' });
-  expect(res?.status()).toBeGreaterThanOrEqual(300);
-  await expect(page).toHaveURL(/\/member$/);
+test('Member redirect canonicalizes', async ({ request }) => {
+  const res = await request.get('/Member', { maxRedirects: 0 });
+  expect(res.status()).toBeGreaterThanOrEqual(300);
+  expect(res.status()).toBeLessThan(400);
+  const location = res.headers()['location'] ?? res.headers().get?.('location');
+  expect(location).toMatch(/\/member$/);
 });
