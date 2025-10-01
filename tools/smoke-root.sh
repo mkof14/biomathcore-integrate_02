@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 set -euo pipefail
-
 B="http://localhost:3000"
 
 root_code=$(curl -sS -o /dev/null -w '%{http_code}' "$B/")
@@ -14,10 +13,7 @@ printf "[2/4] /api/health       -> %s / %s\n" "$ops_legacy_code" "$ops_code"
 printf "[3/4] /member           -> %s\n" "$member_code"
 printf "[4/4] /member/dashboard -> %s\n" "$dash_code"
 
-# assertions
 [ "$root_code" = "200" ] || exit 1
-if [ "$ops_legacy_code" != "200" ] && [ "$ops_code" != "200" ]; then
-  exit 1
-fi
+[ "$ops_code" = "200" ] || exit 1
 
 echo "SMOKE OK"
