@@ -8,4 +8,9 @@ const nextConfig = {
     ];
   },
 };
+async redirects() {
+  return [
+    { source: "/Member", destination: "/member", permanent: true },
+  ];
+},
 module.exports = nextConfig;
