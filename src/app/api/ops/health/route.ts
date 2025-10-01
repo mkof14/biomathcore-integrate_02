@@ -1,10 +1,9 @@
 import { NextResponse } from 'next/server';
 
+export const runtime = 'nodejs';
+
 const startedAt = Date.now();
-const version =
-  process.env.APP_VERSION ||
-  require('../../../../../../package.json').version ||
-  '0.0.0';
+const version = process.env.APP_VERSION ?? 'dev';
 const commit =
   process.env.BUILD_SHA ||
   process.env.VERCEL_GIT_COMMIT_SHA ||
