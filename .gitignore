@@ -25,3 +25,7 @@ tests/**/playwright-report/
 
 .backups/
 **/*.bak*
+
+# Playwright artifacts
+.test-results/
+test-results/
