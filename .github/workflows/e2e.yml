@@ -1,0 +1,21 @@
+name: e2e
+on:
+  push:
+    branches: [main-1]
+  pull_request:
+    branches: [main-1]
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.20.0'
+          cache: 'pnpm'
+      - run: corepack enable
+      - run: corepack use pnpm@10.15.1
+      - run: pnpm install
+      - run: ./scripts/emit-build-env.sh >> $GITHUB_ENV
+      - run: npx playwright install --with-deps
+      - run: pnpm e2e
