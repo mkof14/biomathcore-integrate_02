@@ -1,0 +1,23 @@
+name: smoke-prod
+on:
+  push:
+    branches: [main-1]
+  pull_request:
+    branches: [main-1]
+jobs:
+  smoke-prod:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.20.0'
+          cache: 'pnpm'
+      - run: corepack enable
+      - run: corepack use pnpm@10.15.1
+      - run: pnpm install --frozen-lockfile
+      - run: ./scripts/emit-build-env.sh >> $GITHUB_ENV
+      - run: pnpm build
+      - run: PORT=3000 pnpm start & sleep 5
+      - run: bash tools/smoke-root.sh
+      - run: test "$(curl -sS -o /dev/null -w "%{http_code}" http://localhost:3000/api/ops/health)" = "200"
