@@ -3,3 +3,10 @@
 # biomathcore-integrate_02
 
 Restored snapshot 2025-09-22.
+
+## Health check
+
+- Canonical: `GET /api/ops/health` → `200`
+- Legacy (temporary rewrite): `GET /api/_ops/health` → `200`
+- Response keys: `ok, ts, service, version, commit, uptimeMs, env`
+
