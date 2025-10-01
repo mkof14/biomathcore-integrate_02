@@ -12,3 +12,9 @@ Restored snapshot 2025-09-22.
 - Legacy (temporary rewrite): `GET /api/_ops/health` → `200`
 - Response keys: `ok, ts, service, version, commit, uptimeMs, env`
 
+
+## CI Status
+
+[![Smoke (dev)](https://github.com/mkof14/biomathcore-integrate_02/actions/workflows/smoke.yml/badge.svg?branch=main-1)](https://github.com/mkof14/biomathcore-integrate_02/actions/workflows/smoke.yml)
+[![Smoke (prod)](https://github.com/mkof14/biomathcore-integrate_02/actions/workflows/smoke-prod.yml/badge.svg?branch=main-1)](https://github.com/mkof14/biomathcore-integrate_02/actions/workflows/smoke-prod.yml)
+[![E2E](https://github.com/mkof14/biomathcore-integrate_02/actions/workflows/e2e.yml/badge.svg?branch=main-1)](https://github.com/mkof14/biomathcore-integrate_02/actions/workflows/e2e.yml)
