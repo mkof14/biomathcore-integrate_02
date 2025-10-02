@@ -1,5 +1,5 @@
 /* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
-import prisma from "@/lib/prisma";
+import { prisma } from "@/lib/prisma";
 import { getServerSessionSafe } from "@/lib/auth";
 import Stripe from "stripe";
 import { resolveTierFromSubscription } from "@/lib/stripe/priceMap";

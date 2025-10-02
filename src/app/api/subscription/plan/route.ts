@@ -2,7 +2,7 @@
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import { getServerSessionSafe } from "@/lib/auth";
-import prisma from "@/lib/prisma";
+import { prisma } from "@/lib/prisma";
 import { resolveTierFromSubscription } from "@/lib/stripe/priceMap";
 
 export const runtime = "nodejs";

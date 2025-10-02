@@ -1,6 +1,6 @@
 /* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { NextResponse } from "next/server";
-import prisma from "@/lib/prisma";
+import { prisma } from "@/lib/prisma";
 
 export async function POST(_: Request, { params }: { params: { id: string } }) {
   try {

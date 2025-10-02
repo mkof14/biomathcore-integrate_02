@@ -1,5 +1,5 @@
 /* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
-import prisma from "@/lib/prisma";
+import { prisma } from "@/lib/prisma";
 import { Prisma } from "@prisma/client";
 
 export async function auditLogOptional(

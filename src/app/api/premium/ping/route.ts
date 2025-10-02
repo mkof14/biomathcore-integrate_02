@@ -2,7 +2,7 @@
 import { NextResponse } from "next/server";
 import { requireActive } from "@/lib/guards/subscription";
 import { getServerSessionSafe } from "@/lib/auth";
-import prisma from "@/lib/prisma";
+import { prisma } from "@/lib/prisma";
 import { auditLogOptional } from "@/lib/audit/log";
 
 export async function GET() {
