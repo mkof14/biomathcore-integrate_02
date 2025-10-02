@@ -1,0 +1,1 @@
+Archived husky directory placeholder
