@@ -1,1 +1,8 @@
-* @mkof14
+/src/app/member/**           @mkof14
+/src/components/ai/**        @mkof14
+/src/components/Header.tsx   @mkof14
+/src/components/Footer.tsx   @mkof14
+/src/app/admin/**            @mkof14
+/src/app/monitoring/**       @mkof14
+/src/app/control-center/**   @mkof14
+*                            @mkof14

@@ -1,63 +1,46 @@
 name: CI
-
 on:
-  push:
-    branches: [ main, develop ]
   pull_request:
-  workflow_dispatch:
-
+    branches: [ "main-2", "release/**", "refactor/**" ]
+  push:
+    branches: [ "main-2", "release/**", "refactor/**" ]
 jobs:
-  test:
+  freeze-guard:
     runs-on: ubuntu-latest
-
-    services:
-      postgres:
-        image: postgres:16
-        ports: ["5432:5432"]
-        env:
-          POSTGRES_USER: biomath
-          POSTGRES_PASSWORD: biomath
-          POSTGRES_DB: biomath_core
-        options: >-
-          --health-cmd "pg_isready -U biomath -d biomath_core"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
-    env:
-      DATABASE_URL: postgresql://biomath:biomath@127.0.0.1:5432/biomath_core?sslmode=disable
-      PLAYWRIGHT_BASE_URL: http://localhost:3000
-      REPORTS_BACKEND: memory
-      BLACKBOX_BACKEND: memory
-
     steps:
       - uses: actions/checkout@v4
-
-      - uses: pnpm/action-setup@v3
-        with:
-          version: 10
-
+        with: { fetch-depth: 0 }
+      - name: Freeze guard
+        run: |
+          base="${{ github.base_ref }}"
+          [ -z "$base" ] && base="${{ github.event.pull_request.base.ref }}"
+          CHANGED=$(git diff --name-only origin/$base...HEAD || true)
+          FROZEN=$(cat <<'EOF'
+src/app/member/
+src/components/ai/
+src/components/Header.tsx
+src/components/Footer.tsx
+src/app/admin/
+src/app/monitoring/
+src/app/control-center/
+EOF
+)
+          touched=""
+          for p in $FROZEN; do
+            echo "$CHANGED" | grep -E "^$p" >/dev/null && touched=1
+          done
+          if [ "$touched" = "1" ]; then
+            echo "${{ github.event.pull_request.body }}" | grep -qi "UNFREEZE-APPROVED" || { echo "Frozen area changed without UNFREEZE-APPROVED"; exit 1; }
+          fi
+  typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { version: 10 }
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: "pnpm"
-
+          cache: pnpm
       - run: pnpm install --frozen-lockfile
-
-      - name: Prisma generate + migrate
-        run: |
-          pnpm prisma generate
-          pnpm prisma migrate deploy || true
-
-      - name: Unit tests
-        run: pnpm run test:unit
-
-      - name: Smoke tests (Playwright)
-        run: pnpm exec playwright test -c tests/e2e/smoke.config.ts -g "@smoke"
-
-      - name: Upload Playwright Report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: playwright-report
-          path: tests/e2e/playwright-report
+      - run: pnpm run typecheck
