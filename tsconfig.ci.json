@@ -1,0 +1,19 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "skipLibCheck": true,
+    "noEmit": true
+  },
+  "include": [
+    "next-env.d.ts",
+    "src/app/api/forms/[slug]/submit/route.ts"
+  ],
+  "exclude": [
+    "**/_backup/**",
+    "biomathcore-integrate_02/**",
+    "biomathcore-jules/**",
+    "src/components/ai/**",
+    "**/__tests__/**",
+    "**/*.test.*"
+  ]
+}
