@@ -26,3 +26,6 @@ tests/**/playwright-report/
 .snapshots/
 tsconfig*.tsbuildinfo
 .next/
+
+# ts-scope backups
+*.bak.*
