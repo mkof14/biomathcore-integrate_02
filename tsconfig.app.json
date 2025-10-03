@@ -26,9 +26,6 @@
     }
   },
   "include": [
-    "#",
-    "--commit",
-    "husky",
     "next-env.d.ts",
     "src/app/about/page.tsx",
     "src/app/dev/tools/page.tsx",
@@ -47,9 +44,7 @@
     "src/components/Logo.tsx",
     "src/components/Notifications.tsx",
     "src/components/member/Dashboard.tsx",
-    "src/types/**/*",
-    "без",
-    "коммит"
+    "src/types/**/*"
   ],
   "exclude": [
     "**/*.test.*",
