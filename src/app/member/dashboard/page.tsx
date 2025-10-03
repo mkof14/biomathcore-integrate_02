@@ -117,9 +117,7 @@ export default async function Dashboard() {
 
           {/* Files + Reports */}
           <div className="flex flex-col gap-6">
-            {/* @ts-expect-error Async Server Component */}
             <RecentFiles userId={userId} />
-            {/* @ts-expect-error Async Server Component */}
             <Reports userId={userId} />
           </div>
         </div>

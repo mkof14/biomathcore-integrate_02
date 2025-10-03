@@ -2,7 +2,7 @@ import FloatingAssistant from '@/components/assistant/FloatingAssistant';
 import AiButtonBinder from "@/components/AiButtonBinder";
 import AiAssistantModal from "@/components/AiAssistantModal";
 import WidgetMount from "@/components/assistant/WidgetMount";
-import { I18nProvider } from "@/lib/i18n";
+import I18nProvider from "@/components/I18nProvider";
 import HideBack from "@/components/HideBack";
 // src/app/layout.tsx
 import type { Metadata } from "next";

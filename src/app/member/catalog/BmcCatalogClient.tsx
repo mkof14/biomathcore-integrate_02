@@ -30,7 +30,7 @@ const [selected, setSelected] = useState<string[]>([]);
   function onContinue() {
     try {
       // Try to read selected items from state commonly named "selected" or "selections"
-      const picks = (typeof selected !== "undefined" ? selected : (typeof selections !== "undefined" ? selections : [])) || [];
+      const picks = (selected ?? []) as string[];
       const val = encodeURIComponent(JSON.stringify(picks));
       document.cookie = "bmc.selected=" + val + "; Path=/; Max-Age=" + (60*60*24*30) + "; SameSite=Lax";
     } catch (e) {}
@@ -46,7 +46,7 @@ const [selected, setSelected] = useState<string[]>([]);
             Core plan <b>${CORE}</b> is always included. Add categories ($4–$7 each) up to ${CAP}.
           </p>
         </div>
-        <button type="button" type="button" onClick={clear}
+        <button type="button" onClick={clear}
           className="rounded-xl px-4 py-2 text-sm font-medium bg-white text-slate-900 border border-white/20 shadow"
         >
           Clear selection
@@ -153,7 +153,7 @@ const [selected, setSelected] = useState<string[]>([]);
             </div>
 
             <div className="mt-5 flex gap-2">
-              <button type="button" type="button" onClick={clear}
+              <button type="button" onClick={clear}
                 className="w-1/3 rounded-xl px-3 py-2 text-sm font-medium bg-white/10 border border-white/20 text-white hover:bg-white/15 transition-colors"
               >
                 Clear

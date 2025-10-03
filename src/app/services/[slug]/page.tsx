@@ -41,10 +41,10 @@ export default async function ServiceDetailPage({ params }: PageProps) {
   const { category, service } = hit;
 
   // fallback emoji/icon
-  const emoji = (service.icon as string) || (service.emoji as string) || "🧩";
+  const emoji = (service.icon as string) || ((service as any).emoji as string) || "🧩";
 
   // link back to category anchor on /services
-  const categorySlug = slugify(category.name || category.title || "category");
+  const categorySlug = slugify(category.name || (category as any).title || "category");
   const backHref = `/services#${categorySlug}`;
 
   return (
@@ -57,7 +57,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
           </Link>{" "}
           /{" "}
           <Link href={backHref} className="hover:underline">
-            {category.name || category.title}
+            {category.name || (category as any).title}
           </Link>{" "}
           /{" "}
           <span className="text-gray-900 dark:text-gray-100">
@@ -111,7 +111,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
               <p className="text-sm text-gray-700 dark:text-gray-300">
                 This page summarizes the {service.title} module within the{" "}
                 <span className="font-medium">
-                  {category.name || category.title}
+                  {category.name || (category as any).title}
                 </span>{" "}
                 category. Use the <b>Run analysis</b> button to try an offline
                 demo with your own input data. Later we can connect real AI
@@ -121,7 +121,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
 
             {/* Run panel (client) */}
             <RunPanel
-              serviceId={service.id || service.slug || slug}
+              serviceId={service.id || (service as any).slug || slug}
               serviceTitle={service.title}
             />
 

@@ -1,6 +1,4 @@
-/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
-// Safe stub: Firebase disabled in local dev until configured
-export const firebaseDisabled = true;
-export function initializeApp() { throw new Error("Firebase is disabled in this build"); }
-export function getFirestore() { throw new Error("Firebase is disabled in this build"); }
-export function getStorage() { throw new Error("Firebase is disabled in this build"); }
+export const db: any = {};
+export const auth: any = {};
+export const storage: any = {};
+export default {} as any;

@@ -59,7 +59,7 @@ export default function RenderForm({ title, slug, questions }: { title: string; 
             min={nq.min}
             max={nq.max}
             step={nq.step}
-            value={answers[q.id] ?? ""}
+            value={String(answers[q.id] ?? "")}
             onChange={e => handleChange(q.id, e.target.value)}
           />
           {unit && <span className="text-slate-600">{unit}</span>}

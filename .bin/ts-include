@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+set -euo pipefail
+FILE="tsconfig.app.json"
+TMP="$(mktemp)"
+BAK="$FILE.bak.$(date +%s)"
+
+if [[ ! -f "$FILE" ]]; then
+  echo "err: $FILE not found"; exit 1
+fi
+
+cp "$FILE" "$BAK"
+
+# Добавляем пути из аргументов в include, убираем дубли
+jq --argjson add "$(printf '%s\n' "$@" | jq -R . | jq -s .)" '
+  .include = ((.include // []) + $add | unique)
+' "$FILE" > "$TMP" || { echo "jq failed"; mv "$BAK" "$FILE"; exit 1; }
+
+mv "$TMP" "$FILE"
+
+# Проверяем типы
+if pnpm tsc -p "$FILE" --noEmit; then
+  echo "tsc OK"
+else
+  echo "tsc FAILED — rolling back"
+  mv -f "$BAK" "$FILE"
+  exit 2
+fi
+
+# Авто-снапшот (коммит + тег)
+git add "$FILE" && git commit -m "chore(ts): include -> $*" && git tag -f "snap-$(date +%Y%m%d-%H%M%S)"
