@@ -4,12 +4,13 @@ import { storage } from "@/lib/firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 export default function DataUpload() {
-  const [file, setFile] = useState(null);
+  const [file, setFile] = useState<File | null>(null);
   const [uploadStatus, setUploadStatus] = useState("");
   const [downloadUrl, setDownloadUrl] = useState("");
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFile(e.target.files[0]);
+    
+   const f = e.target.files?.[0]; if (!f) return; setFile(f);
   };
 
   const handleUpload = async () => {
@@ -21,8 +22,8 @@ export default function DataUpload() {
         const url = await getDownloadURL(storageRef);
         setDownloadUrl(url);
         setUploadStatus("Upload successful!");
-      } catch (error) {
-        setUploadStatus("Upload failed: " + error.message);
+      } catch (error: unknown) {
+        setUploadStatus("Upload failed: " + (error instanceof Error ? error.message : String(error)));
       }
     } else {
       setUploadStatus("Please select a file.");
