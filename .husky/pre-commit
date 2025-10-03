@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -euo pipefail
+frozen_paths=("src/app/(home|services|pricing|member|about|investors)" "src/components/Footer.tsx" "src/components/Header.tsx" "src/app/member/catalog" "src/app/member/questionnaires" "src/app/member/reports" "src/app/member/settings" "src/app/admin" "src/app/monitoring" "src/app/control-center")
+changed=$(git diff --cached --name-only || true)
+for p in "${frozen_paths[@]}"; do
+  echo "$changed" | grep -E "^$p" >/dev/null 2>&1 && { echo "Blocked: frozen path $p"; exit 1; }
+done
