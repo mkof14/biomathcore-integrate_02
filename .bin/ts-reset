@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 FILE="tsconfig.app.json"
+[ -f "$FILE" ] || FILE="tsconfig.json"
 BAK="$FILE.bak.$(date +%s)"
 
 [[ -f "$FILE" ]] || { echo "err: $FILE not found"; exit 1; }

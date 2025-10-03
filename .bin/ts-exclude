@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 FILE="tsconfig.app.json"
+[ -f "$FILE" ] || FILE="tsconfig.json"
 TMP="$(mktemp)"
 trap 'rm -f "$TMP"' EXIT
 BAK="$FILE.bak.$(date +%s)"
