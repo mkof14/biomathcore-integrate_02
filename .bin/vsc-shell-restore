@@ -1,22 +1,19 @@
 #!/usr/bin/env bash
 set -euo pipefail
 ZRC="$HOME/.zshrc"
-touch "$ZRC"
-tmpz="$(mktemp)"; trap 'rm -f "$tmpz"' EXIT
+BK="$HOME/.zshrc.bak.$(date +%s)"
+cp -a "$ZRC" "$BK" 2>/dev/null || true
+
+TMP="$(mktemp)"; trap 'rm -f "$TMP"' EXIT
 awk '
   BEGIN{guard=0}
   /# BEGIN vsc-zsh-guard/{guard=1; next}
   /# END vsc-zsh-guard/{guard=0; next}
   {if(!guard) print}
-' "$ZRC" > "$tmpz"
-mv -f "$tmpz" "$ZRC"
+' "$ZRC" > "$TMP" 2>/dev/null || true
+mv -f "$TMP" "$ZRC"
 
-# Re-enable VS Code shell integration for future shells
-if grep -q '^export VSCODE_SHELL_INTEGRATION=0' "$ZRC"; then
-  # comment out the line instead of removing blindly
-  sed -i '' 's/^export VSCODE_SHELL_INTEGRATION=0/# export VSCODE_SHELL_INTEGRATION=0/' "$ZRC" || true
-fi
+# Uncomment any disabled VSCODE_SHELL_INTEGRATION line back to original OFF/ON?
+# (no-op by default; user can edit to preference)
 
-# Clean current shell (best-effort)
-unset VSCODE_SHELL_INTEGRATION || true
-# Allow VS Code to inject again on next session; no prompt resets needed here.
+echo "restored ~/.zshrc (backup: $BK)"

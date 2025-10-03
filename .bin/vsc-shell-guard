@@ -1,50 +1,94 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Harden current shell
-export PROMPT=${PROMPT-'%n@%m %1~ %# '}
-export RPROMPT=${RPROMPT-''}
-export VSCODE_SHELL_INTEGRATION=0
+usage() {
+  cat <<'USAGE'
+Usage: vsc-shell-guard [--now] [--persist]
 
-# Strip injected funcs if present
+  --now       Print Zsh commands that remove VS Code's injected prompt helpers.
+              Source them in your current Zsh to take effect immediately:
+                  . .bin/vsc-shell-guard --now
+              (or) eval "$(.bin/vsc-shell-guard --now)"
+
+  --persist   Idempotently add a guarded block to ~/.zshrc that disables
+              VS Code's prompt injection and scrubs injected functions/arrays.
+
+If you just run this script as a subprocess, it cannot modify the parent shell.
+USAGE
+}
+
+NOW=0
+PERSIST=0
+for arg in "$@"; do
+  case "$arg" in
+    --now) NOW=1 ;;
+    --persist) PERSIST=1 ;;
+    -h|--help) usage; exit 0 ;;
+    *) echo "warn: unknown argument: $arg" >&2 ;;
+  esac
+done
+
+if [[ "$NOW" -eq 1 ]]; then
+  # Print Zsh-safe code to STDOUT; caller should `source` or `eval` it.
+  cat <<'ZRC'
+# --- VS Code prompt guard (immediate, current Zsh only)
 typeset -f __vsc_update_prompt >/dev/null 2>&1 && unset -f __vsc_update_prompt
 typeset -f __vsc_precmd        >/dev/null 2>&1 && unset -f __vsc_precmd
 typeset -f __vsc_preexec       >/dev/null 2>&1 && unset -f __vsc_preexec
 
-# Clean hook arrays
-[[ -v precmd_functions  ]] && precmd_functions=(${precmd_functions:#__vsc_update_prompt} ${precmd_functions:#__vsc_precmd})
-[[ -v preexec_functions ]] && preexec_functions=(${preexec_functions:#__vsc_preexec})
+# Scrub arrays if they exist (portable checks for Zsh)
+if typeset -p precmd_functions   >/dev/null 2>&1; then
+  precmd_functions=(${precmd_functions:#__vsc_update_prompt} ${precmd_functions:#__vsc_precmd})
+fi
+if typeset -p preexec_functions  >/dev/null 2>&1; then
+  preexec_functions=(${preexec_functions:#__vsc_preexec})
+fi
 
-# Reset plain prompt
-autoload -Uz promptinit 2>/dev/null || true
-promptinit 2>/dev/null || true
-prompt off 2>/dev/null || true
-PROMPT='%n@%m %1~ %# '
-RPROMPT=''
+# Ensure RPROMPT is defined to avoid "parameter not set"
+: ${RPROMPT:=""}
+ZRC
+fi
 
-# Persist guard block in ~/.zshrc (idempotent)
-ZRC="$HOME/.zshrc"
-touch "$ZRC"
-tmpz="$(mktemp)"; trap 'rm -f "$tmpz"' EXIT
-awk '
-  BEGIN{guard=0}
-  /# BEGIN vsc-zsh-guard/{guard=1; next}
-  /# END vsc-zsh-guard/{guard=0; next}
-  {if(!guard) print}
-' "$ZRC" > "$tmpz"
-mv -f "$tmpz" "$ZRC"
+if [[ "$PERSIST" -eq 1 ]]; then
+  ZRC="$HOME/.zshrc"
+  TMP="$(mktemp)"; trap 'rm -f "$TMP"' EXIT
 
-cat >> "$ZRC" <<'ZRC'
+  # Remove any older guard block before appending a fresh one
+  awk '
+    BEGIN{guard=0}
+    /# BEGIN vsc-zsh-guard/{guard=1; next}
+    /# END vsc-zsh-guard/{guard=0; next}
+    {if(!guard) print}
+  ' "$ZRC" > "$TMP" 2>/dev/null || true
+  mv -f "$TMP" "$ZRC"
+
+  cat >> "$ZRC" <<'ZRC'
 # BEGIN vsc-zsh-guard
-export VSCODE_SHELL_INTEGRATION=0
+# Keep VS Code shell injection from breaking prompts
 export RPROMPT=${RPROMPT-""}
+
+# If VS Code injected prompt helpers, remove them (Zsh only)
 typeset -f __vsc_update_prompt >/dev/null 2>&1 && unset -f __vsc_update_prompt
 typeset -f __vsc_precmd        >/dev/null 2>&1 && unset -f __vsc_precmd
 typeset -f __vsc_preexec       >/dev/null 2>&1 && unset -f __vsc_preexec
-[[ -v precmd_functions  ]] && precmd_functions=(${precmd_functions:#__vsc_update_prompt} ${precmd_functions:#__vsc_precmd})
-[[ -v preexec_functions ]] && preexec_functions=(${preexec_functions:#__vsc_preexec})
+
+# Scrub hook arrays if present (Zsh)
+if typeset -p precmd_functions   >/dev/null 2>&1; then
+  precmd_functions=(${precmd_functions:#__vsc_update_prompt} ${precmd_functions:#__vsc_precmd})
+fi
+if typeset -p preexec_functions  >/dev/null 2>&1; then
+  preexec_functions=(${preexec_functions:#__vsc_preexec})
+fi
 # END vsc-zsh-guard
 ZRC
 
-# Reload (best-effort)
-. "$ZRC" 2>/dev/null || true
+  # Validate ~/.zshrc syntax (best effort)
+  if command -v zsh >/dev/null 2>&1; then
+    zsh -n "$ZRC" >/dev/null 2>&1 || echo "note: zsh reported syntax issues in $ZRC" >&2
+  fi
+  echo "persisted guard → $ZRC"
+fi
+
+if [[ "$NOW" -eq 0 && "$PERSIST" -eq 0 ]]; then
+  usage
+fi
