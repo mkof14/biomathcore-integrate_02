@@ -2,6 +2,7 @@
 set -euo pipefail
 FILE="tsconfig.app.json"
 TMP="$(mktemp)"
+trap 'rm -f "$TMP"' EXIT
 BAK="$FILE.bak.$(date +%s)"
 COMMIT=0
 
