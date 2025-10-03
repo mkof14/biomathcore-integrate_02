@@ -23,3 +23,6 @@ playwright-report/
 tests/**/playwright-report/
 .vercel
 /biomathcore-integrate_02
+.snapshots/
+tsconfig*.tsbuildinfo
+.next/
