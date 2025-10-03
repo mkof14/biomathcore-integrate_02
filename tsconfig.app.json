@@ -28,6 +28,7 @@
   "include": [
     "next-env.d.ts",
     "src/app/about/page.tsx",
+    "src/app/categories/[categorySlug]/client.tsx",
     "src/app/categories/[categorySlug]/page.tsx",
     "src/app/dev/tools/page.tsx",
     "src/app/intake/[id]/page.tsx",
