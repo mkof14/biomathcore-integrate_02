@@ -15,7 +15,7 @@ export function withLog(handler: (req: Request) => Promise<Response> | Response,
       });
     } catch (e: unknown) {
       const ms = Date.now() - start;
-      console.error(`[api] ${name} ERROR id=${reqId} ${ms}ms`, e?.message || e);
+      console.error(`[api] ${name} ERROR id=${reqId} ${ms}ms`, (e instanceof Error ? e.message : String(e)) || e);
       return NextResponse.json({ ok:false, error:"internal_error", id:reqId }, { status: 500 });
     }
   };

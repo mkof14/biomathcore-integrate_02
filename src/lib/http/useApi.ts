@@ -20,7 +20,7 @@ export function useApi<T>(url: string, opts?: RequestInit) {
       setData(res);
       return res;
     } catch (e: unknown) {
-      setError(e?.message || "request_failed");
+      setError((e instanceof Error ? e.message : String(e)) || "request_failed");
       throw e;
     } finally {
       setLoading(false);

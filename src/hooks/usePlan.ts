@@ -25,7 +25,7 @@ export function usePlan() {
         if (mounted) setData(j);
       })
       .catch(() => {
-        if (mounted) setData({ ok: false } as unknown);
+        if (mounted) setData(null);
       })
       .finally(() => {
         if (mounted) setLoading(false);

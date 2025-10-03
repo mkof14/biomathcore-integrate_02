@@ -1,5 +1,5 @@
 "use client";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer, toast }  from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function Notifications() {
@@ -12,6 +12,6 @@ export default function Notifications() {
   );
 }
 
-export const showNotification = (message, type = "info") => {
+export const showNotification = (message: string, type: TypeOptions = "info") => {
   toast(message, { type });
 };

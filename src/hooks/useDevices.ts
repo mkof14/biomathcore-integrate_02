@@ -36,7 +36,7 @@ export function useDevices() {
       const resp = await api<{ ok: true; devices: Device[] }>("/api/devices");
       setData(resp.devices || []);
     } catch (e: unknown) {
-      setError(e?.message || "Failed to load devices");
+      setError((e instanceof Error ? e.message : String(e)) || "Failed to load devices");
     } finally {
       setLoading(false);
     }

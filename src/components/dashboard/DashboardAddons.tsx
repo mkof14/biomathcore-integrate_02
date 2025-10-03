@@ -141,8 +141,8 @@ function Sparkline({ values, height=64 }:{ values:number[]; height?:number }) {
     if (max===min) return H/2;
     return pad + (H-2*pad) - ( (v-min) / (max-min) ) * (H-2*pad);
   });
-  const d = xs.map((x,i)=>`${i===0?'M':'L'}${x.toFixed(1)},${ys[i].toFixed(1)}`).join(" ");
-  const area = `M${pad},${H-pad} ` + xs.map((x,i)=>`L${x.toFixed(1)},${ys[i].toFixed(1)}`).join(" ") + ` L${W-pad},${H-pad} Z`;
+  const d = xs.map((x,i)=>`${i===0?'M':'L'}${x.toFixed(1)},${( (ys[i] ?? 0) ).toFixed(1)}`).join(" ");
+  const area = `M${pad},${H-pad} ` + xs.map((x,i)=>`L${x.toFixed(1)},${( (ys[i] ?? 0) ).toFixed(1)}`).join(" ") + ` L${W-pad},${H-pad} Z`;
   return (
     <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-[${H}px]">
       <path d={area} className="fill-sky-500/15" />
