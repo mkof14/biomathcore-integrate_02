@@ -16,7 +16,7 @@ export default function DemoDG() {
 
   return (
     <div className="p-6 space-y-4">
-      <ActionBar title="Demo — Drug–Gene" extra={<EndpointBadge path="/api/drug-gene/query" />} />
+      <ActionBar title="Demo — Drug–Gene" right={<EndpointBadge path="/api/drug-gene/query" />} />
       <div className="max-w-2xl space-y-2">
         <div className="flex gap-2">
           <input value={gene} onChange={e=>setGene(e.target.value)} className="px-3 py-2 rounded border border-neutral-700 bg-black" placeholder="Gene"/>
