@@ -5,7 +5,7 @@ import React from "react";
 
 /**         (hint). */
 export default function SidebarLink({ href, label, hint }: { href: string; label: string; hint?: string }) {
-  const pathname = usePathname();
+  const pathname = usePathname() ?? "";
   const active = pathname === href || pathname.startsWith(href + "/");
   return (
     <Link
