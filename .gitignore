@@ -29,3 +29,6 @@ tsconfig*.tsbuildinfo
 
 # ts-scope backups
 *.bak.*
+
+# ts-scope backups
+*.bak.*
