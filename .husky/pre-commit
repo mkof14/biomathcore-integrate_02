@@ -1,15 +1,14 @@
 #!/usr/bin/env sh
-# Safe guard if helper missing
-[ -f "$(dirname "$0")/_/husky.sh" ] && . "$(dirname "$0")/_/husky.sh"
 
-# Global toggles
+# Глобальные выключатели
 [ "$HUSKY" = "0" ] && exit 0
 [ "$SKIP_HUSKY" = "1" ] && exit 0
 
+# Пропустить проверки на песочницах TS
 BRANCH="$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "")"
 case "$BRANCH" in
-  ts-scope-*) exit 0 ;;  # skip hooks on our TS sandbox branches
+  ts-scope-*) exit 0 ;;
 esac
 
-# place your real checks here
+# --- реальные проверки ниже (пока none) ---
 exit 0
