@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+set -euo pipefail
+chmod +x .bin/* 2>/dev/null || true
+chmod +x .husky/* 2>/dev/null || true
+echo "exec bits restored"

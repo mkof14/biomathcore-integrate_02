@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+# Находим последний тег вида snap-*
+TAG="$(git tag --list 'snap-*' --sort=-creatordate | head -n1)"
+if [[ -z "$TAG" ]]; then
+  echo "No snap-* tags found"; exit 1
+fi
+git reset --hard "$TAG"
+echo "Rolled back to $TAG"

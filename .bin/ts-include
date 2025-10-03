@@ -1,0 +1,44 @@
+#!/usr/bin/env sh
+set -eu
+
+FILE="tsconfig.app.json"
+TMP="$(mktemp)"
+trap 'rm -f "$TMP"' EXIT
+BAK="$FILE.bak.$(date +%s)"
+COMMIT=0
+
+ARGS=""
+for a in "$@"; do
+  case "$a" in
+    --commit) COMMIT=1 ;;
+    next-env.d.ts|src/*) ARGS="${ARGS}${a}\n" ;;
+    *) echo "warn: skip non-path arg -> $a" >&2 ;;
+  esac
+done
+
+[ -f "$FILE" ] || { echo "err: $FILE not found"; exit 1; }
+cp "$FILE" "$BAK"
+
+ADD="$(printf "%b" "$ARGS" | awk 'length>0' | jq -R . | jq -s .)"
+
+jq --argjson add "$ADD" '
+  .include = ((.include // []) + $add | unique)
+' "$FILE" > "$TMP" || { echo "jq failed"; mv "$BAK" "$FILE"; rm -f "$TMP"; exit 1; }
+
+mv "$TMP" "$FILE"
+
+if pnpm tsc -p "$FILE" --noEmit; then
+  echo "tsc OK"
+else
+  echo "tsc FAILED — rolling back"
+  mv -f "$BAK" "$FILE"
+  exit 2
+fi
+
+if [ "$COMMIT" -eq 1 ]; then
+  git add -- "$FILE" src/types 2>/dev/null || true
+  git -c core.hooksPath=/dev/null commit -m "chore(ts): include -> $(printf "%b" "$ARGS" | tr '\n' ' ' | sed 's/ $//')" || true
+  git tag -f "snap-$(date +%Y%m%d-%H%M%S)"
+fi
+
+echo "Backup: $BAK"

@@ -1,0 +1,67 @@
+#!/usr/bin/env sh
+set -eu
+
+FILE="tsconfig.app.json"
+TMP="$(mktemp)"
+trap 'rm -f "$TMP"' EXIT
+BAK="$FILE.bak.$(date +%s)"
+LST="$(mktemp)"
+
+[ -f "$FILE" ] || { echo "err: $FILE not found"; exit 1; }
+cp "$FILE" "$BAK"
+
+# выгружаем include построчно в файл (без сабшеллов)
+jq -r '.include[]? // empty' "$FILE" > "$LST" || true
+
+kept_lines=""
+
+# читаем из файла В ТЕКУЩЕМ шелле
+while IFS= read -r pat; do
+  [ -n "$pat" ] || continue
+
+  # белый список
+  case "$pat" in
+    next-env.d.ts|src/*) ;;
+    *) echo "drop: $pat (not allowed)"; continue ;;
+  esac
+
+  # wildcard?
+  case "$pat" in
+    *'*'*|*'?'*|*'['*|*']'*)
+      matches="$(git ls-files -co --exclude-standard -- ":(glob)$pat" || true)"
+      if [ -n "$matches" ]; then
+        kept_lines="${kept_lines}${pat}\n"
+      else
+        echo "drop: $pat (no matches)"
+      fi
+      ;;
+    *)
+      if [ -e "$pat" ]; then
+        kept_lines="${kept_lines}${pat}\n"
+      else
+        echo "drop: $pat (no matches)"
+      fi
+      ;;
+  esac
+done < "$LST"
+
+rm -f "$LST"
+
+# уникализуем, сохраняем порядок и формируем JSON
+json_arr="$(printf "%b" "$kept_lines" \
+  | awk 'length>0' \
+  | awk '!seen[$0]++' \
+  | jq -R . | jq -s .)"
+
+jq --argjson inc "${json_arr:-[]}" '.include = $inc' "$FILE" > "$TMP" \
+  || { echo "jq edit failed"; mv -f "$BAK" "$FILE"; rm -f "$TMP"; exit 1; }
+
+mv "$TMP" "$FILE"
+
+if pnpm tsc -p "$FILE" --noEmit; then
+  echo "prune OK (backup: $BAK)"
+else
+  echo "FAILED — rollback"
+  mv -f "$BAK" "$FILE"
+  exit 2
+fi
