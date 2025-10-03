@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Harden current shell
+export PROMPT=${PROMPT-'%n@%m %1~ %# '}
+export RPROMPT=${RPROMPT-''}
+export VSCODE_SHELL_INTEGRATION=0
+
+# Strip injected funcs if present
+typeset -f __vsc_update_prompt >/dev/null 2>&1 && unset -f __vsc_update_prompt
+typeset -f __vsc_precmd        >/dev/null 2>&1 && unset -f __vsc_precmd
+typeset -f __vsc_preexec       >/dev/null 2>&1 && unset -f __vsc_preexec
+
+# Clean hook arrays
+[[ -v precmd_functions  ]] && precmd_functions=(${precmd_functions:#__vsc_update_prompt} ${precmd_functions:#__vsc_precmd})
+[[ -v preexec_functions ]] && preexec_functions=(${preexec_functions:#__vsc_preexec})
+
+# Reset plain prompt
+autoload -Uz promptinit 2>/dev/null || true
+promptinit 2>/dev/null || true
+prompt off 2>/dev/null || true
+PROMPT='%n@%m %1~ %# '
+RPROMPT=''
+
+# Persist guard block in ~/.zshrc (idempotent)
+ZRC="$HOME/.zshrc"
+touch "$ZRC"
+tmpz="$(mktemp)"; trap 'rm -f "$tmpz"' EXIT
+awk '
+  BEGIN{guard=0}
+  /# BEGIN vsc-zsh-guard/{guard=1; next}
+  /# END vsc-zsh-guard/{guard=0; next}
+  {if(!guard) print}
+' "$ZRC" > "$tmpz"
+mv -f "$tmpz" "$ZRC"
+
+cat >> "$ZRC" <<'ZRC'
+# BEGIN vsc-zsh-guard
+export VSCODE_SHELL_INTEGRATION=0
+export RPROMPT=${RPROMPT-""}
+typeset -f __vsc_update_prompt >/dev/null 2>&1 && unset -f __vsc_update_prompt
+typeset -f __vsc_precmd        >/dev/null 2>&1 && unset -f __vsc_precmd
+typeset -f __vsc_preexec       >/dev/null 2>&1 && unset -f __vsc_preexec
+[[ -v precmd_functions  ]] && precmd_functions=(${precmd_functions:#__vsc_update_prompt} ${precmd_functions:#__vsc_precmd})
+[[ -v preexec_functions ]] && preexec_functions=(${preexec_functions:#__vsc_preexec})
+# END vsc-zsh-guard
+ZRC
+
+# Reload (best-effort)
+. "$ZRC" 2>/dev/null || true
