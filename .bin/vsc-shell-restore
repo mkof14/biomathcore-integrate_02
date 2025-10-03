@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+set -euo pipefail
+ZRC="$HOME/.zshrc"
+BK="$HOME/.zshrc.bak.$(date +%s)"
+cp -a "$ZRC" "$BK" 2>/dev/null || true
+
+TMP="$(mktemp)"; trap 'rm -f "$TMP"' EXIT
+awk '
+  BEGIN{guard=0}
+  /# BEGIN vsc-zsh-guard/{guard=1; next}
+  /# END vsc-zsh-guard/{guard=0; next}
+  {if(!guard) print}
+' "$ZRC" > "$TMP" 2>/dev/null || true
+mv -f "$TMP" "$ZRC"
+
+# Uncomment any disabled VSCODE_SHELL_INTEGRATION line back to original OFF/ON?
+# (no-op by default; user can edit to preference)
+
+echo "restored ~/.zshrc (backup: $BK)"
