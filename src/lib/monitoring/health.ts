@@ -35,7 +35,7 @@ export async function dbHealth(): Promise<{ ok: boolean; ms?: number; error?: st
     await prisma.$queryRawUnsafe('SELECT 1');
     return { ok: true, ms: Date.now() - t0 };
   } catch (e: unknown) {
-    return { ok: false, error: e?.message || 'db_error' };
+    return { ok: false, error: (e instanceof Error ? e.message : String(e)) || 'db_error' };
   }
 }
 

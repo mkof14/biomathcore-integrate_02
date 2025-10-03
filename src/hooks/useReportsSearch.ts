@@ -35,7 +35,7 @@ export function useReportsSearch(
       if (!j.ok) throw new Error("Search failed");
       setRows(j.data || []);
     } catch (e: unknown) {
-      setError(e?.message || "Search error");
+      setError((e instanceof Error ? e.message : String(e)) || "Search error");
     } finally {
       setLoading(false);
     }

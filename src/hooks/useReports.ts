@@ -37,7 +37,7 @@ export function useReports() {
       );
       setData(resp.reports || []);
     } catch (e: unknown) {
-      setError(e?.message || "Failed to load");
+      setError((e instanceof Error ? e.message : String(e)) || "Failed to load");
     } finally {
       setLoading(false);
     }

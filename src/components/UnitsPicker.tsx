@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { useI18n } from "@/lib/i18n";
+import useI18n from "@/lib/i18n";
 
 export type Units = "metric" | "imperial";
 export default function UnitsPicker({ value, onChange }:{ value:Units, onChange:(u:Units)=>void }) {

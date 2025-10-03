@@ -8,21 +8,21 @@ export default function DataUpload() {
   const [uploadStatus, setUploadStatus] = useState("");
   const [downloadUrl, setDownloadUrl] = useState("");
 
-  const handleFileChange = (e) => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFile(e.target.files[0]);
   };
 
   const handleUpload = async () => {
     if (file) {
       setUploadStatus("Uploading...");
-      const storageRef = ref(storage, `uploads/${file.name}`);
+      const storageRef = ref(storage, `uploads/${(file as File).name}`);
       try {
         await uploadBytes(storageRef, file);
         const url = await getDownloadURL(storageRef);
         setDownloadUrl(url);
         setUploadStatus("Upload successful!");
       } catch (error) {
-        setUploadStatus("Upload failed: " + error.message);
+        setUploadStatus("Upload failed: " + (error instanceof Error ? error.message : String(error)));
       }
     } else {
       setUploadStatus("Please select a file.");
