@@ -26,6 +26,7 @@
     }
   },
   "include": [
+    "--commit",
     "next-env.d.ts",
     "src/app/about/page.tsx",
     "src/app/dev/tools/page.tsx",
@@ -47,9 +48,10 @@
     "src/types/**/*"
   ],
   "exclude": [
-    "node_modules",
-    ".next",
+    "**/*.test.*",
     "**/__tests__/**",
-    "**/*.test.*"
+    ".next",
+    "node_modules",
+    "src/app/internal/**"
   ]
 }
