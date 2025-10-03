@@ -3,7 +3,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 function Item({ href, children }: { href: string; children: React.ReactNode }) {
-  const p = usePathname();
+  const p = usePathname() ?? "";
   const active = p === href || p.startsWith(href + "/");
   return (
     <Link

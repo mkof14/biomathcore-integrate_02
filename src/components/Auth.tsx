@@ -12,7 +12,7 @@ export default function Auth() {
   const [isLogin, setIsLogin] = useState(true);
   const [error, setError] = useState("");
 
-  const handleAuth = async (e) => {
+  const handleAuth = async (e: React.FormEvent<HTMLFormElement>) => { e.preventDefault();
     e.preventDefault();
     setError("");
     try {
@@ -23,7 +23,7 @@ export default function Auth() {
       }
       alert("Success!");
     } catch (err) {
-      setError(err.message);
+      setError(err instanceof Error ? err.message : String(err));
     }
   };
 
