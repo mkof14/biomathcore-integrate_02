@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+set -euo pipefail
+FILE="tsconfig.app.json"
+TMP="$(mktemp)"
+BAK="$FILE.bak.$(date +%s)"
+
+[[ -f "$FILE" ]] || { echo "err: $FILE not found"; exit 1; }
+cp "$FILE" "$BAK"
+
+mapfile -t INC < <(jq -r '.include[]?' "$FILE")
+KEPT=()
+
+for pat in "${INC[@]}"; do
+  # Разрешаем только next-env.d.ts и пути из src/
+  [[ "$pat" =~ ^(next-env\.d\.ts|src/) ]] || { echo "drop: $pat (not allowed)"; continue; }
+
+  # Есть ли совпадения по глобу?
+  if compgen -G "$pat" >/dev/null; then
+    KEPT+=("$pat")
+  else
+    # Если это конкретный файл без *, проверим напрямую
+    if [[ "$pat" != *"*"* && -e "$pat" ]]; then
+      KEPT+=("$pat")
+    else
+      echo "drop: $pat (no matches)"
+    fi
+  fi
+done
+
+# Уникализуем, сохраняя порядок
+uniq_kept=()
+declare -A seen
+for x in "${KEPT[@]}"; do
+  [[ -z "${seen[$x]+x}" ]] && { uniq_kept+=("$x"); seen[$x]=1; }
+done
+
+jq --argjson inc "$(printf '%s\n' "${uniq_kept[@]}" | jq -R . | jq -s .)" \
+   '.include = $inc' "$FILE" > "$TMP"
+
+mv "$TMP" "$FILE"
+
+# финальная проверка
+pnpm tsc -p "$FILE" --noEmit && echo "prune OK (backup: $BAK)" || { echo "FAILED — rollback"; mv -f "$BAK" "$FILE"; exit 2; }

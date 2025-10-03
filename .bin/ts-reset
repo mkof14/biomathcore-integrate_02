@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+set -euo pipefail
+FILE="tsconfig.app.json"
+BAK="$FILE.bak.$(date +%s)"
+
+[[ -f "$FILE" ]] || { echo "err: $FILE not found"; exit 1; }
+cp "$FILE" "$BAK"
+
+# Считываем текущие compilerOptions и пересобираем минимальный include
+OPTS="$(jq '.compilerOptions' "$FILE")"
+
+jq --argjson opts "$OPTS" '
+{
+  "compilerOptions": $opts,
+  "include": [
+    "next-env.d.ts",
+    "src/components/I18nProvider.tsx",
+    "src/components/Notifications.tsx",
+    "src/components/Header.tsx",
+    "src/components/Footer.tsx",
+    "src/components/Logo.tsx",
+    "src/app/layout.tsx",
+    "src/app/page.tsx",
+    "src/app/about/page.tsx",
+    "src/app/legal/page.tsx",
+    "src/types/**/*"
+  ],
+  "exclude": ["node_modules",".next","**/__tests__/**","**/*.test.*"]
+}
+' > "$FILE.tmp"
+
+mv "$FILE.tmp" "$FILE"
+
+pnpm tsc -p "$FILE" --noEmit
+echo "Reset done. Backup: $BAK"
