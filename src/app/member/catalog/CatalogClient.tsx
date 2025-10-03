@@ -57,7 +57,7 @@ const CORE = 19;
   function onContinue() {
     try {
       // Try to read selected items from state commonly named "selected" or "selections"
-      const picks = (typeof selected !== "undefined" ? selected : (typeof selections !== "undefined" ? selections : [])) || [];
+      const picks = (selected ?? []) as string[];
       const val = encodeURIComponent(JSON.stringify(picks));
       document.cookie = "bmc.selected=" + val + "; Path=/; Max-Age=" + (60*60*24*30) + "; SameSite=Lax";
     } catch (e) {}

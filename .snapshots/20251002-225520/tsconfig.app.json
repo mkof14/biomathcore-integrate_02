@@ -1,14 +1,29 @@
 {
-  "extends": "./tsconfig.app.json",
   "compilerOptions": {
-    "allowJs": true,
-    "incremental": true,
-    "jsx": "preserve",
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ]
+    "target": "ES2020",
+    "lib": [
+      "ES2020",
+      "DOM",
+      "DOM.Iterable"
+    ],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "jsx": "react-jsx",
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "downlevelIteration": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "baseUrl": "src",
+    "paths": {
+      "@/*": [
+        "*"
+      ]
+    }
   },
   "include": [
     "next-env.d.ts",
@@ -29,7 +44,12 @@
     "src/components/Logo.tsx",
     "src/components/Notifications.tsx",
     "src/components/member/Dashboard.tsx",
-    "src/types/**/*",
-    ".next/types/**/*.ts"
+    "src/types/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    ".next",
+    "**/__tests__/**",
+    "**/*.test.*"
   ]
 }

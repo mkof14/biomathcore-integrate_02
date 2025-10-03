@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -euo pipefail
+STAMP="$(date +%Y%m%d-%H%M%S)"
+mkdir -p .snapshots/$STAMP
+cp -a tsconfig*.json .snapshots/$STAMP/ 2>/dev/null || true
+cp -a src/types .snapshots/$STAMP/ 2>/dev/null || true
+git snap "snapshot $STAMP"
+echo "Saved snapshot at .snapshots/$STAMP"
