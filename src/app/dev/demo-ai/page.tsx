@@ -18,7 +18,7 @@ export default function DemoAI() {
 
   return (
     <div className="p-6 space-y-4">
-      <ActionBar title="Demo — AI" extra={<EndpointBadge path="/api/ai/chat" />} />
+      <ActionBar title="Demo — AI" right={<EndpointBadge path="/api/ai/chat" />} />
       <div className="max-w-2xl space-y-2">
         <textarea value={msg} onChange={e=>setMsg(e.target.value)} rows={5}
           className="w-full px-3 py-2 rounded border border-neutral-700 bg-black" placeholder="Say something..." />

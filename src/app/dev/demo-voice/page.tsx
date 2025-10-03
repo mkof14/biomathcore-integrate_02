@@ -17,7 +17,7 @@ export default function DemoVoice() {
 
   return (
     <div className="p-6 space-y-4">
-      <ActionBar title="Demo — Voice" extra={<EndpointBadge path="/api/voice/speak" />} />
+      <ActionBar title="Demo — Voice" right={<EndpointBadge path="/api/voice/speak" />} />
       <div className="max-w-2xl space-y-2">
         <input className="w-full px-3 py-2 rounded border border-neutral-700 bg-black" value={text} onChange={e=>setText(e.target.value)} />
         <div className="flex items-center gap-2">
