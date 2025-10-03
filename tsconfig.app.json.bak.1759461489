@@ -1,0 +1,56 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "lib": [
+      "ES2020",
+      "DOM",
+      "DOM.Iterable"
+    ],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "jsx": "react-jsx",
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "downlevelIteration": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "baseUrl": "src",
+    "paths": {
+      "@/*": [
+        "*"
+      ]
+    }
+  },
+  "include": [
+    "next-env.d.ts",
+    "src/app/about/page.tsx",
+    "src/app/dev/tools/page.tsx",
+    "src/app/intake/[id]/page.tsx",
+    "src/app/intake/preview/medical/page.tsx",
+    "src/app/intake/preview/modern/page.tsx",
+    "src/app/internal/release/page.tsx",
+    "src/app/layout.tsx",
+    "src/app/legal/page.tsx",
+    "src/app/member/dashboard/page.tsx",
+    "src/app/member/page.tsx",
+    "src/app/page.tsx",
+    "src/components/Footer.tsx",
+    "src/components/Header.tsx",
+    "src/components/I18nProvider.tsx",
+    "src/components/Logo.tsx",
+    "src/components/Notifications.tsx",
+    "src/components/member/Dashboard.tsx",
+    "src/types/**/*"
+  ],
+  "exclude": [
+    "**/*.test.*",
+    "**/__tests__/**",
+    ".next",
+    "node_modules",
+    "src/app/internal/**"
+  ]
+}
