@@ -356,32 +356,3 @@ export const CATEGORIES: Category[] = [
 export function getCategory(slug: string): Category | undefined {
   return CATEGORIES.find((c) => c.slug === slug);
 }
-
-// --- helper: find service by slug across categories ---
-export type SvcLite = {
-  slug: string;
-  title?: string;
-  summary?: string;
-  categorySlug?: string;
-  categoryTitle?: string;
-};
-
-export function getServiceBySlug(slug: string): SvcLite | null {
-  // We expect a CATEGORIES export shaped like:
-  // [{ slug, title, services: [{ slug, title, summary, ... }] }, ...]
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const cats: any[] = (typeof CATEGORIES !== "undefined" ? (CATEGORIES as any[]) : []);
-  for (const c of cats) {
-    const list = Array.isArray(c?.services) ? c.services : [];
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const hit = list.find((s: any) => s?.slug === slug);
-    if (hit) {
-      return {
-        ...hit,
-        categorySlug: c.slug,
-        categoryTitle: c.title,
-      };
-    }
-  }
-  return null;
-}
