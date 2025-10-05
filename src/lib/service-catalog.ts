@@ -367,7 +367,6 @@ export const CATEGORIES: Category[] = [] = [
       { slug: "running-gait-analysis", title: "Running Gait Analysis", summary: "Technique cues and drills based on cadence, contact, and symmetry." }
     ]
   }
-];
 
 export type SvcLite = {
   slug: string;
@@ -388,7 +387,6 @@ export function getServiceBySlug(slug: string): SvcLite | null {
 export type { Service as CatalogService, Category as CatalogCategory };
 
 /** Returns a category by slug or null if not found. */
-];
 export function getCategory(slug: string) {
   return CATEGORIES.find(c => c.slug === slug) ?? null;
 }
