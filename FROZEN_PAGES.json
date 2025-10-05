@@ -11,5 +11,7 @@
     "src/components/Footer.tsx"
   ],
   "allowedLabel": "allow-frozen-changes",
-  "allowedUser": "mkof14"
+  "allowedUser": "mkof14",
+  "/": false,
+  "/services": false
 }
