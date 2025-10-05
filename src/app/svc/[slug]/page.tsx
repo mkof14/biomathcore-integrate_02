@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getServiceBySlug } from "@/lib/service-catalog";
+import { getServiceBySlug } from "@/lib/catalog-client";
 import ClientLegacy from "./ClientLegacy";
 
 type Props = { params: Promise<{ slug: string }> };
