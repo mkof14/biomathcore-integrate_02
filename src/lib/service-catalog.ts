@@ -1,363 +1,138 @@
-export type Service = { slug: string; title: string; summary?: string; };
-export type Category = { slug: string; title: string; summary?: string; services?: Service[]; };
+// src/lib/service-catalog.ts
 
+export type Service = {
+  slug: string;
+  title: string;
+  summary?: string;
+};
+
+export type Category = {
+  slug: string;
+  title: string;
+  description?: string;
+  services: Service[];
+};
+
+/**
+ * CATEGORIES: top-level catalog used by /services and /svc/[slug]
+ */
 export const CATEGORIES: Category[] = [
   {
     slug: "critical-health",
     title: "Critical Health",
-    summary: "High-priority risk checks and urgent insights.",
+    description:
+      "Everything related to medical risks, lab results, medications, and time-sensitive information.",
     services: [
-      { slug: "risk-insight", title: "Risk Insight" },
-      { slug: "lab-results-explainer", title: "Lab Results Explainer" },
-      { slug: "drug-drug-interaction-checker", title: "Drug-Drug Interaction Checker" },
-      { slug: "symptom-analyzer", title: "Symptom Analyzer" },
-      { slug: "chronic-disease-coach", title: "Chronic Disease Coach" },
-      { slug: "ai-medication-adherence", title: "AI Medication Adherence" },
-      { slug: "care-cost-optimizer", title: "Care Cost Optimizer" },
-      { slug: "post-surgery-recovery-tracker", title: "Post-Surgery Recovery Tracker" },
-      { slug: "clinical-trial-finder", title: "Clinical Trial Finder" },
-      { slug: "pre-surgery-readiness", title: "Pre-Surgery Readiness" },
-      { slug: "rare-disease-navigator", title: "Rare Disease Navigator" },
-      { slug: "smart-med-refill", title: "Smart Med Refill" },
-      { slug: "ai-pain-map", title: "AI Pain Map" },
-      { slug: "vaccination-passport", title: "Vaccination Passport" },
-      { slug: "post-covid-planner", title: "Post-COVID Planner" },
-      { slug: "genetic-disease-risk-prediction", title: "Genetic Disease Risk Prediction" },
-      { slug: "emergency-medical-profile", title: "Emergency Medical Profile" },
-      { slug: "remote-vitals-monitoring", title: "Remote Vitals Monitoring" }
+      { slug: "risk-insight", title: "Risk Insight", summary: "Estimates personal risk of chronic diseases using questionnaires and available data (e.g., flags above-average hypertension risk with elevated BP and excess weight)." },
+      { slug: "lab-results-explainer", title: "Lab Results Explainer", summary: "Translates confusing lab values into plain language (e.g., explains that elevated ALT is associated with liver function)." },
+      { slug: "drug-drug-interaction-checker", title: "Drug-Drug Interaction Checker", summary: "Detects unsafe medication combinations and cautions about high-risk overlaps (e.g., certain analgesics with anticoagulants)." },
+      { slug: "symptom-analyzer", title: "Symptom Analyzer", summary: "Suggests possible causes based on your symptoms and answers (e.g., cough + fever may indicate a viral infection; prompts medical follow-up)." },
+      { slug: "chronic-disease-coach", title: "Chronic Disease Coach", summary: "Daily guidance and nudges for chronic conditions such as diabetes, asthma, and more." },
+      { slug: "ai-medication-adherence", title: "AI Medication Adherence", summary: "Smart reminders and simple logging to help you take medications on schedule." },
+      { slug: "care-cost-optimizer", title: "Care Cost Optimizer", summary: "Finds ways to reduce spending on medications and services while preserving quality." },
+      { slug: "post-surgery-recovery-tracker", title: "Post-Surgery Recovery Tracker", summary: "Structured reminders and self-care tips to support post-operative recovery." },
+      { slug: "clinical-trial-finder", title: "Clinical Trial Finder", summary: "Matches you with relevant clinical studies you can volunteer for." },
+      { slug: "pre-surgery-readiness", title: "Pre-Surgery Readiness", summary: "Pre-op preparation checklists to help you arrive ready and reduce last-minute issues." },
+      { slug: "rare-disease-navigator", title: "Rare Disease Navigator", summary: "Curated reference information, community resources, and support pathways for rare conditions." },
+      { slug: "smart-med-refill", title: "Smart Med Refill", summary: "Predictive reminders to reorder medications before you run out." },
+      { slug: "ai-pain-map", title: "AI Pain Map", summary: "Log pain locations and intensity over time; visualize trends and triggers." },
+      { slug: "vaccination-passport", title: "Vaccination Passport", summary: "Your digital vaccination record with reminders for boosters and schedules." },
+      { slug: "post-covid-planner", title: "Post-COVID Planner", summary: "Recovery planner after COVID-19: pacing, symptom tracking, and follow-up reminders." },
+      { slug: "genetic-disease-risk-prediction", title: "Genetic Disease Risk Prediction", summary: "Highlights inherited predispositions—e.g., elevated risk of certain cancers—using genetics and family history." },
+      { slug: "emergency-medical-profile", title: "Emergency Medical Profile", summary: "Stores critical information for emergencies: blood type, allergies, conditions, and SOS contacts." },
+      { slug: "remote-vitals-monitoring", title: "Remote Vitals Monitoring", summary: "Syncs with wearables to track blood pressure, heart rate, and SpO₂; surfaces trends and alerts." }
     ]
   },
   {
     slug: "everyday-wellness",
     title: "Everyday Wellness",
-    summary: "Daily health maintenance.",
+    description: "Lightweight tools for balance, daily habits, and a better mood.",
     services: [
-      { slug: "healthy-travel-kit", title: "Healthy Travel Kit" },
-      { slug: "goal-assistant", title: "Goal Assistant" },
-      { slug: "daily-habit-tracker", title: "Daily Habit Tracker" },
-      { slug: "stress-reduction-guide", title: "Stress Reduction Guide" },
-      { slug: "energy-level-optimizer", title: "Energy Level Optimizer" },
-      { slug: "mind-body-connection-exercises", title: "Mind-Body Connection Exercises" },
-      { slug: "positive-affirmation-generator", title: "Positive Affirmation Generator" },
-      { slug: "gratitude-journal-prompts", title: "Gratitude Journal Prompts" },
-      { slug: "digital-wellbeing-score", title: "Digital Wellbeing Score" },
-      { slug: "mindful-eating-assistant", title: "Mindful Eating Assistant" },
-      { slug: "work-life-balance-advisor", title: "Work-Life Balance Advisor" },
-      { slug: "immunity-booster-plan", title: "Immunity Booster Plan" },
-      { slug: "mindful-breathing-exercises", title: "Mindful Breathing Exercises" },
-      { slug: "ergonomic-workspace-setup", title: "Ergonomic Workspace Setup" },
-      { slug: "social-connection-tracker", title: "Social Connection Tracker" }
+      { slug: "healthy-travel-kit", title: "Healthy Travel Kit", summary: "Simple guidance to stay well on trips: hydration, sleep, movement, and safety tips." },
+      { slug: "goal-assistant", title: "Goal Assistant", summary: "Clarify goals, define milestones, and track consistent progress." },
+      { slug: "daily-habit-tracker", title: "Daily Habit Tracker", summary: "Build sustainable habits with streaks, reminders, and gentle accountability." },
+      { slug: "stress-reduction-guide", title: "Stress Reduction Guide", summary: "Quick, evidence-based strategies to lower daily stress levels." },
+      { slug: "energy-level-optimizer", title: "Energy Level Optimizer", summary: "Personalized suggestions to stabilize energy through sleep, nutrition, and activity." },
+      { slug: "mind-body-connection-exercises", title: "Mind-Body Connection Exercises", summary: "Short routines to improve interoception and mind-body awareness." },
+      { slug: "positive-affirmation-generator", title: "Positive Affirmation Generator", summary: "Supportive statements tailored to your goals and challenges." },
+      { slug: "gratitude-journal-prompts", title: "Gratitude Journal Prompts", summary: "Gentle prompts to cultivate gratitude and positive reflection." },
+      { slug: "digital-wellbeing-score", title: "Digital Wellbeing Score", summary: "A simple index of screen time, notifications, and digital balance." },
+      { slug: "mindful-eating-assistant", title: "Mindful Eating Assistant", summary: "Practical cues for slower, more intentional meals and better satiety." },
+      { slug: "work-life-balance-advisor", title: "Work-Life Balance Advisor", summary: "Suggestions to set boundaries, protect focus, and preserve downtime." },
+      { slug: "immunity-booster-plan", title: "Immunity Booster Plan", summary: "Daily basics that support immune health: sleep, nutrients, and movement." },
+      { slug: "mindful-breathing-exercises", title: "Mindful Breathing Exercises", summary: "Brief breathing practices to downshift stress and improve focus." },
+      { slug: "ergonomic-workspace-setup", title: "Ergonomic Workspace Setup", summary: "Quick posture and desk tweaks to reduce strain and fatigue." },
+      { slug: "social-connection-tracker", title: "Social Connection Tracker", summary: "A light tracker for meaningful check-ins and maintaining relationships." }
     ]
   },
   {
     slug: "longevity-and-anti-aging",
     title: "Longevity & Anti-Aging",
-    summary: "Protocols to extend healthspan.",
+    description: "For people who want a deeper view into aging drivers and actionable longevity levers.",
     services: [
-      { slug: "biological-age-factors", title: "Biological Age Factors" },
-      { slug: "polygenic-risk-viewer", title: "Polygenic Risk Viewer" },
-      { slug: "epigenetic-age-dashboard", title: "Epigenetic Age Dashboard" },
-      { slug: "pharmacogenomics-matcher", title: "Pharmacogenomics Matcher" },
-      { slug: "genetic-trait-explainer", title: "Genetic Trait Explainer" },
-      { slug: "telomere-length-analysis", title: "Telomere Length Analysis" },
-      { slug: "nad-optimization-guide", title: "NAD+ Optimization Guide" },
-      { slug: "senolytics-recommendation", title: "Senolytics Recommendation" },
-      { slug: "mitochondrial-health-assessment", title: "Mitochondrial Health Assessment" },
-      { slug: "longevity-diet-planner", title: "Longevity Diet Planner" },
-      { slug: "glycemic-control-advisor", title: "Glycemic Control Advisor" },
-      { slug: "cellular-senescence-score", title: "Cellular Senescence Score" },
-      { slug: "microbiome-diversity-analysis", title: "Microbiome Diversity Analysis" },
-      { slug: "longevity-gene-expression-report", title: "Longevity Gene Expression Report" },
-      { slug: "organ-age-assessment", title: "Organ Age Assessment" }
+      { slug: "biological-age-factors", title: "Biological Age Factors", summary: "Maps lifestyle and biomarker contributors to biological age deltas." },
+      { slug: "polygenic-risk-viewer", title: "Polygenic Risk Viewer", summary: "Visualizes polygenic scores and contextual risk percentiles." },
+      { slug: "epigenetic-age-dashboard", title: "Epigenetic Age Dashboard", summary: "Tracks methylation-based age metrics and modifiable inputs." },
+      { slug: "pharmacogenomics-matcher", title: "Pharmacogenomics Matcher", summary: "Matches medications to genotype-informed response and safety signals." },
+      { slug: "genetic-trait-explainer", title: "Genetic Trait Explainer", summary: "Explains common genetic traits and what they may (and may not) imply." },
+      { slug: "telomere-length-analysis", title: "Telomere Length Analysis", summary: "Interprets telomere markers with caveats and longitudinal context." },
+      { slug: "nad-optimization-guide", title: "NAD+ Optimization Guide", summary: "Evidence-aware guidance around NAD+ pathways, diet, and supplementation." },
+      { slug: "senolytics-recommendation", title: "Senolytics Recommendation", summary: "Overviews senolytic concepts and current human-grade evidence." },
+      { slug: "mitochondrial-health-assessment", title: "Mitochondrial Health Assessment", summary: "Reviews energy, fatigue, and labs for mitochondrial support levers." },
+      { slug: "longevity-diet-planner", title: "Longevity Diet Planner", summary: "Plans that emphasize nutrient density, glycemic control, and satiety." },
+      { slug: "glycemic-control-advisor", title: "Glycemic Control Advisor", summary: "Suggestions to smooth glucose variability via timing, fiber, and activity." },
+      { slug: "cellular-senescence-score", title: "Cellular Senescence Score", summary: "An exploratory composite score derived from proxy markers and lifestyle factors." },
+      { slug: "microbiome-diversity-analysis", title: "Microbiome Diversity Analysis", summary: "Summarizes diversity indices with food-pattern ideas for support." },
+      { slug: "longevity-gene-expression-report", title: "Longevity Gene Expression Report", summary: "Explains key pathways and what expression shifts might suggest." },
+      { slug: "organ-age-assessment", title: "Organ Age Assessment", summary: "Frames organ-specific aging signals (heart, liver, brain) from available markers." }
     ]
   },
   {
     slug: "mental-wellness",
     title: "Mental Wellness",
-    summary: "Stress, cognition, and mood tools.",
+    description: "Improve sleep, mood, and stress resilience with practical tools.",
     services: [
-      { slug: "mindfulness-guide", title: "Mindfulness Guide" },
-      { slug: "motivation-booster", title: "Motivation Booster" },
-      { slug: "digital-detox-planner", title: "Digital Detox Planner" },
-      { slug: "digital-gratitude-wall", title: "Digital Gratitude Wall" },
-      { slug: "social-battery-prediction", title: "Social Battery Prediction" },
-      { slug: "social-isolation-coach", title: "Social Isolation Coach" },
-      { slug: "cognitive-performance-enhancer", title: "Cognitive Performance Enhancer" },
-      { slug: "emotional-regulation-tools", title: "Emotional Regulation Tools" },
-      { slug: "cbt-modules", title: "Cognitive Behavioral Therapy (CBT) Modules" },
-      { slug: "stress-hormone-tracker", title: "Stress Hormone Tracker" },
-      { slug: "sleep-mood-connection-analysis", title: "Sleep-Mood Connection Analysis" }
+      { slug: "mindfulness-guide", title: "Mindfulness Guide", summary: "Short, repeatable practices to cultivate presence and calm." },
+      { slug: "motivation-booster", title: "Motivation Booster", summary: "Behavioral tips and prompts to unlock momentum on low-energy days." },
+      { slug: "digital-detox-planner", title: "Digital Detox Planner", summary: "Structure a healthy reset for notifications, feeds, and screen time." },
+      { slug: "digital-gratitude-wall", title: "Digital Gratitude Wall", summary: "Collect small daily wins and moments of gratitude in one place." },
+      { slug: "social-battery-prediction", title: "Social Battery Prediction", summary: "Forecasts social energy and suggests recharge windows." },
+      { slug: "social-isolation-coach", title: "Social Isolation Coach", summary: "Gentle steps to rebuild connection and support networks." },
+      { slug: "cognitive-performance-enhancer", title: "Cognitive Performance Enhancer", summary: "Focus, task-switching, and working-memory drills you can actually keep up with." },
+      { slug: "emotional-regulation-tools", title: "Emotional Regulation Tools", summary: "Skills for naming, reframing, and responding to emotions under stress." },
+      { slug: "cbt-modules", title: "CBT Modules", summary: "Structured cognitive-behavioral exercises: thought records, exposures, and more." },
+      { slug: "stress-hormone-tracker", title: "Stress Hormone Tracker", summary: "Contextualizes cortisol-related patterns alongside sleep and lifestyle." },
+      { slug: "sleep-mood-connection-analysis", title: "Sleep–Mood Connection Analysis", summary: "Maps how sleep duration/quality tracks with mood variability." }
     ]
   },
   {
     slug: "fitness-and-performance",
     title: "Fitness & Performance",
-    summary: "Training and recovery.",
+    description: "Programs and helpers for active people and athletes at any level.",
     services: [
-      { slug: "personalized-meal-plan", title: "Personalized Meal Plan" },
-      { slug: "vo2-max-assessment", title: "VO₂-Max Assessment" },
-      { slug: "workout-generator", title: "Workout Generator" },
-      { slug: "strength-plateau-breaker", title: "Strength Plateau Breaker" },
-      { slug: "soft-tissue-release-map", title: "Soft Tissue Release Map" },
-      { slug: "body-fat-trend-projection", title: "Body Fat Trend Projection" },
-      { slug: "sport-specific-warm-up", title: "Sport Specific Warm-up" },
-      { slug: "cycling-power-prediction", title: "Cycling Power Prediction" },
-      { slug: "two-minute-hrv-breathwork", title: "2-Minute HRV Breathwork" },
-      { slug: "active-recovery-timer", title: "Active Recovery Timer" },
-      { slug: "desk-stretch-breaks", title: "Desk Stretch Breaks" },
-      { slug: "soft-tissue-map", title: "Soft Tissue Map" },
-      { slug: "endurance-training-plan", title: "Endurance Training Plan" },
-      { slug: "flexibility-and-mobility-guide", title: "Flexibility & Mobility Guide" },
-      { slug: "post-workout-nutrition-guide", title: "Post-Workout Nutrition Guide" },
-      { slug: "injury-prevention-plan", title: "Injury Prevention Plan" },
-      { slug: "strength-and-conditioning-coach", title: "Strength & Conditioning Coach" },
-      { slug: "powerlifting-program-generator", title: "Powerlifting Program Generator" },
-      { slug: "running-gait-analysis", title: "Running Gait Analysis" }
-    ]
-  },
-  {
-    slug: "womens-health",
-    title: "Women’s Health",
-    summary: "Female-specific tracks.",
-    services: [
-      { slug: "cycle-tracker", title: "Cycle Tracker" },
-      { slug: "pregnancy-timeline", title: "Pregnancy Timeline" },
-      { slug: "menopause-navigator", title: "Menopause Navigator" },
-      { slug: "breast-health-risk", title: "Breast-Health Risk" },
-      { slug: "hormone-dashboard", title: "Hormone Dashboard" },
-      { slug: "endometriosis-symptom-tracker", title: "Endometriosis Symptom Tracker" },
-      { slug: "pcos-guide", title: "Polycystic Ovary Syndrome (PCOS) Guide" },
-      { slug: "pelvic-floor-exercise-plan", title: "Pelvic Floor Exercise Plan" }
-    ]
-  },
-  {
-    slug: "mens-health",
-    title: "Men’s Health",
-    summary: "Male-specific tracks.",
-    services: [
-      { slug: "androgen-dashboard", title: "Androgen Dashboard" },
-      { slug: "prostate-risk-score", title: "Prostate Risk Score" },
-      { slug: "fertility-tracker", title: "Fertility Tracker" },
-      { slug: "hair-loss-predictor", title: "Hair-Loss Predictor" },
-      { slug: "performance-coach", title: "Performance Coach" },
-      { slug: "cardiovascular-risk-for-men", title: "Cardiovascular Risk for Men" },
-      { slug: "male-hormone-optimization", title: "Male Hormone Optimization" },
-      { slug: "prostate-health-coach", title: "Prostate Health Coach" }
-    ]
-  },
-  {
-    slug: "beauty-and-skincare",
-    title: "Beauty & Skincare",
-    summary: "Skin and hair routines.",
-    services: [
-      { slug: "ai-skincare-routine", title: "AI Skincare Routine" },
-      { slug: "uv-damage-forecast", title: "UV Damage Forecast" },
-      { slug: "digital-dermatology-scan", title: "Digital Dermatology Scan" },
-      { slug: "hair-porosity-advisor", title: "Hair Porosity Advisor" },
-      { slug: "cosmetic-barcode-scan", title: "Cosmetic Barcode Scan" },
-      { slug: "facial-massage-routine", title: "Facial Massage Routine" },
-      { slug: "ingredient-conflict", title: "Ingredient Conflict" },
-      { slug: "hair-growth-predictor", title: "Hair Growth Predictor" },
-      { slug: "anti-aging-skincare-advisor", title: "Anti-Aging Skincare Advisor" },
-      { slug: "sunscreen-recommendation-engine", title: "Sunscreen Recommendation Engine" }
-    ]
-  },
-  {
-    slug: "nutrition-and-diet",
-    title: "Nutrition & Diet",
-    summary: "Diet planning and analysis.",
-    services: [
-      { slug: "smart-food-swaps", title: "Smart Food Swaps" },
-      { slug: "remote-patient-monitoring", title: "Remote Patient Monitoring (RPM)" },
-      { slug: "hydration-formula", title: "Hydration Formula" },
-      { slug: "nutrition-label-decoder", title: "Nutrition Label Decoder" },
-      { slug: "budget-meal-kit-builder", title: "Budget Meal Kit Builder" },
-      { slug: "sodium-potassium-meter", title: "Sodium-Potassium Meter" },
-      { slug: "gut-microbiome-analyzer", title: "Gut Microbiome Analyzer" },
-      { slug: "personalized-supplement-guide", title: "Personalized Supplement Guide" },
-      { slug: "metabolic-rate-calculator", title: "Metabolic Rate Calculator" },
-      { slug: "food-sensitivity-tracker", title: "Food Sensitivity Tracker" },
-      { slug: "electrolyte-balance-advisor", title: "Electrolyte Balance Advisor" },
-      { slug: "food-sustainability-score", title: "Food Sustainability Score" },
-      { slug: "meal-prep-planner", title: "Meal Prep Planner" },
-      { slug: "recipe-nutrient-analyzer", title: "Recipe Nutrient Analyzer" },
-      { slug: "hydration-goal-setter", title: "Hydration Goal Setter" }
-    ]
-  },
-  {
-    slug: "sleep-and-recovery",
-    title: "Sleep & Recovery",
-    summary: "Sleep and recovery tools.",
-    services: [
-      { slug: "blue-light-planner", title: "Blue Light Planner" },
-      { slug: "sleep-hygiene-coach", title: "Sleep Hygiene Coach" },
-      { slug: "circadian-light-guide", title: "Circadian Light Guide" },
-      { slug: "sleep-apnea-screener", title: "Sleep Apnea Screener" },
-      { slug: "micro-meditation-generator", title: "Micro-Meditation Generator" },
-      { slug: "sleep-environment-optimizer", title: "Sleep Environment Optimizer" },
-      { slug: "guided-sleep-meditation", title: "Guided Sleep Meditation" },
-      { slug: "dream-pattern-analysis", title: "Dream Pattern Analysis" }
-    ]
-  },
-  {
-    slug: "environmental-health",
-    title: "Environmental Health",
-    summary: "Environment exposure literacy.",
-    services: [
-      { slug: "eco-routine-assessment", title: "Eco-Routine Assessment" },
-      { slug: "environmental-exposure", title: "Environmental Exposure" },
-      { slug: "pollen-defense", title: "Pollen Defense" },
-      { slug: "indoor-noise-map", title: "Indoor Noise Map" },
-      { slug: "commute-calorie-optimizer", title: "Commute Calorie Optimizer" },
-      { slug: "home-air-quality-advisor", title: "Home Air Quality Advisor" },
-      { slug: "water-quality-monitor", title: "Water Quality Monitor" },
-      { slug: "mold-exposure-risk-assessment", title: "Mold Exposure Risk Assessment" }
-    ]
-  },
-  {
-    slug: "family-health",
-    title: "Family Health",
-    summary: "Household health playbooks.",
-    services: [
-      { slug: "family-medication-hub", title: "Family Medication Hub" },
-      { slug: "child-growth-tracker", title: "Child Growth Tracker" },
-      { slug: "genetic-compatibility-screening", title: "Genetic Compatibility Screening" },
-      { slug: "family-wellness-challenge", title: "Family Wellness Challenge" },
-      { slug: "child-immunization-scheduler", title: "Child Immunization Scheduler" },
-      { slug: "family-first-aid-guide", title: "Family First-Aid Guide" },
-      { slug: "sibling-health-comparison", title: "Sibling Health Comparison" }
-    ]
-  },
-  {
-    slug: "preventive-medicine-and-longevity",
-    title: "Preventive Medicine & Longevity",
-    summary: "Screening and prevention.",
-    services: [
-      { slug: "personalized-cancer-screening", title: "Personalized Cancer Screening" },
-      { slug: "cardiovascular-disease-prevention-plan", title: "Cardiovascular Disease Prevention Plan" },
-      { slug: "neurodegenerative-risk-assessment", title: "Neurodegenerative Risk Assessment" },
-      { slug: "inflammation-management-program", title: "Inflammation Management Program" },
-      { slug: "immune-system-optimization", title: "Immune System Optimization" },
-      { slug: "health-and-wellness-risk-calculator", title: "Health & Wellness Risk Calculator" },
-      { slug: "diabetes-prevention-program", title: "Diabetes Prevention Program" },
-      { slug: "metabolic-syndrome-monitor", title: "Metabolic Syndrome Monitor" }
-    ]
-  },
-  {
-    slug: "biohacking-and-performance",
-    title: "Biohacking & Performance",
-    summary: "N=1 tools and protocols.",
-    services: [
-      { slug: "nootropic-recommendation-engine", title: "Nootropic Recommendation Engine" },
-      { slug: "cryotherapy-protocol-generator", title: "Cryotherapy Protocol Generator" },
-      { slug: "red-light-therapy-guide", title: "Red Light Therapy Guide" },
-      { slug: "cold-exposure-training-plan", title: "Cold Exposure Training Plan" },
-      { slug: "intermittent-fasting-schedule", title: "Intermittent Fasting Schedule" },
-      { slug: "biofeedback-training-modules", title: "Biofeedback Training Modules" },
-      { slug: "neurofeedback-session-planner", title: "Neurofeedback Session Planner" },
-      { slug: "wearable-data-integrator", title: "Wearable Data Integrator" },
-      { slug: "personalized-recovery-modalities", title: "Personalized Recovery Modalities" },
-      { slug: "nootropic-stack-builder", title: "Nootropic Stack Builder" },
-      { slug: "cold-exposure-protocol", title: "Cold Exposure Protocol" },
-      { slug: "breathwork-optimizer", title: "Breathwork Optimizer" },
-      { slug: "cognitive-enhancement-plan", title: "Cognitive Enhancement Plan" },
-      { slug: "intermittent-fasting-calculator", title: "Intermittent Fasting Calculator" },
-      { slug: "dopamine-reset-protocol", title: "Dopamine Reset Protocol" },
-      { slug: "sensory-deprivation-guide", title: "Sensory Deprivation Guide" },
-      { slug: "biofeedback-training-for-focus", title: "Biofeedback Training for Focus" }
-    ]
-  },
-  {
-    slug: "senior-care",
-    title: "Senior Care",
-    summary: "Aging support and safety.",
-    services: [
-      { slug: "senior-dashboard", title: "Senior Dashboard" },
-      { slug: "caregiver-portal", title: "Caregiver Portal" },
-      { slug: "fall-detection-alert", title: "Fall Detection Alert" },
-      { slug: "medication-adherence", title: "Medication Adherence" },
-      { slug: "voice-companion", title: "Voice Companion" },
-      { slug: "frailty-index", title: "Frailty Index" },
-      { slug: "medication-reminder-system", title: "Medication Reminder System" },
-      { slug: "fall-prevention-exercises", title: "Fall Prevention Exercises" },
-      { slug: "cognitive-health-games", title: "Cognitive Health Games" }
-    ]
-  },
-  {
-    slug: "eye-health-suite",
-    title: "Eye-Health Suite",
-    summary: "Vision hygiene tools.",
-    services: [
-      { slug: "browser-vision-test", title: "Browser Vision Test" },
-      { slug: "retina-scan-ai", title: "Retina Scan AI" },
-      { slug: "blue-light-filter", title: "Blue Light Filter" },
-      { slug: "eye-exercise-reminders", title: "Eye Exercise Reminders" }
-    ]
-  },
-  {
-    slug: "digital-therapeutics-store",
-    title: "Digital Therapeutics Store",
-    summary: "Validated digital tools.",
-    services: [
-      { slug: "insomnia-cbt-i-app", title: "Insomnia CBT-I App" },
-      { slug: "adhd-neuro-game", title: "ADHD Neuro-Game" },
-      { slug: "anxiety-management-app", title: "Anxiety Management App" },
-      { slug: "chronic-pain-relief-vr", title: "Chronic Pain Relief VR" },
-      { slug: "ptsd-recovery-modules", title: "PTSD Recovery Modules" }
-    ]
-  },
-  {
-    slug: "general-sexual-longevity",
-    title: "General Sexual Longevity",
-    summary: "Foundations of sexual vitality.",
-    services: [
-      { slug: "libido-hormonal-optimization", title: "Libido Hormonal Optimization" },
-      { slug: "sexual-health-biomarkers", title: "Sexual Health Biomarkers" },
-      { slug: "aphrodisiac-nutrigenomics", title: "Aphrodisiac Nutrigenomics" },
-      { slug: "microbiome-and-sexuality", title: "Microbiome and Sexuality" },
-      { slug: "neuroplasticity-and-libido", title: "Neuroplasticity and Libido" },
-      { slug: "stress-and-cortisol-management", title: "Stress and Cortisol Management" },
-      { slug: "circadian-rhythms-and-sexuality", title: "Circadian Rhythms and Sexuality" },
-      { slug: "physical-fitness-for-sexuality", title: "Physical Fitness for Sexuality" },
-      { slug: "peptide-therapy-for-libido", title: "Peptide Therapy for Libido" },
-      { slug: "xenoestrogen-detoxification", title: "Xenoestrogen Detoxification" },
-      { slug: "psychosexual-optimization", title: "Psychosexual Optimization" },
-      { slug: "partner-synchronization", title: "Partner Synchronization" },
-      { slug: "fertility-health-assessment", title: "Fertility Health Assessment" },
-      { slug: "hormone-balance-for-libido", title: "Hormone Balance for Libido" },
-      { slug: "sexual-wellness-education", title: "Sexual Wellness Education" },
-      { slug: "relationship-communication-coach", title: "Relationship Communication Coach" }
-    ]
-  },
-  {
-    slug: "mens-sexual-health",
-    title: "Men's Sexual Health",
-    summary: "Male sexual wellness.",
-    services: [
-      { slug: "vascular-health-for-potency", title: "Vascular Health for Potency" },
-      { slug: "male-vitality-and-trt", title: "Male Vitality and TRT" },
-      { slug: "erectile-dysfunction-guide", title: "Erectile Dysfunction (ED) Guide" },
-      { slug: "sperm-health-optimization", title: "Sperm Health Optimization" }
-    ]
-  },
-  {
-    slug: "womens-sexual-health",
-    title: "Women's Sexual Health",
-    summary: "Female sexual wellness.",
-    services: [
-      { slug: "female-hormonal-optimization", title: "Female Hormonal Optimization" },
-      { slug: "libido-boosting-nutrition", title: "Libido-Boosting Nutrition" },
-      { slug: "pelvic-health-program", title: "Pelvic Health Program" },
-      { slug: "menopausal-intimacy-advisor", title: "Menopausal Intimacy Advisor" }
+      { slug: "personalized-meal-plan", title: "Personalized Meal Plan", summary: "Macro-aware plans aligned with training load, preferences, and goals." },
+      { slug: "vo2-max-assessment", title: "VO₂-Max Assessment", summary: "Field-test protocols and guidance to improve aerobic capacity." },
+      { slug: "workout-generator", title: "Workout Generator", summary: "Auto-builds sessions based on equipment, time, and target adaptations." },
+      { slug: "strength-plateau-breaker", title: "Strength Plateau Breaker", summary: "Periodization tweaks and accessory lifts to move past stalls." },
+      { slug: "soft-tissue-release-map", title: "Soft Tissue Release Map", summary: "Region-by-region self-release ideas for common restrictions." },
+      { slug: "body-fat-trend-projection", title: "Body Fat Trend Projection", summary: "Forecasts body-comp trends from logs and measurement cadence." },
+      { slug: "sport-specific-warm-up", title: "Sport-Specific Warm-up", summary: "Targeted warm-ups for running, lifting, cycling, and more." },
+      { slug: "cycling-power-prediction", title: "Cycling Power Prediction", summary: "Estimates FTP and target power zones from recent rides." },
+      { slug: "two-minute-hrv-breathwork", title: "2-Minute HRV Breathwork", summary: "A quick protocol to nudge HRV upward before/after sessions." },
+      { slug: "active-recovery-timer", title: "Active Recovery Timer", summary: "Simple timers and sequences for between-sets or off-day recovery." },
+      { slug: "desk-stretch-breaks", title: "Desk Stretch Breaks", summary: "Short movement breaks to offset sedentary time and stiffness." },
+      { slug: "soft-tissue-map", title: "Soft Tissue Map", summary: "A visual atlas to track mobility hotspots and progress." },
+      { slug: "endurance-training-plan", title: "Endurance Training Plan", summary: "Progressive blocks for 5K, 10K, half, or cycling endurance goals." },
+      { slug: "flexibility-mobility-guide", title: "Flexibility & Mobility Guide", summary: "Efficient routines to expand ROM and maintain joint health." },
+      { slug: "post-workout-nutrition-guide", title: "Post-Workout Nutrition Guide", summary: "Refuel timing, protein targets, and carb strategies by session type." },
+      { slug: "injury-prevention-plan", title: "Injury Prevention Plan", summary: "Prehab templates to shore up weak links and reduce overuse risk." },
+      { slug: "strength-and-conditioning-coach", title: "Strength & Conditioning Coach", summary: "Multi-phase templates for strength, power, and speed development." },
+      { slug: "powerlifting-program-generator", title: "Powerlifting Program Generator", summary: "Customizable cycles for squat, bench, and deadlift with load progressions." },
+      { slug: "running-gait-analysis", title: "Running Gait Analysis", summary: "Technique cues and drills based on cadence, contact, and symmetry." }
     ]
   }
 ];
 
-export function getCategory(slug: string): Category | undefined {
-  return CATEGORIES.find((c) => c.slug === slug);
-}
-
-// --- helper: find service by slug across categories ---
 export type SvcLite = {
   slug: string;
   title?: string;
@@ -367,21 +142,11 @@ export type SvcLite = {
 };
 
 export function getServiceBySlug(slug: string): SvcLite | null {
-  // We expect a CATEGORIES export shaped like:
-  // [{ slug, title, services: [{ slug, title, summary, ... }] }, ...]
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const cats: any[] = (typeof CATEGORIES !== "undefined" ? (CATEGORIES as any[]) : []);
-  for (const c of cats) {
-    const list = Array.isArray(c?.services) ? c.services : [];
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const hit = list.find((s: any) => s?.slug === slug);
-    if (hit) {
-      return {
-        ...hit,
-        categorySlug: c.slug,
-        categoryTitle: c.title,
-      };
-    }
+  for (const c of CATEGORIES) {
+    const hit = c.services.find((s) => s.slug === slug);
+    if (hit) return { ...hit, categorySlug: c.slug, categoryTitle: c.title };
   }
   return null;
 }
+
+export type { Service as CatalogService, Category as CatalogCategory };
