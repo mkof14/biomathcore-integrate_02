@@ -1,4 +1,5 @@
 "use client";
+export const dynamic = "force-dynamic";
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import AuthShell from "../../../_components/AuthShell";
@@ -88,7 +89,7 @@ export default function ResetPasswordPage() {
               ref={pwdRef}
               type={show1 ? "text" : "password"}
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e: any) => setPassword(e.target.value)}
               minLength={8}
               required
               className="w-full rounded-xl bg-white text-black px-4 py-3 pr-12 shadow focus:outline-none"
@@ -115,7 +116,7 @@ export default function ResetPasswordPage() {
               ref={cfmRef}
               type={show2 ? "text" : "password"}
               value={confirm}
-              onChange={(e) => setConfirm(e.target.value)}
+              onChange={(e: any) => setConfirm(e.target.value)}
               minLength={8}
               required
               className="w-full rounded-xl bg-white text-black px-4 py-3 pr-12 shadow focus:outline-none"

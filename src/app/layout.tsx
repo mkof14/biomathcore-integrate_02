@@ -1,3 +1,9 @@
+import "@/lib/dev/fetch-log";
+
+import "@/lib/dev/fetch-log";
+
+import { Suspense } from "react";
+import React from "react";
 import FloatingAssistant from '@/components/assistant/FloatingAssistant';
 import AiButtonBinder from "@/components/AiButtonBinder";
 import AiAssistantModal from "@/components/AiAssistantModal";

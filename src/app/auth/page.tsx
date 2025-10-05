@@ -63,7 +63,7 @@ export default function SignInPage() {
           <input
             type="email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e: any) => setEmail(e.target.value)}
             required
             className="w-full rounded-xl bg-white text-black px-4 py-3 shadow focus:outline-none"
             placeholder="you@example.com"
@@ -77,7 +77,7 @@ export default function SignInPage() {
             <input
               type={show ? "text" : "password"}
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e: any) => setPassword(e.target.value)}
               minLength={8}
               required
               className="w-full rounded-xl bg-white text-black px-4 py-3 pr-12 shadow focus:outline-none"

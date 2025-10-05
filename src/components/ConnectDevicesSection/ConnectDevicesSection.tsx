@@ -104,7 +104,7 @@ export default function ConnectDevicesSection() {
         <div className="flex justify-end mb-6">
           <select
             value={filter}
-            onChange={(e) => setFilter(e.target.value)}
+            onChange={(e: any) => setFilter(e.target.value)}
             className="bg-gray-100 dark:bg-gray-800 text-sm p-2 rounded border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500"
           >
             <option value="">All Types</option>
@@ -139,7 +139,7 @@ export default function ConnectDevicesSection() {
           >
             <div
               className="bg-white dark:bg-gray-900 p-6 rounded-xl w-full max-w-md shadow-lg"
-              onClick={(e) => e.stopPropagation()}
+              onClick={(e: any) => e.stopPropagation()}
             >
               <h3 className="text-xl font-semibold text-purple-600 dark:text-purple-400 mb-4">
                 Add New Device
@@ -150,7 +150,7 @@ export default function ConnectDevicesSection() {
               <input
                 type="text"
                 value={newDevice.name}
-                onChange={(e) =>
+                onChange={(e: any) =>
                   setNewDevice({ ...newDevice, name: e.target.value })
                 }
                 className="w-full p-2 mb-4 rounded border bg-gray-50 dark:bg-gray-800 text-black dark:text-white border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500"
@@ -161,7 +161,7 @@ export default function ConnectDevicesSection() {
               <input
                 type="text"
                 value={newDevice.type}
-                onChange={(e) =>
+                onChange={(e: any) =>
                   setNewDevice({ ...newDevice, type: e.target.value })
                 }
                 className="w-full p-2 mb-4 rounded border bg-gray-50 dark:bg-gray-800 text-black dark:text-white border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500"

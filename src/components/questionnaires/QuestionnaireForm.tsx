@@ -123,7 +123,7 @@ export default function QuestionnaireForm({
                     type="text"
                     className="w-full rounded-lg border bg-white/90 text-black px-3 py-2"
                     value={values[q.id] ?? ""}
-                    onChange={(e) => setValue(q.id, e.target.value)}
+                    onChange={(e: any) => setValue(q.id, e.target.value)}
                   />
                 )}
 
@@ -131,7 +131,7 @@ export default function QuestionnaireForm({
                   <textarea
                     className="w-full rounded-lg border bg-white/90 text-black px-3 py-2 min-h-[120px]"
                     value={values[q.id] ?? ""}
-                    onChange={(e) => setValue(q.id, e.target.value)}
+                    onChange={(e: any) => setValue(q.id, e.target.value)}
                   />
                 )}
 
@@ -140,7 +140,7 @@ export default function QuestionnaireForm({
                     type="number"
                     className="w-full rounded-lg border bg-white/90 text-black px-3 py-2"
                     value={values[q.id] ?? ""}
-                    onChange={(e) => setValue(q.id, e.target.valueAsNumber)}
+                    onChange={(e: any) => setValue(q.id, e.target.valueAsNumber)}
                   />
                 )}
 
@@ -149,7 +149,7 @@ export default function QuestionnaireForm({
                     type="date"
                     className="w-full rounded-lg border bg-white/90 text-black px-3 py-2"
                     value={values[q.id] ?? ""}
-                    onChange={(e) => setValue(q.id, e.target.value)}
+                    onChange={(e: any) => setValue(q.id, e.target.value)}
                   />
                 )}
 
@@ -158,7 +158,7 @@ export default function QuestionnaireForm({
                     <input
                       type="checkbox"
                       checked={!!values[q.id]}
-                      onChange={(e) => setValue(q.id, e.target.checked)}
+                      onChange={(e: any) => setValue(q.id, e.target.checked)}
                     />
                     <span className="text-sm">Yes</span>
                   </label>
@@ -190,7 +190,7 @@ export default function QuestionnaireForm({
                           <input
                             type="checkbox"
                             checked={checked}
-                            onChange={(e) => {
+                            onChange={(e: any) => {
                               const next = new Set(list);
                               e.target.checked ? next.add(c) : next.delete(c);
                               setValue(q.id, Array.from(next));

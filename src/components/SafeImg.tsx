@@ -39,7 +39,7 @@ export default function SafeImg({
       width={width}
       height={height}
       loading={loading}
-      onError={(e) => {
+      onError={(e: any) => {
         const el = e.currentTarget as HTMLImageElement;
         if (el.src !== placeholder) el.src = placeholder;
       }}

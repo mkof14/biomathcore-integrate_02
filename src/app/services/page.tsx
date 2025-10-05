@@ -326,7 +326,7 @@ export default function ServicesPage() {
                 <input
                   type="text"
                   value={query}
-                  onChange={(e) => setQuery(e.target.value)}
+                  onChange={(e: any) => setQuery(e.target.value)}
                   placeholder="Type service name or description…"
                   className="w-full rounded-lg border border-gray-300 dark:border-white/10 bg-white dark:bg-zinc-900 px-3 py-2 outline-none focus:ring-2 focus:ring-purple-500"
                 />
@@ -337,7 +337,7 @@ export default function ServicesPage() {
                 </label>
                 <select
                   value={selectedCatSlug}
-                  onChange={(e) => setSelectedCatSlug(e.target.value)}
+                  onChange={(e: any) => setSelectedCatSlug(e.target.value)}
                   className="w-full rounded-lg border border-gray-300 dark:border-white/10 bg-white dark:bg-zinc-900 px-3 py-2 outline-none focus:ring-2 focus:ring-purple-500"
                 >
                   <option value="all">All</option>
@@ -448,7 +448,7 @@ export default function ServicesPage() {
                         tabIndex={0}
                         aria-label={`Open quick preview for ${service.title}`}
                         onClick={() => openModal(service)}
-                        onKeyDown={(e) => {
+                        onKeyDown={(e: any) => {
                           if (e.key === "Enter" || e.key === " ") {
                             e.preventDefault();
                             openModal(service);
@@ -482,7 +482,7 @@ export default function ServicesPage() {
                           <Link
                             href={detailHref}
                             prefetch
-                            onClick={(e) => {
+                            onClick={(e: any) => {
                               e.stopPropagation();
                               pushRecent({
                                 catName: cat.name,

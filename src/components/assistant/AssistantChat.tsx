@@ -135,7 +135,7 @@ export default function AssistantChat({
             <select
               className="rounded bg-slate-800/90 border border-slate-600 text-slate-100 px-2 py-1"
               value={lang}
-              onChange={(e) => setLang(e.target.value as A.Lang)}
+              onChange={(e: any) => setLang(e.target.value as A.Lang)}
             >
               <option value="en">English</option>
               <option value="es">Español</option>
@@ -178,7 +178,7 @@ export default function AssistantChat({
                 : startListening({
                     locale,
                     onInterim: (txt) => setInput(txt),
-                    onFinal: (txt) => { setInput(txt); void send(txt); },
+                    onFinal: (txt: string) => { setInput(txt); void send(txt); },
                   })
             }
             title={listening ? "Stop mic" : "Start mic"}
@@ -216,8 +216,8 @@ export default function AssistantChat({
           {/* Input */}
           <input
             value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => {
+            onChange={(e: any) => setInput(e.target.value)}
+            onKeyDown={(e: any) => {
               if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); void send(); }
             }}
             placeholder={A.t(lang, "inputPlaceholder")}

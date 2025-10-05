@@ -15,7 +15,7 @@ export default function LanguageSwitch({
       <select
         className="rounded-lg bg-slate-800 border border-slate-600 text-slate-100 px-2 py-1"
         value={lang}
-        onChange={(e) => onChange(e.target.value as Lang)}
+        onChange={(e: any) => onChange(e.target.value as Lang)}
       >
         <option value="en">English</option>
         <option value="es">Español</option>

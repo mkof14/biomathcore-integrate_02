@@ -196,10 +196,10 @@ export default function QuestionnaireEngine({ modules, initialMetric = "percent"
               <div className="mb-2 font-semibold">{current.q.label}{current.q.required ? " *" : ""}</div>
               {current.q.type === "text" && (
                 <input type="text" placeholder={current.q.placeholder || ""} value={(state.answers[current.q.id] as string) || ""}
-                  onChange={(e) => setAnswer(current.q.id, e.target.value)} className="w-full" aria-required={!!current.q.required}/>
+                  onChange={(e: any) => setAnswer(current.q.id, e.target.value)} className="w-full" aria-required={!!current.q.required}/>
               )}
               {current.q.type === "select" && (
-                <select value={(state.answers[current.q.id] as string) || ""} onChange={(e) => setAnswer(current.q.id, e.target.value)}
+                <select value={(state.answers[current.q.id] as string) || ""} onChange={(e: any) => setAnswer(current.q.id, e.target.value)}
                   className="w-full" aria-required={!!current.q.required}>
                   <option value="" disabled>{current.q.required ? "Select an option *" : "Select an option"}</option>
                   {current.q.options.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
@@ -208,7 +208,7 @@ export default function QuestionnaireEngine({ modules, initialMetric = "percent"
               {current.q.type === "scale" && (
                 <div>
                   <input type="range" min={q.min} max={q.max} step={q.step || 1}
-                    value={Number(state.answers[current.q.id] ?? q.min)} onChange={(e) => setAnswer(current.q.id, Number(e.target.value))}
+                    value={Number(state.answers[current.q.id] ?? q.min)} onChange={(e: any) => setAnswer(current.q.id, Number(e.target.value))}
                     className="w-full" aria-required={!!current.q.required}/>
                   <div className="flex justify-between text-xs opacity-80">
                     <span>{q.leftLabel ?? q.min}</span>

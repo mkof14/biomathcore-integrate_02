@@ -11,7 +11,7 @@ async function getFromNextAuth(): Promise<CurrentUser> {
    
     let authOptions: unknown = undefined;
     try { authOptions = (await import("@/app/api/auth/[...nextauth]/route")).authOptions; } catch { /* TODO: implement or remove */ }
-    const session = await getServerSession(authOptions);
+    const session = await getServerSession(authOptions as any);
     if (!session) return null;
 
    

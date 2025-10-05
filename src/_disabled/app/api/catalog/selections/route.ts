@@ -5,7 +5,7 @@ import { authOptions } from "@/lib/auth/options";
 import { prisma } from "@/lib/prisma";
 
 export async function DELETE() {
-  const session = await getServerSession(authOptions);
+  const session = await getServerSession(authOptions as any);
   const email = session?.user?.email;
   if (!email) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 

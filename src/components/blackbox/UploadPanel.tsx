@@ -52,7 +52,7 @@ export default function UploadPanel() {
           <input
             type="file"
             className="w-full rounded-md border border-zinc-700 bg-zinc-900/60 p-2 text-sm"
-            onChange={(e) => setFile(e.target.files?.[0] || null)}
+            onChange={(e: any) => setFile(e.target.files?.[0] || null)}
           />
           <div className="mt-2 text-xs text-zinc-500">
             Supported: any file (placeholder). Max 10MB.
@@ -67,7 +67,7 @@ export default function UploadPanel() {
             className="w-full min-h-[120px] rounded-md border border-zinc-700 bg-zinc-900/60 p-2 text-sm"
             placeholder="Paste content here..."
             value={text}
-            onChange={(e) => setText(e.target.value)}
+            onChange={(e: any) => setText(e.target.value)}
           />
         </div>
       </div>

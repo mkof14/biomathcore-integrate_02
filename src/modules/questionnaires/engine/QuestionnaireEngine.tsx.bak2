@@ -142,7 +142,7 @@ export default function QuestionnaireEngine({
           type="text"
           placeholder={q.placeholder || ""}
           value={(state.answers[q.id] as string) || ""}
-          onChange={(e) => setAnswer(q.id, e.target.value)}
+          onChange={(e: any) => setAnswer(q.id, e.target.value)}
           className="w-full"
           aria-required={!!q.required}
         />
@@ -152,7 +152,7 @@ export default function QuestionnaireEngine({
       return (
         <select
           value={(state.answers[q.id] as string) || ""}
-          onChange={(e) => setAnswer(q.id, e.target.value)}
+          onChange={(e: any) => setAnswer(q.id, e.target.value)}
           className="w-full"
           aria-required={!!q.required}
         >
@@ -176,7 +176,7 @@ export default function QuestionnaireEngine({
           max={q.max}
           step={q.step || 1}
           value={Number(state.answers[q.id] ?? q.min)}
-          onChange={(e) => setAnswer(q.id, Number(e.target.value))}
+          onChange={(e: any) => setAnswer(q.id, Number(e.target.value))}
           className="w-full"
           aria-required={!!q.required}
         />

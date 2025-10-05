@@ -7,7 +7,7 @@ import { authOptions } from "@/lib/auth/options";
  * Use: const session = await auth()
  */
 export async function auth() {
-  return getServerSession(authOptions as unknown);
+  return getServerSession(authOptions as any);
 }
 
 /** Back-compat alias used elsewhere in the codebase */

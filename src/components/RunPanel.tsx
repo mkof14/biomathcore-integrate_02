@@ -117,7 +117,7 @@ export default function RunPanel({ serviceId, serviceTitle }: Props) {
         <textarea
           ref={textareaRef}
           value={input}
-          onChange={(e) => setInput(e.target.value)}
+          onChange={(e: any) => setInput(e.target.value)}
           placeholder="e.g., Last 7 days of sleep, stress levels…"
           className="w-full min-h-[96px] rounded-lg border border-white/10 bg-black/30 px-3 py-2 text-sm outline-none ring-0 placeholder:text-white/40 focus:border-white/20"
         />

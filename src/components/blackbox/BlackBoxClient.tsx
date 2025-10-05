@@ -74,7 +74,7 @@ export default function BlackBoxClient() {
         <textarea
           className="mt-3 h-[340px] w-full resize-y rounded-md bg-black/60 p-3 font-mono text-sm outline-none ring-1 ring-zinc-800 focus:ring-zinc-600"
           value={raw}
-          onChange={(e) => setRaw(e.target.value)}
+          onChange={(e: any) => setRaw(e.target.value)}
           spellCheck={false}
         />
         <div className="mt-3 flex items-center justify-between">

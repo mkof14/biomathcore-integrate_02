@@ -185,7 +185,7 @@ export default function QuestionnaireEngine({ modules, initialMetric = "percent"
                   type="text"
                   placeholder={current.q.placeholder || ""}
                   value={(state.answers[current.q.id] as string) || ""}
-                  onChange={(e) => setAnswer(current.q.id, e.target.value)}
+                  onChange={(e: any) => setAnswer(current.q.id, e.target.value)}
                   className="w-full"
                   aria-required={!!current.q.required}
                 />
@@ -193,7 +193,7 @@ export default function QuestionnaireEngine({ modules, initialMetric = "percent"
               {current.q.type === "select" && (
                 <select
                   value={(state.answers[current.q.id] as string) || ""}
-                  onChange={(e) => setAnswer(current.q.id, e.target.value)}
+                  onChange={(e: any) => setAnswer(current.q.id, e.target.value)}
                   className="w-full"
                   aria-required={!!current.q.required}
                 >
@@ -207,7 +207,7 @@ export default function QuestionnaireEngine({ modules, initialMetric = "percent"
                     type="range"
                     min={current.q.min} max={current.q.max} step={current.q.step || 1}
                     value={Number(state.answers[current.q.id] ?? current.q.min)}
-                    onChange={(e) => setAnswer(current.q.id, Number(e.target.value))}
+                    onChange={(e: any) => setAnswer(current.q.id, Number(e.target.value))}
                     className="w-full"
                     aria-required={!!current.q.required}
                   />

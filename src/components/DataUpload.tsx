@@ -9,7 +9,7 @@ export default function DataUpload() {
   const [downloadUrl, setDownloadUrl] = useState("");
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFile(e.target.files[0]);
+    setFile((e.target?.files?.[0] as File | undefined));
   };
 
   const handleUpload = async () => {

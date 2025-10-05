@@ -29,7 +29,7 @@ export default function SurveyForm() {
             <input
               type="number"
               value={formData.age}
-              onChange={(e) =>
+              onChange={(e: any) =>
                 setFormData({ ...formData, age: e.target.value })
               }
               className="w-full p-2 rounded text-black"
@@ -40,7 +40,7 @@ export default function SurveyForm() {
             <label className="block mb-2">Пол</label>
             <select
               value={formData.gender}
-              onChange={(e) =>
+              onChange={(e: any) =>
                 setFormData({ ...formData, gender: e.target.value })
               }
               className="w-full p-2 rounded text-black"
@@ -56,7 +56,7 @@ export default function SurveyForm() {
             <label className="block mb-2">Цели здоровья</label>
             <textarea
               value={formData.healthGoals}
-              onChange={(e) =>
+              onChange={(e: any) =>
                 setFormData({ ...formData, healthGoals: e.target.value })
               }
               className="w-full p-2 rounded text-black"

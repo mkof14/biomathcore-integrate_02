@@ -212,11 +212,11 @@ export default function AiChat() {
         <input
           type="text"
           value={input}
-          onChange={(e) => setInput(e.target.value)}
+          onChange={(e: any) => setInput(e.target.value)}
           className="flex-grow p-3 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
           placeholder="Type your message…"
           disabled={isLoading || !apiKey}
-          onKeyDown={(e) => {
+          onKeyDown={(e: any) => {
             if (e.key === "Enter" && !isLoading) handleSend();
           }}
         />

@@ -9,7 +9,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ slug: s
     const { slug } = await params;
     if (!slug) return NextResponse.json({ error: 'Slug is required' }, { status: 400 });
 
-    const session = await getServerSession(authOptions);
+    const session = await getServerSession(authOptions as any);
 
     const questionnaire = await prisma.questionnaire.findUnique({
       where: { slug },

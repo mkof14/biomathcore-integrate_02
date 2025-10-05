@@ -1,10 +1,10 @@
-import NextAuth, { type NextAuthConfig } from "next-auth";
+import NextAuth, { type NextAuthOptions } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { PrismaClient } from "@prisma/client";
 
 const db = new PrismaClient();
 
-const config: NextAuthConfig = {
+const config: NextAuthOptions = {
   debug: true,
   // важен для Vercel (и при прокси): разрешаем доверять host-заголовку
   trustHost: true,

@@ -37,7 +37,7 @@ export default function SignUpPage() {
             <label className="block text-sm mb-1">Name (optional)</label>
             <input
               value={name}
-              onChange={(e) => setName(e.currentTarget.value)}
+              onChange={(e: any) => setName(e.currentTarget.value)}
               className="w-full rounded-lg bg-black border border-white/10 px-3 py-2 outline-none focus:ring-2 focus:ring-cyan-400/60"
               placeholder="Your name"
             />
@@ -48,7 +48,7 @@ export default function SignUpPage() {
               type="email"
               required
               value={email}
-              onChange={(e) => setEmail(e.currentTarget.value)}
+              onChange={(e: any) => setEmail(e.currentTarget.value)}
               className="w-full rounded-lg bg-black border border-white/10 px-3 py-2 outline-none focus:ring-2 focus:ring-cyan-400/60"
               placeholder="you@example.com"
             />
@@ -60,7 +60,7 @@ export default function SignUpPage() {
               required
               minLength={6}
               value={password}
-              onChange={(e) => setPassword(e.currentTarget.value)}
+              onChange={(e: any) => setPassword(e.currentTarget.value)}
               className="w-full rounded-lg bg-black border border-white/10 px-3 py-2 outline-none focus:ring-2 focus:ring-cyan-400/60"
               placeholder="Min 6 characters"
             />

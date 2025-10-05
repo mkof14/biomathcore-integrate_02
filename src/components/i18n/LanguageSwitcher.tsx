@@ -14,7 +14,7 @@ export default function LanguageSwitcher() {
   return (
     <select
       value={lang}
-      onChange={(e) => setLang(e.target.value as any)}
+      onChange={(e: any) => setLang(e.target.value as any)}
       className="h-9 rounded-md border border-neutral-700 bg-neutral-900/70 text-white px-2"
       aria-label="Language"
       title="Language"

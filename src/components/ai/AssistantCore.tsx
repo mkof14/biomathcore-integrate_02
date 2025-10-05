@@ -202,7 +202,7 @@ export default function AssistantCore() {
         <div className="flex items-center gap-2">
           <select
             value={voiceName}
-            onChange={(e) => setVoiceName(e.target.value)}
+            onChange={(e: any) => setVoiceName(e.target.value)}
             className="h-9 max-w-[60%] truncate rounded-lg bg-neutral-700 px-2 text-sm outline-none ring-1 ring-white/10"
           >
             {voices.map((v) => (
@@ -255,7 +255,7 @@ export default function AssistantCore() {
 
         <input
           value={visibleInput()}
-          onChange={(e) => { setInput(e.target.value); interimRef.current = ""; }}
+          onChange={(e: any) => { setInput(e.target.value); interimRef.current = ""; }}
           placeholder="Speak or type…"
           className="flex-1 h-11 rounded-xl bg-neutral-100 px-3 text-[0.95rem] text-neutral-900 placeholder-neutral-500 outline-none ring-1 ring-neutral-300 focus:ring-violet-300"
         />

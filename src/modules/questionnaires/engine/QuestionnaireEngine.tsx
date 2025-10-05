@@ -154,7 +154,7 @@ export default function QuestionnaireEngine({
                         <input
                           type="text"
                           defaultValue={answers[q.id] ?? ""}
-                          onChange={(e) => setValue(q.id, e.target.value)}
+                          onChange={(e: any) => setValue(q.id, e.target.value)}
                           placeholder={q.placeholder || ""}
                           className="w-full qa-input"
                           style={{ padding: "10px 12px", border: "1px solid var(--qa-border)", borderRadius: 8, background: "var(--qa-input-bg)", opacity: 0.98 }}
@@ -164,7 +164,7 @@ export default function QuestionnaireEngine({
                       {q.type === "textarea" && (
                         <textarea
                           defaultValue={answers[q.id] ?? ""}
-                          onChange={(e) => setValue(q.id, e.target.value)}
+                          onChange={(e: any) => setValue(q.id, e.target.value)}
                           placeholder={q.placeholder || ""}
                           className="w-full qa-input"
                           style={{ minHeight: 96, padding: "10px 12px", border: "1px solid var(--qa-border)", borderRadius: 8, background: "var(--qa-input-bg)", opacity: 0.98 }}
@@ -174,7 +174,7 @@ export default function QuestionnaireEngine({
                       {q.type === "select" && Array.isArray(q.options) && (
                         <select
                           defaultValue={answers[q.id] ?? ""}
-                          onChange={(e) => setValue(q.id, e.target.value)}
+                          onChange={(e: any) => setValue(q.id, e.target.value)}
                           className="w-full qa-input"
                           style={{ padding: "10px 12px", border: "1px solid var(--qa-border)", borderRadius: 8, background: "var(--qa-input-bg)", opacity: 0.98 }}
                         >

@@ -7,7 +7,7 @@ function Toggle({ checked, onChange, label, id }: { checked: boolean; onChange: 
   return (
     <label htmlFor={id} className="flex items-center gap-3 cursor-pointer select-none">
       <div className={`relative h-6 w-11 rounded-full transition-colors ${checked ? "bg-emerald-500/80" : "bg-slate-700"}`}>
-        <input id={id} type="checkbox" className="peer sr-only" checked={checked} onChange={(e) => onChange(e.target.checked)} />
+        <input id={id} type="checkbox" className="peer sr-only" checked={checked} onChange={(e: any) => onChange(e.target.checked)} />
         <span className={`absolute top-0.5 left-0.5 h-5 w-5 rounded-full bg-white transition-transform ${checked ? "translate-x-5" : "translate-x-0"}`} />
       </div>
       <span className="text-sm text-slate-200">{label}</span>
@@ -120,7 +120,7 @@ export default function SettingsPage() {
                 <select
                   className="w-full rounded-lg bg-slate-800 border border-slate-600 p-2 text-sm text-slate-100 focus:ring-2 focus:ring-cyan-500"
                   value={state.autoBackupInterval}
-                  onChange={(e) => setState((s) => ({ ...s, autoBackupInterval: e.target.value }))}
+                  onChange={(e: any) => setState((s) => ({ ...s, autoBackupInterval: e.target.value }))}
                 >
                   <option value="15m">Every 15 minutes</option>
                   <option value="1h">Hourly</option>
@@ -135,7 +135,7 @@ export default function SettingsPage() {
                 <select
                   className="w-full rounded-lg bg-slate-800 border border-slate-600 p-2 text-sm text-slate-100 focus:ring-2 focus:ring-emerald-500"
                   value={String(state.retentionDays)}
-                  onChange={(e) => setState((s) => ({ ...s, retentionDays: Number(e.target.value) }))}
+                  onChange={(e: any) => setState((s) => ({ ...s, retentionDays: Number(e.target.value) }))}
                 >
                   <option value="7">7 days</option>
                   <option value="30">30 days</option>

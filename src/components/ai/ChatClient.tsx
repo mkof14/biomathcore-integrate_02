@@ -68,7 +68,7 @@ export default function ChatClient() {
       <div className="mt-4 flex gap-2">
         <input
           value={input}
-          onChange={(e) => setInput(e.target.value)}
+          onChange={(e: any) => setInput(e.target.value)}
           onKeyDown={onKey}
           placeholder="Type your question…"
           className="flex-1 rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-gray-100 outline-none placeholder:text-gray-400 focus:border-cyan-400"

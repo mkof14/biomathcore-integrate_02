@@ -106,10 +106,10 @@ export default function QuestionnaireEngine({ modules, initialMetric = "percent"
   function renderQuestion(q: Question) {
     if (q.type === "text") return (
       <input type="text" placeholder={q.placeholder || ""} value={(state.answers[q.id] as string) || ""}
-        onChange={(e) => setAnswer(q.id, e.target.value)} className="w-full" aria-required={!!q.required}/>
+        onChange={(e: any) => setAnswer(q.id, e.target.value)} className="w-full" aria-required={!!q.required}/>
     );
     if (q.type === "select") return (
-      <select value={(state.answers[q.id] as string) || ""} onChange={(e) => setAnswer(q.id, e.target.value)}
+      <select value={(state.answers[q.id] as string) || ""} onChange={(e: any) => setAnswer(q.id, e.target.value)}
         className="w-full" aria-required={!!q.required}>
         <option value="" disabled>{q.required ? "Select an option *" : "Select an option"}</option>
         {q.options.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
@@ -118,7 +118,7 @@ export default function QuestionnaireEngine({ modules, initialMetric = "percent"
     return (
       <div>
         <input type="range" min={q.min} max={q.max} step={q.step || 1}
-          value={Number(state.answers[q.id] ?? q.min)} onChange={(e) => setAnswer(q.id, Number(e.target.value))}
+          value={Number(state.answers[q.id] ?? q.min)} onChange={(e: any) => setAnswer(q.id, Number(e.target.value))}
           className="w-full" aria-required={!!q.required}/>
         <div className="flex justify-between text-xs opacity-80">
           <span>{q.leftLabel ?? q.min}</span>

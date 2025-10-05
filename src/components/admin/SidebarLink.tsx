@@ -18,10 +18,10 @@ export default function SidebarLink({ href, label, hint }: { href: string; label
         borderColor: active ? "var(--link-active-border)" : "var(--link-border)",
         color: "var(--page-fg)",
       }}
-      onMouseOver={(e) => {
+      onMouseOver={(e: any) => {
         if (!active) (e.currentTarget as HTMLAnchorElement).style.background = "var(--link-bg-hover)";
       }}
-      onMouseOut={(e) => {
+      onMouseOut={(e: any) => {
         if (!active) (e.currentTarget as HTMLAnchorElement).style.background = "var(--link-bg)";
       }}
     >

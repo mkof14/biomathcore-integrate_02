@@ -1,17 +1,16 @@
-/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { NextResponse } from "next/server";
-import { createReport } from "@/lib/repos/reportRepo";
-import { withLog } from "@/lib/api/log";
-export const runtime = "nodejs";
+import { PrismaClient } from "@prisma/client";
+const prisma = new PrismaClient();
 
-export const POST = withLog(async () => {
-  const samples = [
-    { title: "Weekly summary", status: "ready" },
-    { title: "Device telemetry", status: "draft" },
-    { title: "Clinical note", status: "archived" },
-  ];
-  for (const s of samples) await createReport(s as unknown);
-  return NextResponse.json({ ok:true, created: samples.length });
-}, "reports.dev.seed");
-
-export { /* TODO: implement or remove */ };
+export async function POST() {
+  try {
+    const row = await prisma.report.create({
+      data: { userId: "U1001", title: "Demo Health Report", status: "ready" } as any,
+    });
+    return NextResponse.json({ ok: true, id: row.id });
+  } catch (e:any) {
+    return NextResponse.json({ ok: false, error: String(e?.message || e) }, { status: 500 });
+  } finally {
+    await prisma.$disconnect();
+  }
+}

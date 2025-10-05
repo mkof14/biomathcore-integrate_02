@@ -150,7 +150,7 @@ export default function ClientPanel({
       <textarea
         ref={taRef}
         value={input}
-        onChange={(e) => setInput(e.target.value)}
+        onChange={(e: any) => setInput(e.target.value)}
         placeholder="E.g. last 7 days of sleep, steps, stress — or ask a question."
         className="w-full h-28 rounded-lg border border-gray-300 dark:border-white/10 bg-white dark:bg-zinc-900 px-3 py-2 outline-none focus:ring-2 focus:ring-purple-500 text-sm mb-4"
       />

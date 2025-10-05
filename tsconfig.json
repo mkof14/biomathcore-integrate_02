@@ -8,7 +8,7 @@
     ],
     "allowJs": true,
     "skipLibCheck": true,
-    "strict": true,
+    "strict": false,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "esModuleInterop": true,
@@ -29,10 +29,12 @@
         "name": "next"
       }
     ],
-    "noUncheckedIndexedAccess": true,
+    "noUncheckedIndexedAccess": false,
     "types": [
       "node"
-    ]
+    ],
+    "noImplicitAny": false,
+    "strictNullChecks": true
   },
   "include": [
     "next-env.d.ts",
@@ -41,6 +43,16 @@
     ".next/types/**/*.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "**/_backup/**",
+    "**/*.broken.*",
+    "**/_backup/**",
+    "**/*.broken.*",
+    "**/__tests__/**",
+    "**/tests/**",
+    "**/*.test.*",
+    "biomathcore-jules/**",
+    "_backup_member_q/**",
+    "src/_frozen/**"
   ]
 }

@@ -111,9 +111,7 @@ export default function PricingPage() {
   return (
     <section className="bg-black text-white py-16 px-6">
       <div className="max-w-7xl mx-auto text-center mb-10">
-        <h1 className="text-3xl md:text-4xl font-extrabold text-purple-400">
-          Plans that fit real life
-        </h1>
+        <h1 className="text-white text-center text-3xl md:text-4xl font-extrabold text-purple-400 text-white drop-shadow-md">Pricing</h1>
         <p className="text-gray-400 mt-2 text-sm md:text-base">
           Choose a plan you can use every day. Upgrade any time.
         </p>

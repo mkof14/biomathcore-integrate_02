@@ -58,7 +58,7 @@ export default function ServiceGenerator({
 
       <textarea
         value={input}
-        onChange={(e) => setInput(e.target.value)}
+        onChange={(e: any) => setInput(e.target.value)}
         placeholder="Enter your data or query here…"
         rows={5}
         className="mb-4 w-full resize-y rounded-lg border border-gray-700 bg-gray-800 px-3 py-3 text-gray-100 placeholder-gray-400 focus:border-purple-500 focus:outline-none"

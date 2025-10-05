@@ -55,6 +55,7 @@ export default function Footer() {
             <ul className="space-y-2 text-sm">
               <li><Link className="relative after:absolute after:left-0 after:-bottom-0.5 after:h-px after:w-0 after:bg-sky-400 after:transition-all hover:after:w-full" href="/">Home</Link></li>
               <li><Link className="relative after:absolute after:left-0 after:-bottom-0.5 after:h-px after:w-0 after:bg-sky-400 after:transition-all hover:after:w/full" href="/services">Service Categories</Link></li>
+<li><a className="relative after:absolute after:left-0 after:-bottom-0.5 after:h-px after:w-0 after:bg-sky-400 after:transition-all hover:after:w-full" href="/pricing">Pricing</a></li>
               <li><Link className="relative after:absolute after:left-0 after:-bottom-0.5 after:h-px after:w-0 after:bg-sky-400 after:transition-all hover:after:w-full" href="/member">Member Zone</Link></li>
               <li><Link className="relative after:absolute after:left-0 after:-bottom-0.5 after:h-px after:w-0 after:bg-sky-400 after:transition-all hover:after:w-full" href="/auth">Sign In / Up</Link></li>
               <li><Link className="relative after:absolute after:left-0 after:-bottom-0.5 after:h-px after:w-0 after:bg-sky-400 after:transition-all hover:after:w-full" href="/faq">FAQ</Link></li>
