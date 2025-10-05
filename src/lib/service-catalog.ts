@@ -368,6 +368,10 @@ export const CATEGORIES: Category[] = [] = [
     ]
   }
 
+];
+
+];
+
 export type SvcLite = {
   slug: string;
   title?: string;
