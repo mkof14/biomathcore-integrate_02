@@ -1,11 +1,20 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import dynamic from "next/dynamic";
 import { resolveService } from "@/lib/catalog-client";
 
 type Props = { params: Promise<{ slug: string }> };
 
 export const dynamic = "force-dynamic";
+
+const LegacyMount = dynamic(
+  () =>
+    import("../../../_legacy_routes/src__app__services__[slug]/ServiceGeneratorMount")
+      .then(m => m.default)
+      .catch(() => null as any),
+  { ssr: false }
+);
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
@@ -37,18 +46,21 @@ export default async function ServicePage({ params }: Props) {
         </nav>
 
         <h1 className="text-2xl md:text-3xl font-semibold">{svc.title}</h1>
+        {svc.summary && <p className="mt-2 text-slate-600">{svc.summary}</p>}
 
         <div className="mt-6 rounded-xl border border-slate-200 bg-white p-6">
-          <p className="text-slate-700">
-            This is the <strong>{svc.title}</strong> tool. Hook your existing UI and actions here.
-          </p>
-          <ul className="mt-4 list-disc pl-5 text-slate-700 space-y-1">
-            <li>Breadcrumbs route back to its category and the Services hub.</li>
-            <li>Slug: <code className="text-slate-900">{slug}</code></li>
-            {svc.categorySlug && (
-              <li>Category: <Link className="text-cyan-700 hover:underline" href={`/services/${svc.categorySlug}`}>{svc.categoryTitle ?? svc.categorySlug}</Link></li>
-            )}
-          </ul>
+          {LegacyMount ? (
+            <LegacyMount slug={slug} />
+          ) : (
+            <div className="text-slate-700">
+              <p>
+                UI for <strong>{svc.title}</strong> will appear here.
+              </p>
+              <p className="mt-2 text-sm text-slate-500">
+                Slug: <code className="text-slate-900">{slug}</code>
+              </p>
+            </div>
+          )}
         </div>
       </section>
     </main>
