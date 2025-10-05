@@ -368,7 +368,6 @@ export const CATEGORIES: Category[] = [] = [
     ]
   }
 
-];
 
 ];
 
