@@ -170,9 +170,7 @@ export const CATEGORIES: Category[] = [] = [
     ]
   },
   {
-    slug: "senior-care",
-    title: "Senior Care",
-    summary: "Support for aging at home: safety, meds, cognition, and mobility.",
+    undefined,
     services: [
       { slug: "senior-dashboard", title: "Senior Dashboard", summary: "Vitals, meds, and daily check-ins in one place." },
       { slug: "caregiver-portal", title: "Caregiver Portal", summary: "Shared access for trusted family/caregivers." },
