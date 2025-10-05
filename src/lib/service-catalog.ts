@@ -16,7 +16,8 @@ export type Category = {
 /**
  * CATEGORIES: top-level catalog used by /services and /svc/[slug]
  */
-export const CATEGORIES: Category[,{
+export const CATEGORIES: Category[] = [
+  {
     slug: "senior-care",
     title: "Senior Care",
     summary: "Support for older adults: health monitoring, medication reminders, home safety, and cognitive support.",
@@ -247,7 +248,7 @@ export const CATEGORIES: Category[,{
   {
     slug: "mens-sexual-health",
     title: "Men’s Sexual Health",
-    summary: "Potency foundations, TRT education, ED support, and fertility.",
+    summary: "Educational tools for male sexual function, vascular and hormonal literacy, and reproductive wellness—meant to complement professional care.",
     services: [
       { slug: "vascular-health-for-potency", title: "Vascular Health for Potency", summary: "BP/lipids/fitness for erectile quality." },
       { slug: "male-vitality-and-trt", title: "Male Vitality and TRT", summary: "Education on risks/benefits with MD guidance." },
@@ -258,13 +259,15 @@ export const CATEGORIES: Category[,{
   {
     slug: "womens-sexual-health",
     title: "Women’s Sexual Health",
-    summary: "Cycle-aware libido, pelvic care, and pain-free intimacy.",
+    summary: "Educational tools for women’s intimate health—hormonal literacy, libido, pelvic comfort, and relationship harmony—meant to complement clinical care.",
     services: [
       { slug: "female-hormonal-optimization", title: "Female Hormonal Optimization", summary: "Support cycle-phased energy and desire." },
       { slug: "libido-boosting-nutrition", title: "Libido-Boosting Nutrition", summary: "Foods and timing that support libido." },
       { slug: "pelvic-health-program", title: "Pelvic Health Program", summary: "Pelvic-floor strength and mobility." },
-      { slug: "menopausal-intimacy-advisor", title: "Menopausal Intimacy Advisor", summary: "Comfort strategies and options to discuss." }
-    ]
+      { slug: "menopausal-intimacy-advisor", title: "Menopausal Intimacy Advisor", summary: "Comfort strategies and options to discuss." },
+    { slug: "cycle-aware-intimacy-planner", title: "Cycle-aware Intimacy Planner", summary: "Helps align intimacy, energy, and comfort with menstrual-cycle phases—offering timing tips and symptom tracking to discuss with a clinician if needed." },
+    { slug: "vulvar-skin-care-guide", title: "Vulvar Skin Care Guide", summary: "Gentle, evidence-informed hygiene and moisturizer guidance for vulvar comfort; flags common irritants and when to seek medical advice." }
+  ]
   },
   {
     slug: "critical-health",
@@ -404,4 +407,20 @@ export type { Service as CatalogService, Category as CatalogCategory };
 /** Returns a category by slug or null if not found. */
 export function getCategory(slug: string) {
   return CATEGORIES.find(c => c.slug === slug) ?? null;
+}
+
+
+
+/** Lookup a service by slug and return its category too */
+export function getService(slug: string): { category: Category; service: Service } | null {
+  for (const c of CATEGORIES) {
+    const svc = (c.services || []).find(x => x.slug === slug);
+    if (svc) return { category: c, service: svc };
+  }
+  return null;
+}
+
+/** Flat list of all services (useful for search/sitemap) */
+export function getAllServices(): Service[] {
+  return CATEGORIES.flatMap(c => c.services || []);
 }

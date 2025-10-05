@@ -3,14 +3,10 @@ export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { CATEGORIES, getCategory } from "@/lib/service-catalog";
+import { getCategory } from "@/lib/service-catalog";
 import { fetchServicesByCategory } from "@/lib/catalog-client";
 
-type Props = { params: Promise<{ category: string }> };
-
-export async function generateStaticParams() {
-  return CATEGORIES.map((c) => ({ category: c.slug }));
-}
+type Props = { params: { category: string } };
 
 export default async function ServicesCategoryPage({ params }: Props) {
   const { category } = await params;
@@ -26,7 +22,7 @@ export default async function ServicesCategoryPage({ params }: Props) {
       title: s.title || s.slug!,
       summary: s.summary,
     })),
-    ...((cat.services ?? []).filter((s) => !apiSet.has(s.slug))),
+    ...(cat.services ?? []).filter((s) => !apiSet.has(s.slug)),
   ];
 
   return (
@@ -40,7 +36,9 @@ export default async function ServicesCategoryPage({ params }: Props) {
 
         <header className="mb-6">
           <h1 className="text-2xl md:text-3xl font-semibold">{cat.title}</h1>
-          {cat.summary && <p className="mt-2 text-slate-600">{cat.summary}</p>}
+          {"summary" in cat && (cat as any).summary && (
+            <p className="mt-2 text-slate-600">{(cat as any).summary}</p>
+          )}
         </header>
 
         {merged.length === 0 ? (
@@ -56,8 +54,12 @@ export default async function ServicesCategoryPage({ params }: Props) {
                 className="rounded-2xl border border-slate-200 bg-white p-5 hover:border-slate-900/30 transition"
               >
                 <h3 className="text-base font-medium">{s.title}</h3>
-                {s.summary && <p className="mt-1 text-sm text-slate-600">{s.summary}</p>}
-                <span className="mt-3 inline-block text-xs text-slate-500">Open</span>
+                {s.summary && (
+                  <p className="mt-1 text-sm text-slate-600">{s.summary}</p>
+                )}
+                <span className="mt-3 inline-block text-xs text-slate-500">
+                  Open
+                </span>
               </Link>
             ))}
           </div>
