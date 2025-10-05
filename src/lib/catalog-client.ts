@@ -16,34 +16,11 @@ async function getJSON<T>(url: string): Promise<T | null> {
   }
 }
 
-export async function fetchCategories(): Promise<ApiCategory[]> {
-  for (const u of endpoints.categories) {
-    const data = await getJSON<ApiCategory[] | { items?: ApiCategory[] }>(u);
-    if (Array.isArray(data)) {
-      return data.map(nrmCategory);
-    }
-    if (data && Array.isArray(data.items)) {
-      return data.items.map(nrmCategory);
-    }
-  }
-  return [];
+function toSlug(s: string) {
+  return s.toLowerCase().replace(/&/g,"and").replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"");
 }
-
-export async function fetchServicesByCategory(slug: string): Promise<ApiService[]> {
-  for (const u of endpoints.selection) {
-    const urlA = `${u}?category=${encodeURIComponent(slug)}`;
-    const urlB = `${u}?categorySlug=${encodeURIComponent(slug)}`;
-    for (const tryUrl of [urlA, urlB]) {
-      const data = await getJSON<ApiService[] | { items?: ApiService[] }>(tryUrl);
-      if (Array.isArray(data)) {
-        return data.map(nrmService);
-      }
-      if (data && Array.isArray((data as any).items)) {
-        return (data as any).items.map(nrmService);
-      }
-    }
-  }
-  return [];
+function slugToName(slug: string) {
+  return slug.split("-").map(w=>w.charAt(0).toUpperCase()+w.slice(1)).join(" ");
 }
 
 function nrmCategory(x: ApiCategory): ApiCategory {
@@ -73,9 +50,40 @@ function nrmService(x: ApiService): ApiService {
   };
 }
 
-function toSlug(s: string) {
-  return s.toLowerCase().replace(/&/g,"and").replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"");
+export async function fetchCategories(): Promise<ApiCategory[]> {
+  for (const u of endpoints.categories) {
+    const data = await getJSON<ApiCategory[] | { items?: ApiCategory[] }>(u);
+    if (Array.isArray(data)) return data.map(nrmCategory);
+    if (data && Array.isArray((data as any).items)) return (data as any).items.map(nrmCategory);
+  }
+  return [];
 }
-function slugToName(slug: string) {
-  return slug.split("-").map(w=>w.charAt(0).toUpperCase()+w.slice(1)).join(" ");
+
+export async function fetchServicesByCategory(slug: string): Promise<ApiService[]> {
+  const u = endpoints.selection[0];
+  const tryUrl = `${u}?category=${encodeURIComponent(slug)}`;
+  const data = await getJSON<ApiService[] | { items?: ApiService[] }>(tryUrl);
+  if (Array.isArray(data)) return data.map(nrmService);
+  if (data && Array.isArray((data as any).items)) return (data as any).items.map(nrmService);
+  return [];
+}
+
+export async function fetchAllServicesIndex(): Promise<Map<string,{slug:string;title:string;categorySlug?:string;categoryTitle?:string;}>> {
+  const map = new Map<string,{slug:string;title:string;categorySlug?:string;categoryTitle?:string;}>();
+  const cats = await fetchCategories();
+  for (const c of cats) {
+    const list = await fetchServicesByCategory(c.slug!);
+    for (const s of list) {
+      const key = s.slug!;
+      if (!map.has(key)) {
+        map.set(key, { slug: key, title: s.title || s.name || key, categorySlug: c.slug, categoryTitle: c.title || c.name });
+      }
+    }
+  }
+  return map;
+}
+
+export async function resolveService(slug: string): Promise<{slug:string;title:string;categorySlug?:string;categoryTitle?:string;} | null> {
+  const idx = await fetchAllServicesIndex();
+  return idx.get(slug) ?? null;
 }

@@ -1,7 +1,16 @@
-/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 import { NextResponse } from "next/server";
-export const runtime = "nodejs";
-export async function POST(req: Request) {
-  const body = await req.json().catch(()=> ({ /* TODO: implement or remove */ }));
-  return NextResponse.json({ ok:true, received: body });
+import { CATEGORIES } from "@/lib/service-catalog";
+
+export async function GET(req: Request) {
+  const { searchParams } = new URL(req.url);
+  const category = searchParams.get("category") || searchParams.get("categorySlug") || "";
+  const cat = CATEGORIES.find(c => c.slug === category);
+  const items = (cat?.services ?? []).map(s => ({
+    slug: s.slug,
+    title: s.title,
+    summary: s.summary ?? "",
+    category: cat?.title,
+    categorySlug: cat?.slug
+  }));
+  return NextResponse.json({ items });
 }
