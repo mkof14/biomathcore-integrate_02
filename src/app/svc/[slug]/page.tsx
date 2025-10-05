@@ -10,7 +10,7 @@ export const dynamic = "force-dynamic";
 
 const LegacyMount = dynamic(
   () =>
-    import("../../../_legacy_routes/src__app__services__[slug]/ServiceGeneratorMount")
+    import("../../../../_legacy_routes/src__app__services__[slug]/ServiceGeneratorMount")
       .then(m => m.default)
       .catch(() => null as any),
   { ssr: false }
