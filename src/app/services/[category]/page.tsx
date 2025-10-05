@@ -12,8 +12,6 @@ export async function generateStaticParams() {
   return CATEGORIES.map((c) => ({ category: c.slug }));
 }
 
-export const dynamic = "force-dynamic";
-
 export default async function ServicesCategoryPage({ params }: Props) {
   const { category } = await params;
 
