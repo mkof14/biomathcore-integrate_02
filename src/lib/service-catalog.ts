@@ -16,7 +16,7 @@ export type Category = {
 /**
  * CATEGORIES: top-level catalog used by /services and /svc/[slug]
  */
-export const CATEGORIES: Category[] = [,
+export const CATEGORIES: Category[,
     {
     slug: "senior-care",
     title: "Senior Care",
@@ -32,9 +32,8 @@ export const CATEGORIES: Category[] = [,
       { slug: "fall-prevention-exercises", title: "Fall Prevention Exercises", summary: "Gentle balance and lower-body strength routines designed for home use—no special equipment needed." },
       { slug: "cognitive-health-games", title: "Cognitive Health Games", summary: "Light games to practice memory, attention, and reaction—keep the brain engaged daily." }
     ]
-  }
-] = [
-  {
+  },
+    {
     slug: "womens-health",
     title: "Women’s Health",
     summary: "Cycle, hormones, pregnancy, menopause, and breast-health tools.",
@@ -382,7 +381,6 @@ export const CATEGORIES: Category[] = [,
       { slug: "running-gait-analysis", title: "Running Gait Analysis", summary: "Technique cues and drills based on cadence, contact, and symmetry." }
     ]
   }
-
 
 ];
 
