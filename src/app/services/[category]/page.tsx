@@ -1,3 +1,4 @@
+export const dynamicParams = true;
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CATEGORIES, getCategory } from "@/lib/service-catalog";
