@@ -16,8 +16,7 @@ export type Category = {
 /**
  * CATEGORIES: top-level catalog used by /services and /svc/[slug]
  */
-export const CATEGORIES: Category[,
-    {
+export const CATEGORIES: Category[,{
     slug: "senior-care",
     title: "Senior Care",
     summary: "Support for older adults: health monitoring, medication reminders, home safety, and cognitive support.",
