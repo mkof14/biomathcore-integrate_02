@@ -4,6 +4,8 @@
 *.env
 *.pem
 *.key
+.env.bak*
+.env.local.bak*
 .next/
 .turbo/
 node_modules/
@@ -18,3 +20,4 @@ npm-debug.log*
 pnpm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+biomathcore-jules/
