@@ -1,36 +1,57 @@
 import Link from "next/link";
+import { CATEGORIES as STATIC_CATEGORIES } from "@/lib/service-catalog";
 import { fetchCategories } from "@/lib/catalog-client";
-import { CATEGORIES } from "@/lib/service-catalog";
-
-export const dynamic = "force-dynamic";
 
 export default async function ServicesIndexPage() {
-  const api = await fetchCategories();
-  const map = new Map(api.map(c => [c.slug!, c]));
-  const merged = CATEGORIES.map(c => {
-    const a = map.get(c.slug);
-    return { slug: c.slug, title: c.title, summary: c.summary || a?.summary || "", count: a?.count as number | undefined };
+  // Пытаемся подтянуть API, но не ломаем страницу если оно недоступно
+  let api: Array<any> = [];
+  try { api = await fetchCategories(); } catch { api = []; }
+
+  const apiMap = new Map(api.map((c: any) => [c?.slug, c]));
+
+  // Берём все статические категории и поверх дополняем тем, что есть в API
+  const categories = STATIC_CATEGORIES.map((c) => {
+    const fromApi = apiMap.get(c.slug) || {};
+    const mergedServices = [
+      ...(Array.isArray(fromApi.services) ? fromApi.services : []),
+      ...(Array.isArray(c.services) ? c.services : []),
+    ];
+    return { ...fromApi, ...c, services: mergedServices };
   });
 
   return (
-    <main className="min-h-screen bg-slate-50 text-slate-900">
-      <section className="mx-auto max-w-7xl px-6 py-12">
-        <header className="mb-8">
-          <h1 className="text-3xl md:text-4xl font-semibold tracking-tight">Services — All Categories</h1>
-          <p className="mt-3 text-slate-600">Choose a category to see available services and tools.</p>
-        </header>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {merged.map((c) => (
-            <Link key={c.slug} href={`/services/${c.slug}`} className="rounded-2xl border border-slate-200 bg-white p-5 hover:border-slate-900/30 transition">
-              <div className="flex items-center justify-between">
-                <h3 className="text-lg font-medium">{c.title}</h3>
-                {typeof c.count === "number" && <span className="text-xs text-slate-500">{c.count}</span>}
-              </div>
-              {c.summary && <p className="mt-2 text-sm text-slate-600">{c.summary}</p>}
-            </Link>
-          ))}
-        </div>
-      </section>
+    <main className="mx-auto max-w-6xl px-6 py-12">
+      <h1 className="text-4xl font-semibold mb-3">BioMath Core — Service Categories</h1>
+      <p className="text-zinc-400 mb-10">
+        Explore categories. Each card opens the Services hub filtered to that category.
+      </p>
+
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {categories.map((c) => (
+          <Link
+            key={c.slug}
+            href={`/services/${c.slug}`}
+            className="flex items-center justify-between rounded-2xl border border-zinc-800 bg-zinc-900/40 p-5 hover:bg-zinc-900 transition"
+          >
+            <div className="pr-4">
+              <div className="text-lg font-medium">{c.title}</div>
+              {c.summary && (
+                <div className="mt-1 text-sm text-zinc-400 line-clamp-2">{c.summary}</div>
+              )}
+            </div>
+            <span className="text-xs rounded-full border border-zinc-700 px-3 py-1">Open</span>
+          </Link>
+        ))}
+      </div>
+
+      <div className="mt-10">
+        <Link
+          href="/services"
+          className="inline-flex items-center rounded-xl bg-cyan-500 px-5 py-3 text-black font-medium hover:bg-cyan-400 transition"
+        >
+          Go to Services hub →
+        </Link>
+      </div>
     </main>
   );
 }
