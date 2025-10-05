@@ -16,7 +16,24 @@ export type Category = {
 /**
  * CATEGORIES: top-level catalog used by /services and /svc/[slug]
  */
-export const CATEGORIES: Category[] = [] = [
+export const CATEGORIES: Category[] = [,
+    {
+    slug: "senior-care",
+    title: "Senior Care",
+    summary: "Support for older adults: health monitoring, medication reminders, home safety, and cognitive support.",
+    services: [
+      { slug: "senior-dashboard", title: "Senior Dashboard", summary: "Pulls key signals—blood pressure, glucose, pulse, and daily activity—into a simple, shareable panel." },
+      { slug: "caregiver-portal", title: "Caregiver Portal", summary: "Caregivers can view medication reminders, appointments, and shared notes to coordinate support." },
+      { slug: "fall-detection-alert", title: "Fall Detection Alert", summary: "With a paired wearable or sensor, detects potential falls and notifies designated contacts." },
+      { slug: "medication-adherence", title: "Medication Adherence", summary: "Timely reminders and easy logging with a shareable adherence history for clinic visits." },
+      { slug: "voice-companion", title: "Voice Companion", summary: "Hands-free voice prompts for reminders and simple requests—helpful for limited vision or motor skills." },
+      { slug: "frailty-index", title: "Frailty Index", summary: "Screens physical robustness via short questionnaires and activity data to flag early functional decline." },
+      { slug: "medication-reminder-system", title: "Medication Reminder System", summary: "Syncs reminders to phone or smart speakers for accessible, audible notifications tailored to routines." },
+      { slug: "fall-prevention-exercises", title: "Fall Prevention Exercises", summary: "Gentle balance and lower-body strength routines designed for home use—no special equipment needed." },
+      { slug: "cognitive-health-games", title: "Cognitive Health Games", summary: "Light games to practice memory, attention, and reaction—keep the brain engaged daily." }
+    ]
+  }
+] = [
   {
     slug: "womens-health",
     title: "Women’s Health",

@@ -1,4 +1,6 @@
 export const dynamicParams = true;
+export const dynamic = "force-dynamic";
+
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CATEGORIES, getCategory } from "@/lib/service-catalog";
@@ -10,7 +12,6 @@ export async function generateStaticParams() {
   return CATEGORIES.map((c) => ({ category: c.slug }));
 }
 
-export const dynamicParams = false;
 export const dynamic = "force-dynamic";
 
 export default async function ServicesCategoryPage({ params }: Props) {
