@@ -16,7 +16,7 @@ export type Category = {
 /**
  * CATEGORIES: top-level catalog used by /services and /svc/[slug]
  */
-export const CATEGORIES: Category[,
+export const CATEGORIES: Category[] = [
   {
     slug: "womens-health",
     title: "Women’s Health",
