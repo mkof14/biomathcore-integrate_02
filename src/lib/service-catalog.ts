@@ -16,7 +16,7 @@ export type Category = {
 /**
  * CATEGORIES: top-level catalog used by /services and /svc/[slug]
  */
-export const CATEGORIES: Category[] = [
+export const CATEGORIES: Category[] = [] = [
   {
     slug: "womens-health",
     title: "Women’s Health",
@@ -252,7 +252,7 @@ export const CATEGORIES: Category[] = [
       { slug: "pelvic-health-program", title: "Pelvic Health Program", summary: "Pelvic-floor strength and mobility." },
       { slug: "menopausal-intimacy-advisor", title: "Menopausal Intimacy Advisor", summary: "Comfort strategies and options to discuss." }
     ]
-  }] = [
+  },
   {
     slug: "critical-health",
     title: "Critical Health",
@@ -391,3 +391,4 @@ export type { Service as CatalogService, Category as CatalogCategory };
 export function getCategory(slug: string) {
   return CATEGORIES.find(c => c.slug === slug) ?? null;
 }
+];
