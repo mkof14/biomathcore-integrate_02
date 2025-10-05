@@ -1,47 +1,44 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
-import type { Metadata } from "next";
 import dynamic from "next/dynamic";
-import { resolveService } from "@/lib/catalog-client";
+import { notFound } from "next/navigation";
+import { getServiceBySlug } from "@/lib/service-catalog";
 
-type Props = { params: Promise<{ slug: string }> };
-
-export const dynamic = "force-dynamic";
+type Props = {
+  params: Promise<{ slug: string }>;
+};
 
 const LegacyMount = dynamic(
   () =>
     import("../../../../_legacy_routes/src__app__services__[slug]/ServiceGeneratorMount")
-      .then(m => m.default)
-      .catch(() => null as any),
+      .then((m: any) => m.default || m)
+      .catch(() => Promise.resolve(() => null)),
   { ssr: false }
-);
+) as any;
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export default async function SvcPage({ params }: Props) {
   const { slug } = await params;
-  const svc = await resolveService(slug);
-  if (!svc) return { title: "Service • BioMath Core" };
-  return { title: `${svc.title} • BioMath Core` };
-}
-
-export default async function ServicePage({ params }: Props) {
-  const { slug } = await params;
-  const svc = await resolveService(slug);
+  const svc = getServiceBySlug(slug);
   if (!svc) return notFound();
 
   return (
     <main className="min-h-screen bg-white text-slate-900">
       <section className="mx-auto max-w-3xl px-6 py-12">
-        <nav className="mb-6 text-sm flex gap-2 text-slate-600">
-          <Link href="/services" className="hover:text-slate-900">Services</Link>
-          <span>/</span>
-          {svc.categorySlug ? (
-            <Link href={`/services/${svc.categorySlug}`} className="hover:text-slate-900">
-              {svc.categoryTitle ?? svc.categorySlug}
-            </Link>
-          ) : (
-            <span className="text-slate-400">Uncategorized</span>
+        <nav className="mb-6 text-sm">
+          <Link href="/services" className="text-slate-600 hover:text-slate-900">
+            Services
+          </Link>
+          {svc.categorySlug && (
+            <>
+              <span className="mx-1 text-slate-400">/</span>
+              <Link
+                href={`/services/${svc.categorySlug}`}
+                className="text-slate-600 hover:text-slate-900"
+              >
+                {svc.categoryTitle ?? svc.categorySlug}
+              </Link>
+            </>
           )}
-          <span>/</span>
+          <span className="mx-1 text-slate-400">/</span>
           <span className="text-slate-900">{svc.title}</span>
         </nav>
 
@@ -59,6 +56,17 @@ export default async function ServicePage({ params }: Props) {
               <p className="mt-2 text-sm text-slate-500">
                 Slug: <code className="text-slate-900">{slug}</code>
               </p>
+              {svc.categorySlug && (
+                <p className="mt-2 text-sm text-slate-500">
+                  Category:{" "}
+                  <Link
+                    className="text-cyan-700 hover:underline"
+                    href={`/services/${svc.categorySlug}`}
+                  >
+                    {svc.categoryTitle ?? svc.categorySlug}
+                  </Link>
+                </p>
+              )}
             </div>
           )}
         </div>
