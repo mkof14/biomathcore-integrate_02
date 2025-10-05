@@ -388,7 +388,7 @@ export function getServiceBySlug(slug: string): SvcLite | null {
 export type { Service as CatalogService, Category as CatalogCategory };
 
 /** Returns a category by slug or null if not found. */
+];
 export function getCategory(slug: string) {
   return CATEGORIES.find(c => c.slug === slug) ?? null;
 }
-];
