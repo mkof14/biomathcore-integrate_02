@@ -62,11 +62,7 @@
   @apply bg-white/10 dark:bg-slate-900/40;
 }
 
-@layer utilities {
-  .cat-critical-health {
-    @apply text-rose-600 dark:text-rose-400;
-  }
-  .cat-eye-health-suite {
+.cat-eye-health-suite {
     @apply text-cyan-700 dark:text-cyan-300;
   }
   .cat-women-health {
@@ -112,3 +108,24 @@
     @apply text-slate-800 dark:text-slate-100;
   }
 }
+
+/* category solid colors */
+.cat-critical-health{color:#e11d48}.dark .cat-critical-health{color:#fb7185}
+.cat-eye-health-suite{color:#0e7490}.dark .cat-eye-health-suite{color:#67e8f9}
+.cat-women-health{color:#db2777}.dark .cat-women-health{color:#f472b6}
+.cat-mens-health{color:#2563eb}.dark .cat-mens-health{color:#60a5fa}
+.cat-mental-wellness{color:#4f46e5}.dark .cat-mental-wellness{color:#a5b4fc}
+.cat-sleep-health{color:#0284c7}.dark .cat-sleep-health{color:#7dd3fc}
+.cat-nutrition-and-diet{color:#059669}.dark .cat-nutrition-and-diet{color:#6ee7b7}
+.cat-everyday-wellness{color:#047857}.dark .cat-everyday-wellness{color:#6ee7b7}
+.cat-metabolic-health{color:#d97706}.dark .cat-metabolic-health{color:#fbbf24}
+.cat-cardio-health{color:#dc2626}.dark .cat-cardio-health{color:#f87171}
+.cat-lab-diagnostics{color:#a21caf}.dark .cat-lab-diagnostics{color:#f0abfc}
+.cat-vaccinations{color:#0d9488}.dark .cat-vaccinations{color:#5eead4}
+.cat-fitness-performance{color:#7c3aed}.dark .cat-fitness-performance{color:#c4b5fd}
+.cat-longevity-and-anti-aging{color:#047857}.dark .cat-longevity-and-anti-aging{color:#6ee7b7}
+.cat-skin-dermatology{color:#ea580c}.dark .cat-skin-dermatology{color:#fdba74}
+.cat-senior-care{color:#0ea5e9}.dark .cat-senior-care{color:#7dd3fc}
+.cat-default{color:#1f2937}.dark .cat-default{color:#e5e7eb}
+
+
