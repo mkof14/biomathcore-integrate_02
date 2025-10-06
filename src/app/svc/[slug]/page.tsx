@@ -7,6 +7,7 @@ import {
 } from "@/app/services/services.catalog";
 import ClientActions from "./ClientActions";
 import BackClient from "./BackClient";
+import AIOpinions from "./AIOpinions";
 
 export async function generateStaticParams() {
   return allServicesFlat().map((s) => ({ slug: s.slug }));
@@ -52,13 +53,15 @@ export default async function ServicePage({
       </div>
 
       <article className="prose prose-slate dark:prose-invert max-w-none mt-6">
-        <div className="rounded-3xl border border-slate-200/50 bg-gradient-to-br from-white/95 to-white/75 dark:from-slate-900/70 dark:to-slate-900/40 backdrop-blur-md p-6 shadow-lg hover:shadow-xl transition-all">
+        <div className="rounded-3xl border border-slate-200/50 bg-gradient-to-br from-white/95 to-white/75 dark:from-slate-900/70 dark:to-slate-900/40 backdrop-blur-md p-6 shadow-lg">
           <p>
             Details to be connected with Reports/Questionnaires and data
             pipelines.
           </p>
         </div>
       </article>
+
+      <AIOpinions serviceTitle={s.title} />
     </main>
   );
 }

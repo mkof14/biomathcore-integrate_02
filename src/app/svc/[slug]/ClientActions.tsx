@@ -1,5 +1,6 @@
 "use client";
 import { usePathname } from "next/navigation";
+import { Copy, Share2, Printer, Download } from "lucide-react";
 
 export default function ClientActions({
   serviceSlug,
@@ -33,39 +34,72 @@ export default function ClientActions({
     } catch {}
   }
 
+  function printPage() {
+    if (typeof window !== "undefined") window.print();
+  }
+
+  function downloadSummary() {
+    const content = [
+      `Service: ${serviceSlug}`,
+      `URL: ${typeof window !== "undefined" ? window.location.href : ""}`,
+      "",
+      "Summary:",
+      "- Findings and recommendations will be shown here after generation.",
+    ].join("\n");
+    const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${serviceSlug}-summary.txt`;
+    document.body.appendChild(a);
+    a.click();
+    URL.revokeObjectURL(url);
+    a.remove();
+  }
+
   return (
     <div className="flex flex-wrap items-center gap-2">
       <button
         onClick={() => history.back()}
         className="rounded-md border border-slate-300 dark:border-slate-700 px-3 py-2 text-sm hover:bg-slate-50 dark:hover:bg-slate-800/30"
       >
-        ← Назад
+        ← Back
       </button>
       {categoryHref ? (
         <a
           href={categoryHref}
           className="rounded-md border border-slate-300 dark:border-slate-700 px-3 py-2 text-sm hover:bg-slate-50 dark:hover:bg-slate-800/30"
         >
-          Категория
+          Category
         </a>
       ) : null}
+
       <button
         onClick={copyLink}
-        className="rounded-md border border-slate-300 dark:border-slate-700 px-3 py-2 text-sm hover:bg-slate-50 dark:hover:bg-slate-800/30"
+        className="inline-flex items-center gap-2 rounded-md border border-slate-300 dark:border-slate-700 px-3 py-2 text-sm hover:bg-slate-50 dark:hover:bg-slate-800/30"
       >
-        Copy Link
+        <Copy className="h-4 w-4" /> Copy
       </button>
+
       <button
         onClick={webShare}
-        className="rounded-md bg-slate-900 text-white px-3 py-2 text-sm hover:opacity-90 dark:bg-slate-100 dark:text-slate-900"
+        className="inline-flex items-center gap-2 rounded-md border border-slate-300 dark:border-slate-700 px-3 py-2 text-sm hover:bg-slate-50 dark:hover:bg-slate-800/30"
       >
-        Share
+        <Share2 className="h-4 w-4" /> Share
       </button>
+
       <button
-        className="rounded-md bg-gradient-to-r from-sky-600 via-teal-500 to-emerald-500 text-white px-3 py-2 text-sm hover:opacity-95"
-        onClick={() => alert("Coming soon")}
+        onClick={printPage}
+        className="inline-flex items-center gap-2 rounded-md border border-slate-300 dark:border-slate-700 px-3 py-2 text-sm hover:bg-slate-50 dark:hover:bg-slate-800/30"
       >
-        Start
+        <Printer className="h-4 w-4" /> Print
+      </button>
+
+      <button
+        onClick={downloadSummary}
+        className="inline-flex items-center gap-2 rounded-md bg-gradient-to-r from-sky-600 via-teal-500 to-emerald-500 text-white px-3 py-2 text-sm hover:opacity-95"
+      >
+        <Download className="h-4 w-4" /> Download
       </button>
     </div>
   );
