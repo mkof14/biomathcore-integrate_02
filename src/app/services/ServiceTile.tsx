@@ -11,6 +11,8 @@ import type { ServiceCategory } from "./services.catalog";
 export default function ServiceTile({ cat }: { cat: ServiceCategory }) {
   const titleColor = categoryClassFor(slug);
 
+  const titleColor = categoryClassFor(slug);
+
   const cat = findCategoryByServiceSlug?.(item?.slug) as any;
   const slug = cat?.slug ?? "";
   const color = (CATEGORY_COLOR as any)[slug] ?? "text-slate-200";
