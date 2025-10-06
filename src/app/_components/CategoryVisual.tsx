@@ -87,3 +87,15 @@ export function CategoryTitle({
     </div>
   );
 }
+
+export function CategoryTitle({ cat }: { cat: any }) {
+  const slug = cat?.slug || "";
+  const Color = (CATEGORY_COLOR as any)[slug] || "text-slate-700";
+  const Icon = (CATEGORY_ICON as any)[slug];
+  return (
+    <span className="inline-flex items-center gap-2">
+      {Icon ? <Icon className={"h-4 w-4 " + Color} /> : null}
+      <span className={Color}>{cat?.title ?? String(slug)}</span>
+    </span>
+  );
+}
