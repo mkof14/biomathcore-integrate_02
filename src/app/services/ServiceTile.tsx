@@ -2,6 +2,11 @@ import Link from "next/link";
 import type { ServiceCategory } from "./services.catalog";
 
 export default function ServiceTile({ cat }: { cat: ServiceCategory }) {
+  const cat = findCategoryByServiceSlug?.(item?.slug) as any;
+  const slug = cat?.slug ?? "";
+  const color = (CATEGORY_COLOR as any)[slug] ?? "text-slate-200";
+  const Icon = (CATEGORY_ICON as any)[slug] ?? null;
+
   return (
     <Link
       href={`/services/${cat.slug}`}
