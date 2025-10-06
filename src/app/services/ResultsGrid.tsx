@@ -2,10 +2,13 @@
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { CATEGORIES } from "./services.catalog";
+import { useFavorites } from "./useFavorites";
 
 export default function ResultsGrid({ scopedTo }: { scopedTo?: string }) {
   const params = useSearchParams();
   const q = (params.get("q") || "").toLowerCase().trim();
+  const tags = params.getAll("tag").map((t) => t.toLowerCase());
+  const { favs, toggle } = useFavorites();
 
   const categories = CATEGORIES.filter((c) =>
     scopedTo ? c.slug === scopedTo : true,
@@ -13,17 +16,25 @@ export default function ResultsGrid({ scopedTo }: { scopedTo?: string }) {
 
   const matches = categories
     .map((c) => {
-      const filtered = q
-        ? c.services.filter(
-            (s) =>
-              s.title.toLowerCase().includes(q) ||
-              s.slug.toLowerCase().includes(q) ||
-              c.title.toLowerCase().includes(q),
-          )
-        : c.services;
+      const filtered = c.services.filter((s) => {
+        const matchQ = q
+          ? s.title.toLowerCase().includes(q) || s.slug.includes(q)
+          : true;
+        const matchTag =
+          tags.length > 0
+            ? tags.some(
+                (t) =>
+                  s.title.toLowerCase().includes(t) ||
+                  c.title.toLowerCase().includes(t),
+              )
+            : true;
+        return matchQ && matchTag;
+      });
       return { ...c, services: filtered };
     })
     .filter((c) => c.services.length > 0);
+
+  const count = matches.reduce((acc, c) => acc + c.services.length, 0);
 
   if (matches.length === 0) {
     return <div className="text-sm text-slate-500">No results</div>;
@@ -31,6 +42,10 @@ export default function ResultsGrid({ scopedTo }: { scopedTo?: string }) {
 
   return (
     <div className="space-y-8">
+      <div className="text-sm text-slate-500">
+        Results: {count}
+        {favs.length > 0 && ` • Favorites: ${favs.length}`}
+      </div>
       {matches.map((c) => (
         <section key={c.slug}>
           {!scopedTo ? (
@@ -44,16 +59,21 @@ export default function ResultsGrid({ scopedTo }: { scopedTo?: string }) {
           ) : null}
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {c.services.map((s) => (
-              <Link
-                key={s.slug}
-                href={`/svc/${s.slug}`}
-                className="block rounded-xl p-4 bg-white/60 dark:bg-slate-900/40 border border-slate-200/50 hover:shadow"
-              >
-                <div className="text-base font-medium">{s.title}</div>
-                {s.shortHint ? (
-                  <div className="text-xs opacity-70 mt-1">{s.shortHint}</div>
-                ) : null}
-              </Link>
+              <div key={s.slug} className="relative group">
+                <Link
+                  href={`/svc/${s.slug}`}
+                  className="block rounded-xl p-4 bg-white/60 dark:bg-slate-900/40 border border-slate-200/50 hover:shadow"
+                >
+                  <div className="text-base font-medium">{s.title}</div>
+                </Link>
+                <button
+                  onClick={() => toggle(s.slug)}
+                  className={`absolute top-2 right-2 text-lg ${favs.includes(s.slug) ? "text-yellow-500" : "text-slate-400 group-hover:text-slate-600"}`}
+                  title="Toggle favorite"
+                >
+                  ★
+                </button>
+              </div>
             ))}
           </div>
         </section>

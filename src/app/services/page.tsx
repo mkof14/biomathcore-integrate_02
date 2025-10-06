@@ -1,13 +1,8 @@
 import Breadcrumbs from "./Breadcrumbs";
 import SearchBox from "./SearchBox";
+import TagFilter from "./TagFilter";
 import { CATEGORIES } from "./services.catalog";
 import ResultsGrid from "./ResultsGrid";
-
-export const metadata = {
-  title: "Services",
-  description:
-    "Browse BioMath Core categories and services. Filter and open detailed modules.",
-};
 
 export default function ServicesPage() {
   return (
@@ -21,8 +16,11 @@ export default function ServicesPage() {
           All categories ({CATEGORIES.length}) and services.
         </p>
       </header>
-      <div className="mb-6">
+      <div className="mb-4">
         <SearchBox placeholder="Search across all services…" />
+      </div>
+      <div className="mb-6">
+        <TagFilter />
       </div>
       <ResultsGrid />
     </main>
