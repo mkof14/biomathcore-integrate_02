@@ -1,71 +1,70 @@
 "use client";
 import { useState } from "react";
-import { Bot, Brain, FileText } from "lucide-react";
+import { FileText } from "lucide-react";
 
 type Opinion = {
-  model: "OpenAI" | "Gemini";
-  color: string;
-  gradient: string;
   bullets: string[];
   summary: string;
 };
 
-function sampleOpinions(service: string): Opinion[] {
+function sampleOpinions(): Opinion[] {
   return [
     {
-      model: "OpenAI",
-      color: "from-sky-500 to-teal-400",
-      gradient: "bg-gradient-to-r from-sky-600 via-cyan-500 to-teal-500",
       bullets: [
-        "Key risks identified and prioritized.",
-        "Personalized next steps based on your inputs.",
-        "Evidence references mapped to clinical guidelines.",
+        "Identifies near-term risks and clear next steps.",
+        "Grounded in validated markers and guidelines.",
+        "Emphasizes adherence and measurable outcomes.",
       ],
       summary:
-        "OpenAI proposes a conservative plan with strong emphasis on validated biomarkers and adherence coaching.",
+        "Opinion A recommends a structured plan focused on clinically validated actions and short-term measurables.",
     },
     {
-      model: "Gemini",
-      color: "from-fuchsia-500 to-purple-500",
-      gradient: "bg-gradient-to-r from-fuchsia-600 via-pink-500 to-purple-600",
       bullets: [
-        "Explores adjunct options and lifestyle levers.",
-        "Highlights long-term optimizations and prevention.",
-        "Surfaces data gaps and suggests what to measure next.",
+        "Explores optional adjuncts and long-term levers.",
+        "Surfaces data gaps and suggests what to track next.",
+        "Highlights prevention and sustainable habits.",
       ],
       summary:
-        "Gemini suggests a more exploratory plan with optional biohacking modules and monitoring cadence.",
+        "Opinion B offers an exploratory angle with prevention tactics and monitoring cadence to inform future decisions.",
     },
   ];
 }
 
 export default function AIOpinions({ serviceTitle }: { serviceTitle: string }) {
-  const [openAIReady, setOpenAIReady] = useState(false);
-  const [geminiReady, setGeminiReady] = useState(false);
-  const opinions = sampleOpinions(serviceTitle);
+  const [aReady, setAReady] = useState(false);
+  const [bReady, setBReady] = useState(false);
+  const opinions = sampleOpinions();
 
   return (
-    <section className="mt-8 space-y-6">
-      <header className="flex items-center gap-2">
-        <FileText className="h-5 w-5 text-slate-400" />
-        <h2 className="text-xl font-semibold">
-          Second Opinion — Dual AI Reports
-        </h2>
+    <section className="mt-10 space-y-6">
+      <header className="space-y-2">
+        <div className="flex items-center gap-2">
+          <FileText className="h-5 w-5 text-slate-400" />
+          <h2 className="text-xl font-semibold">
+            Second Opinion — Dual AI Reports
+          </h2>
+        </div>
+        <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-300/90">
+          Two independent AI perspectives review the same inputs and present
+          complementary conclusions. Compare them side-by-side, merge insights,
+          and export a combined action plan. This mirrors a real second-opinion
+          workflow and helps reduce blind spots while improving confidence in
+          the next step.
+        </p>
       </header>
 
       <div className="grid gap-4 lg:grid-cols-2">
-        {/* OpenAI */}
-        <div className="rounded-3xl border border-slate-200/50 bg-white/80 dark:bg-slate-900/40 backdrop-blur-md shadow-md">
-          <div
-            className={`rounded-t-3xl p-4 text-white ${opinions[0].gradient}`}
-          >
+        <div className="rounded-3xl border border-slate-200/60 bg-white/80 dark:bg-slate-900/40 backdrop-blur-md shadow-md">
+          <div className="rounded-t-3xl p-4 text-white bg-gradient-to-r from-slate-700 via-slate-600 to-slate-500">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Bot className="h-5 w-5" />
-                <span className="font-semibold">Opinion A — OpenAI</span>
+              <div className="flex items-center gap-3">
+                <div className="h-9 w-9 rounded-full bg-white/15 ring-1 ring-white/30 grid place-items-center text-white text-sm font-semibold">
+                  A
+                </div>
+                <span className="font-semibold">Opinion A</span>
               </div>
               <button
-                onClick={() => setOpenAIReady(true)}
+                onClick={() => setAReady(true)}
                 className="rounded-md bg-white/20 px-3 py-1 text-sm hover:bg-white/30"
               >
                 Generate
@@ -73,9 +72,9 @@ export default function AIOpinions({ serviceTitle }: { serviceTitle: string }) {
             </div>
           </div>
           <div className="p-5">
-            {!openAIReady ? (
+            {!aReady ? (
               <p className="text-sm text-slate-500">
-                Click Generate to produce OpenAI opinion.
+                Click Generate to produce this opinion.
               </p>
             ) : (
               <div className="space-y-3">
@@ -92,18 +91,17 @@ export default function AIOpinions({ serviceTitle }: { serviceTitle: string }) {
           </div>
         </div>
 
-        {/* Gemini */}
-        <div className="rounded-3xl border border-slate-200/50 bg-white/80 dark:bg-slate-900/40 backdrop-blur-md shadow-md">
-          <div
-            className={`rounded-t-3xl p-4 text-white ${opinions[1].gradient}`}
-          >
+        <div className="rounded-3xl border border-slate-200/60 bg-white/80 dark:bg-slate-900/40 backdrop-blur-md shadow-md">
+          <div className="rounded-t-3xl p-4 text-white bg-gradient-to-r from-emerald-700 via-teal-700 to-cyan-700">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Brain className="h-5 w-5" />
-                <span className="font-semibold">Opinion B — Gemini</span>
+              <div className="flex items-center gap-3">
+                <div className="h-9 w-9 rounded-full bg-white/15 ring-1 ring-white/30 grid place-items-center text-white text-sm font-semibold">
+                  B
+                </div>
+                <span className="font-semibold">Opinion B</span>
               </div>
               <button
-                onClick={() => setGeminiReady(true)}
+                onClick={() => setBReady(true)}
                 className="rounded-md bg-white/20 px-3 py-1 text-sm hover:bg-white/30"
               >
                 Generate
@@ -111,9 +109,9 @@ export default function AIOpinions({ serviceTitle }: { serviceTitle: string }) {
             </div>
           </div>
           <div className="p-5">
-            {!geminiReady ? (
+            {!bReady ? (
               <p className="text-sm text-slate-500">
-                Click Generate to produce Gemini opinion.
+                Click Generate to produce this opinion.
               </p>
             ) : (
               <div className="space-y-3">
@@ -131,28 +129,29 @@ export default function AIOpinions({ serviceTitle }: { serviceTitle: string }) {
         </div>
       </div>
 
-      {/* Compare strip */}
       <div className="rounded-2xl border border-slate-200/60 p-4 text-sm text-slate-600 dark:text-slate-300/90">
         <div className="grid gap-3 md:grid-cols-3">
           <div>
             <div className="text-xs uppercase tracking-wide text-slate-500">
-              Focus
+              Orientation
             </div>
-            <div>OpenAI — validated care & adherence</div>
-            <div>Gemini — exploration & prevention</div>
+            <div>Opinion A — structured & validated</div>
+            <div>Opinion B — exploratory & preventive</div>
           </div>
           <div>
             <div className="text-xs uppercase tracking-wide text-slate-500">
-              Tone
+              How to use
             </div>
-            <div>Structured, conservative</div>
-            <div>Creative, forward-looking</div>
+            <div>
+              Start with A for immediate steps, enrich with B for long-term
+              levers.
+            </div>
           </div>
           <div>
             <div className="text-xs uppercase tracking-wide text-slate-500">
-              Use Together
+              Outcome
             </div>
-            <div>Combine to get balanced plan and second opinion.</div>
+            <div>Balanced plan with clarity now and optional depth later.</div>
           </div>
         </div>
       </div>
