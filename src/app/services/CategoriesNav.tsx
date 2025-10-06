@@ -25,7 +25,7 @@ export default function CategoriesNav() {
               href={`/services/${c.slug}`}
               className={`block rounded-md px-3 py-2 text-sm ${active ? "bg-slate-100 dark:bg-slate-800/40 font-semibold" : "hover:bg-slate-50 dark:hover:bg-slate-800/30"}`}
             >
-              {c.title}
+              <CategoryTitle cat={c} />
             </Link>
           );
         })}
