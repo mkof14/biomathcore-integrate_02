@@ -6,7 +6,9 @@ export default function Page() {
   return (
     <div className="p-6 max-w-2xl mx-auto">
       <h1 className="text-2xl font-bold">Questionnaires</h1>
-      <p className="text-slate-500 mt-3">Patient → Lifestyle → Medical History</p>
+      <p className="text-slate-500 mt-3">
+        Patient → Lifestyle → Medical History
+      </p>
 
       <div className="mt-8">
         <Link

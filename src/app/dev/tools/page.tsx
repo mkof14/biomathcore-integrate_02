@@ -9,16 +9,44 @@ async function call(method: "POST", url: string, body?: any) {
     body: body ? JSON.stringify(body) : undefined,
     cache: "no-store",
   });
-  try { return await res.json(); } catch { return { ok:false }; }
+  try {
+    return await res.json();
+  } catch {
+    return { ok: false };
+  }
 }
 
-function Btn({ label, onClick }: { label: string; onClick: () => Promise<void> }) {
+function Btn({
+  label,
+  onClick,
+}: {
+  label: string;
+  onClick: () => Promise<void>;
+}) {
   const [busy, setBusy] = useState(false);
   const [ok, setOk] = useState<boolean | null>(null);
   return (
     <button
-      onClick={async () => { setBusy(true); setOk(null); try { await onClick(); setOk(true); } catch { setOk(false); } finally { setBusy(false); } }}
-      className={"px-3 py-2 rounded border " + (ok === true ? "border-emerald-600 text-emerald-400" : ok === false ? "border-red-600 text-red-400" : "border-neutral-700")}
+      onClick={async () => {
+        setBusy(true);
+        setOk(null);
+        try {
+          await onClick();
+          setOk(true);
+        } catch {
+          setOk(false);
+        } finally {
+          setBusy(false);
+        }
+      }}
+      className={
+        "px-3 py-2 rounded border " +
+        (ok === true
+          ? "border-emerald-600 text-emerald-400"
+          : ok === false
+            ? "border-red-600 text-red-400"
+            : "border-neutral-700")
+      }
       disabled={busy}
     >
       {busy ? "…" : label}
@@ -49,48 +77,84 @@ export default function Tools() {
           <div className="rounded-2xl border border-neutral-800 p-4 space-y-3">
             <div className="font-medium">AI</div>
             <div className="flex gap-2">
-              <Btn label="Seed" onClick={() => call("POST","/api/ai/dev/seed")} />
-              <Btn label="Reset" onClick={() => call("POST","/api/ai/dev/reset")} />
+              <Btn
+                label="Seed"
+                onClick={() => call("POST", "/api/ai/dev/seed")}
+              />
+              <Btn
+                label="Reset"
+                onClick={() => call("POST", "/api/ai/dev/reset")}
+              />
             </div>
             <div className="flex gap-2 text-xs text-muted-foreground">
               <EndpointBadge path="/api/ai/health" showLabel={false} />
-              <EndpointBadge path="/api/ai/export?limit=1000" showLabel={false} />
+              <EndpointBadge
+                path="/api/ai/export?limit=1000"
+                showLabel={false}
+              />
             </div>
           </div>
 
           <div className="rounded-2xl border border-neutral-800 p-4 space-y-3">
             <div className="font-medium">Voice</div>
             <div className="flex gap-2">
-              <Btn label="Seed" onClick={() => call("POST","/api/voice/dev/seed")} />
-              <Btn label="Reset" onClick={() => call("POST","/api/voice/dev/reset")} />
+              <Btn
+                label="Seed"
+                onClick={() => call("POST", "/api/voice/dev/seed")}
+              />
+              <Btn
+                label="Reset"
+                onClick={() => call("POST", "/api/voice/dev/reset")}
+              />
             </div>
             <div className="flex gap-2 text-xs text-muted-foreground">
               <EndpointBadge path="/api/voice/health" showLabel={false} />
-              <EndpointBadge path="/api/voice/export?limit=1000" showLabel={false} />
+              <EndpointBadge
+                path="/api/voice/export?limit=1000"
+                showLabel={false}
+              />
             </div>
           </div>
 
           <div className="rounded-2xl border border-neutral-800 p-4 space-y-3">
             <div className="font-medium">Drug–Gene</div>
             <div className="flex gap-2">
-              <Btn label="Seed" onClick={() => call("POST","/api/drug-gene/dev/seed")} />
-              <Btn label="Reset" onClick={() => call("POST","/api/drug-gene/dev/reset")} />
+              <Btn
+                label="Seed"
+                onClick={() => call("POST", "/api/drug-gene/dev/seed")}
+              />
+              <Btn
+                label="Reset"
+                onClick={() => call("POST", "/api/drug-gene/dev/reset")}
+              />
             </div>
             <div className="flex gap-2 text-xs text-muted-foreground">
               <EndpointBadge path="/api/drug-gene/health" showLabel={false} />
-              <EndpointBadge path="/api/drug-gene/export?limit=1000" showLabel={false} />
+              <EndpointBadge
+                path="/api/drug-gene/export?limit=1000"
+                showLabel={false}
+              />
             </div>
           </div>
 
           <div className="rounded-2xl border border-neutral-800 p-4 space-y-3">
             <div className="font-medium">Reports</div>
             <div className="flex gap-2">
-              <Btn label="Seed" onClick={() => call("POST","/api/reports/dev/seed")} />
-              <Btn label="Reset" onClick={() => call("POST","/api/reports/dev/reset")} />
+              <Btn
+                label="Seed"
+                onClick={() => call("POST", "/api/reports/dev/seed")}
+              />
+              <Btn
+                label="Reset"
+                onClick={() => call("POST", "/api/reports/dev/reset")}
+              />
             </div>
             <div className="flex gap-2 text-xs text-muted-foreground">
               <EndpointBadge path="/api/reports?limit=20" showLabel={false} />
-              <EndpointBadge path="/api/reports/export?limit=1000" showLabel={false} />
+              <EndpointBadge
+                path="/api/reports/export?limit=1000"
+                showLabel={false}
+              />
             </div>
           </div>
         </div>

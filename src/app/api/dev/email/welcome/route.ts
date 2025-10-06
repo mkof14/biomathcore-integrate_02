@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
 
 export async function GET() {
-  const ORIGIN = new URL(process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000").origin;
+  const ORIGIN = new URL(
+    process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
+  ).origin;
   const LOGO = `${ORIGIN}/images/BMCore-Logo-33.png`;
   const SITE = "https://biomathcore.com";
   const YEAR = new Date().getFullYear();

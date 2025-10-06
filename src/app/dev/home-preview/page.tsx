@@ -32,23 +32,33 @@ export default function HomePreview() {
       </section>
 
       <section className="mx-auto max-w-6xl px-6 pb-16">
-        <h2 className="text-lg font-semibold text-slate-200 mb-4 text-center">Our Advantages</h2>
+        <h2 className="text-lg font-semibold text-slate-200 mb-4 text-center">
+          Our Advantages
+        </h2>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <div className="rounded-xl border border-slate-800 bg-slate-900/60 p-4">
             <div className="text-sm font-semibold">Personalized Insights</div>
-            <p className="text-xs text-slate-400 mt-1">Tailored recommendations powered by your data.</p>
+            <p className="text-xs text-slate-400 mt-1">
+              Tailored recommendations powered by your data.
+            </p>
           </div>
           <div className="rounded-xl border border-slate-800 bg-slate-900/60 p-4">
             <div className="text-sm font-semibold">Secure by Design</div>
-            <p className="text-xs text-slate-400 mt-1">Encryption and privacy from day one.</p>
+            <p className="text-xs text-slate-400 mt-1">
+              Encryption and privacy from day one.
+            </p>
           </div>
           <div className="rounded-xl border border-slate-800 bg-slate-900/60 p-4">
             <div className="text-sm font-semibold">Fast Insights</div>
-            <p className="text-xs text-slate-400 mt-1">From ingestion to answers in minutes.</p>
+            <p className="text-xs text-slate-400 mt-1">
+              From ingestion to answers in minutes.
+            </p>
           </div>
           <div className="rounded-xl border border-slate-800 bg-slate-900/60 p-4">
             <div className="text-sm font-semibold">Human + AI</div>
-            <p className="text-xs text-slate-400 mt-1">Blend of expert knowledge and models.</p>
+            <p className="text-xs text-slate-400 mt-1">
+              Blend of expert knowledge and models.
+            </p>
           </div>
         </div>
       </section>

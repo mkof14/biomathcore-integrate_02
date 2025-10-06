@@ -21,7 +21,6 @@ export type Category = {
 
 export const allCategories = allCategoriesRaw as Category[];
 
-
 export function findServiceBySlug(slug: string) {
   const needle = decodeURIComponent(slug).toLowerCase();
 

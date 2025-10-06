@@ -17,7 +17,11 @@ function resolveReturnUrl(req: NextRequest) {
   return fromQuery || `${base}/member-zone/billing`;
 }
 
-async function resolveCustomerId(stripe: Stripe, req: NextRequest, body: unknown) {
+async function resolveCustomerId(
+  stripe: Stripe,
+  req: NextRequest,
+  body: unknown,
+) {
   const u = new URL(req.url);
   const fromQuery = u.searchParams.get("customerId");
   const fromBody = body?.customerId;
@@ -28,10 +32,15 @@ async function resolveCustomerId(stripe: Stripe, req: NextRequest, body: unknown
 
   // Dev-only opt-in to auto-create a disposable customer to avoid breaking flows.
   if (process.env.ALLOW_PORTAL_AUTO_CUSTOMER === "1") {
-    const email = (body?.email || req.headers.get("x-user-email") || "dev@localhost") as string;
+    const email = (body?.email ||
+      req.headers.get("x-user-email") ||
+      "dev@localhost") as string;
     const c = await stripe.customers.create({
       email,
-      metadata: { created_by: "portal:auto", env: process.env.NODE_ENV || "development" },
+      metadata: {
+        created_by: "portal:auto",
+        env: process.env.NODE_ENV || "development",
+      },
     });
     return c.id;
   }
@@ -41,32 +50,59 @@ async function resolveCustomerId(stripe: Stripe, req: NextRequest, body: unknown
 
 async function createPortalSession(req: NextRequest) {
   const stripe = ensureEnv();
-  const body = req.method === "POST" ? await req.json().catch(() => ({ /* TODO: implement or remove */ })) : { /* TODO: implement or remove */ };
+  const body =
+    req.method === "POST"
+      ? await req.json().catch(() => ({
+          /* TODO: implement or remove */
+        }))
+      : {
+          /* TODO: implement or remove */
+        };
   const customerId = await resolveCustomerId(stripe, req, body);
   if (!customerId) {
-    return { error: "Missing customerId (or enable ALLOW_PORTAL_AUTO_CUSTOMER=1)", status: 400 } as const;
+    return {
+      error: "Missing customerId (or enable ALLOW_PORTAL_AUTO_CUSTOMER=1)",
+      status: 400,
+    } as const;
   }
   const return_url = resolveReturnUrl(req);
-  const session = await stripe.billingPortal.sessions.create({ customer: customerId, return_url });
+  const session = await stripe.billingPortal.sessions.create({
+    customer: customerId,
+    return_url,
+  });
   return { url: session.url } as const;
 }
 
 export async function POST(req: NextRequest) {
   try {
     const res = await createPortalSession(req);
-    if ("error" in res) return NextResponse.json({ ok: false, error: res.error }, { status: res.status });
+    if ("error" in res)
+      return NextResponse.json(
+        { ok: false, error: res.error },
+        { status: res.status },
+      );
     return NextResponse.json({ ok: true, url: res.url });
   } catch (e: unknown) {
-    return NextResponse.json({ ok: false, error: e?.message || "Stripe error" }, { status: 400 });
+    return NextResponse.json(
+      { ok: false, error: e?.message || "Stripe error" },
+      { status: 400 },
+    );
   }
 }
 
 export async function GET(req: NextRequest) {
   try {
     const res = await createPortalSession(req);
-    if ("error" in res) return NextResponse.json({ ok: false, error: res.error }, { status: res.status });
+    if ("error" in res)
+      return NextResponse.json(
+        { ok: false, error: res.error },
+        { status: res.status },
+      );
     return NextResponse.redirect(res.url, { status: 302 });
   } catch (e: unknown) {
-    return NextResponse.json({ ok: false, error: e?.message || "Stripe error" }, { status: 400 });
+    return NextResponse.json(
+      { ok: false, error: e?.message || "Stripe error" },
+      { status: 400 },
+    );
   }
 }

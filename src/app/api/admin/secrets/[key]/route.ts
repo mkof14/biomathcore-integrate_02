@@ -14,7 +14,9 @@ async function loadSecrets(): Promise<SecretsMap> {
     const parsed = JSON.parse(txt);
     if (parsed && typeof parsed === "object") {
       if (Array.isArray((parsed as unknown).records)) {
-        const map: SecretsMap = { /* TODO: implement or remove */ };
+        const map: SecretsMap = {
+          /* TODO: implement or remove */
+        };
         for (const r of (parsed as unknown).records) {
           if (r && typeof r.key === "string") map[r.key] = r.value;
         }
@@ -22,8 +24,12 @@ async function loadSecrets(): Promise<SecretsMap> {
       }
       return parsed as SecretsMap;
     }
-  } catch { /* TODO: implement or remove */ }
-  return { /* TODO: implement or remove */ };
+  } catch {
+    /* TODO: implement or remove */
+  }
+  return {
+    /* TODO: implement or remove */
+  };
 }
 
 /** GET /api/admin/secrets/:key */
@@ -36,7 +42,10 @@ export async function GET(req: Request) {
   const key = idx >= 0 ? base[idx + 1] : undefined;
 
   if (!key) {
-    return NextResponse.json({ ok: true, hint: "Use /api/admin/secrets/<key>" });
+    return NextResponse.json({
+      ok: true,
+      hint: "Use /api/admin/secrets/<key>",
+    });
   }
 
   const secrets = await loadSecrets();

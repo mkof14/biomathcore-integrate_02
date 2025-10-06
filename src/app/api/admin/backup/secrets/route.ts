@@ -30,4 +30,4 @@ export async function GET() {
   }
 }
 
-export { /* TODO: implement or remove */ };
+export /* TODO: implement or remove */ {};

@@ -12,7 +12,7 @@ export async function GET() {
   const catsStr = process.env.PROFILE_SPECIAL_CATEGORIES || "";
   const categories = catsStr
     .split(",")
-    .map(s => s.trim().toLowerCase())
+    .map((s) => s.trim().toLowerCase())
     .filter(Boolean);
 
   return NextResponse.json({

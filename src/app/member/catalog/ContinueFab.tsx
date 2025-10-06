@@ -4,8 +4,12 @@ import { useRouter } from "next/navigation";
 export default function ContinueFab() {
   const router = useRouter();
   const go = (e?: React.MouseEvent) => {
-    try { e?.preventDefault?.(); } catch {}
-    try { router.push("/member/questionnaires"); } catch {}
+    try {
+      e?.preventDefault?.();
+    } catch {}
+    try {
+      router.push("/member/questionnaires");
+    } catch {}
   };
   return (
     <button

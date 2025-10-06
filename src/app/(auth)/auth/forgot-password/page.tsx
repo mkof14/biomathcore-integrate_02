@@ -11,7 +11,9 @@ export default function ForgotPasswordPage() {
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
-    setBusy(true); setOk(null); setMsg("");
+    setBusy(true);
+    setOk(null);
+    setMsg("");
     try {
       const res = await fetch("/api/auth/forgot-password", {
         method: "POST",
@@ -19,37 +21,81 @@ export default function ForgotPasswordPage() {
         body: JSON.stringify({ email: email.trim().toLowerCase() }),
       });
       const j = await res.json().catch(() => ({}));
-      if (!res.ok) { setOk(false); setMsg(j?.error || "Email not found"); return; }
-      setOk(true); setMsg("Reset link sent. Please check your email. (Dev: see server console)");
+      if (!res.ok) {
+        setOk(false);
+        setMsg(j?.error || "Email not found");
+        return;
+      }
+      setOk(true);
+      setMsg(
+        "Reset link sent. Please check your email. (Dev: see server console)",
+      );
       if (j?.demoLink) console.log("Reset link:", j.demoLink);
-    } catch { setOk(false); setMsg("Network error"); }
-    finally { setBusy(false); }
+    } catch {
+      setOk(false);
+      setMsg("Network error");
+    } finally {
+      setBusy(false);
+    }
   }
 
   return (
     <div className="rounded-2xl bg-white/90 p-8 shadow-xl backdrop-blur-sm">
       <div className="flex justify-center mb-4">
-        <Image src="/images/BMCore-Logo-33.png" alt="BioMath Core Logo" width={160} height={60} priority className="drop-shadow-lg" />
+        <Image
+          src="/images/BMCore-Logo-33.png"
+          alt="BioMath Core Logo"
+          width={160}
+          height={60}
+          priority
+          className="drop-shadow-lg"
+        />
       </div>
-      <h1 className="text-center text-2xl font-semibold text-cyan-700 tracking-wide mb-2">Forgot Password</h1>
-      <p className="text-center text-sm text-slate-600 mb-6">Enter your account email — we’ll send a link to reset your password.</p>
-      {ok === true && !!msg && <div className="mb-4 rounded-md border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-700">{msg}</div>}
-      {ok === false && !!msg && <div className="mb-4 rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">{msg}</div>}
+      <h1 className="text-center text-2xl font-semibold text-cyan-700 tracking-wide mb-2">
+        Forgot Password
+      </h1>
+      <p className="text-center text-sm text-slate-600 mb-6">
+        Enter your account email — we’ll send a link to reset your password.
+      </p>
+      {ok === true && !!msg && (
+        <div className="mb-4 rounded-md border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-700">
+          {msg}
+        </div>
+      )}
+      {ok === false && !!msg && (
+        <div className="mb-4 rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
+          {msg}
+        </div>
+      )}
       <form onSubmit={submit} className="space-y-4">
         <label className="block">
           <span className="text-sm font-medium text-gray-700">Email</span>
-          <input type="email" required placeholder="you@example.com" value={email} onChange={(e)=>setEmail(e.target.value)}
-                 className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-black placeholder-gray-400
-                            focus:border-cyan-500 focus:ring-2 focus:ring-cyan-400 focus:outline-none" />
+          <input
+            type="email"
+            required
+            placeholder="you@example.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-black placeholder-gray-400
+                            focus:border-cyan-500 focus:ring-2 focus:ring-cyan-400 focus:outline-none"
+          />
         </label>
-        <button type="submit" disabled={busy}
-                className="w-full rounded-lg px-4 py-2 font-semibold text-white shadow transition-colors
+        <button
+          type="submit"
+          disabled={busy}
+          className="w-full rounded-lg px-4 py-2 font-semibold text-white shadow transition-colors
                            bg-gradient-to-r from-cyan-500 to-emerald-400 hover:from-cyan-600 hover:to-emerald-500
-                           focus:outline-none focus:ring-2 focus:ring-cyan-400 disabled:opacity-60">
+                           focus:outline-none focus:ring-2 focus:ring-cyan-400 disabled:opacity-60"
+        >
           {busy ? "Sending…" : "Send reset link"}
         </button>
         <div className="text-center">
-          <Link href="/sign-in" className="text-sm text-slate-600 hover:underline">Back to Sign In</Link>
+          <Link
+            href="/sign-in"
+            className="text-sm text-slate-600 hover:underline"
+          >
+            Back to Sign In
+          </Link>
         </div>
       </form>
     </div>

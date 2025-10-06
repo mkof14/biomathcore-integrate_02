@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import React, { useState } from "react";
 import { SectionCard } from "@/components/admin/AdminShell";
@@ -6,8 +6,10 @@ import { SectionCard } from "@/components/admin/AdminShell";
 /**   POST-   ( ). */
 async function ping(path: string) {
   const r = await fetch(path, { method: "POST" });
-  const j = await r.json().catch(()=>({}));
-  return r.ok ? `OK: ${j?.detail || "alive"}` : `ERR ${r.status}: ${j?.detail || "check env/key"}`;
+  const j = await r.json().catch(() => ({}));
+  return r.ok
+    ? `OK: ${j?.detail || "alive"}`
+    : `ERR ${r.status}: ${j?.detail || "check env/key"}`;
 }
 
 /**    Stripe / Gemini:    */
@@ -24,10 +26,14 @@ export default function IntegrationsPage() {
             <div className="kicker">Ping API using STRIPE_SECRET_KEY</div>
             <button
               className="btn btn-primary mt-2"
-              onClick={async ()=> setStripe(await ping("/api/admin/ping/stripe"))}
+              onClick={async () =>
+                setStripe(await ping("/api/admin/ping/stripe"))
+              }
               aria-label="Ping Stripe"
               title="   Stripe API"
-            >Ping</button>
+            >
+              Ping
+            </button>
             <div className="small mt-2">{stripe}</div>
           </div>
 
@@ -36,10 +42,14 @@ export default function IntegrationsPage() {
             <div className="kicker">Ping API using GEMINI_API_KEY</div>
             <button
               className="btn btn-primary mt-2"
-              onClick={async ()=> setGemini(await ping("/api/admin/ping/gemini"))}
+              onClick={async () =>
+                setGemini(await ping("/api/admin/ping/gemini"))
+              }
               aria-label="Ping Gemini"
               title="   Gemini API"
-            >Ping</button>
+            >
+              Ping
+            </button>
             <div className="small mt-2">{gemini}</div>
           </div>
         </div>

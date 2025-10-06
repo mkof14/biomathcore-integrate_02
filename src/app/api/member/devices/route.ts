@@ -3,13 +3,31 @@ import { NextResponse } from "next/server";
 import { randomUUID } from "crypto";
 type Device = { id: string; type: string; connectedAt: string };
 const g = global as unknown as { __DEVICES__?: Device[] };
-function bag() { if (!g.__DEVICES__) g.__DEVICES__ = []; return g.__DEVICES__!; }
+function bag() {
+  if (!g.__DEVICES__) g.__DEVICES__ = [];
+  return g.__DEVICES__!;
+}
 export const runtime = "nodejs";
-export async function GET() { return NextResponse.json({ ok: true, data: bag() }); }
+export async function GET() {
+  return NextResponse.json({ ok: true, data: bag() });
+}
 export async function POST(req: Request) {
-  const b = await req.json().catch(()=>({ /* TODO: implement or remove */ } as unknown));
-  if (!b?.type) return NextResponse.json({ ok:false, error:"type_required" }, { status:400 });
-  const d: Device = { id: randomUUID(), type: String(b.type), connectedAt: new Date().toISOString() };
+  const b = await req.json().catch(
+    () =>
+      ({
+        /* TODO: implement or remove */
+      }) as unknown,
+  );
+  if (!b?.type)
+    return NextResponse.json(
+      { ok: false, error: "type_required" },
+      { status: 400 },
+    );
+  const d: Device = {
+    id: randomUUID(),
+    type: String(b.type),
+    connectedAt: new Date().toISOString(),
+  };
   bag().unshift(d);
   return NextResponse.json({ ok: true, data: d });
 }

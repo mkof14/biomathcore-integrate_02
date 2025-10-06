@@ -3,25 +3,58 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
-function Toggle({ checked, onChange, label, id }: { checked: boolean; onChange: (v: boolean) => void; label: string; id: string; }) {
+function Toggle({
+  checked,
+  onChange,
+  label,
+  id,
+}: {
+  checked: boolean;
+  onChange: (v: boolean) => void;
+  label: string;
+  id: string;
+}) {
   return (
-    <label htmlFor={id} className="flex items-center gap-3 cursor-pointer select-none">
-      <div className={`relative h-6 w-11 rounded-full transition-colors ${checked ? "bg-emerald-500/80" : "bg-slate-700"}`}>
-        <input id={id} type="checkbox" className="peer sr-only" checked={checked} onChange={(e: any) => onChange(e.target.checked)} />
-        <span className={`absolute top-0.5 left-0.5 h-5 w-5 rounded-full bg-white transition-transform ${checked ? "translate-x-5" : "translate-x-0"}`} />
+    <label
+      htmlFor={id}
+      className="flex items-center gap-3 cursor-pointer select-none"
+    >
+      <div
+        className={`relative h-6 w-11 rounded-full transition-colors ${checked ? "bg-emerald-500/80" : "bg-slate-700"}`}
+      >
+        <input
+          id={id}
+          type="checkbox"
+          className="peer sr-only"
+          checked={checked}
+          onChange={(e: any) => onChange(e.target.checked)}
+        />
+        <span
+          className={`absolute top-0.5 left-0.5 h-5 w-5 rounded-full bg-white transition-transform ${checked ? "translate-x-5" : "translate-x-0"}`}
+        />
       </div>
       <span className="text-sm text-slate-200">{label}</span>
     </label>
   );
 }
 
-function Card({ title, subtitle, children }: { title: string; subtitle?: string; children: React.ReactNode }) {
+function Card({
+  title,
+  subtitle,
+  children,
+}: {
+  title: string;
+  subtitle?: string;
+  children: React.ReactNode;
+}) {
   return (
     <div className="relative rounded-2xl p-5 border border-slate-700 bg-slate-900/70 shadow-xl overflow-hidden">
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-cyan-400/5 via-transparent to-emerald-400/5" />
       <div className="relative">
         <h2 className="font-medium text-slate-100">{title}</h2>
-        {subtitle && <p className="text-xs text-slate-400 mt-0.5">{subtitle}</p>}
+        {subtitle && (
+          <p className="text-xs text-slate-400 mt-0.5">{subtitle}</p>
+        )}
         <div className="mt-4">{children}</div>
       </div>
     </div>
@@ -68,8 +101,18 @@ export default function SettingsPage() {
         href="/member/dashboard"
         className="inline-flex items-center gap-2 text-slate-300 hover:text-cyan-400 text-sm mb-6"
       >
-        <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+        <svg
+          className="w-4 h-4"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M15 19l-7-7 7-7"
+          />
         </svg>
         Back
       </Link>
@@ -86,11 +129,13 @@ export default function SettingsPage() {
               checked={state.encryptionOn}
               onChange={(v) => setState((s) => ({ ...s, encryptionOn: v }))}
             />
-            <span className={`text-xs px-2 py-1 rounded-lg border ${
-              state.encryptionOn
-                ? "bg-emerald-500/10 text-emerald-300 border-emerald-700/40"
-                : "bg-amber-500/10 text-amber-300 border-amber-700/40"
-            }`}>
+            <span
+              className={`text-xs px-2 py-1 rounded-lg border ${
+                state.encryptionOn
+                  ? "bg-emerald-500/10 text-emerald-300 border-emerald-700/40"
+                  : "bg-amber-500/10 text-amber-300 border-amber-700/40"
+              }`}
+            >
               {state.encryptionOn ? "AES-256 ON" : "Encryption OFF"}
             </span>
           </div>
@@ -116,11 +161,18 @@ export default function SettingsPage() {
           {expanded && (
             <div className="mt-4 space-y-4">
               <div>
-                <label className="block text-xs text-slate-400 mb-1">Interval</label>
+                <label className="block text-xs text-slate-400 mb-1">
+                  Interval
+                </label>
                 <select
                   className="w-full rounded-lg bg-slate-800 border border-slate-600 p-2 text-sm text-slate-100 focus:ring-2 focus:ring-cyan-500"
                   value={state.autoBackupInterval}
-                  onChange={(e: any) => setState((s) => ({ ...s, autoBackupInterval: e.target.value }))}
+                  onChange={(e: any) =>
+                    setState((s) => ({
+                      ...s,
+                      autoBackupInterval: e.target.value,
+                    }))
+                  }
                 >
                   <option value="15m">Every 15 minutes</option>
                   <option value="1h">Hourly</option>
@@ -131,11 +183,18 @@ export default function SettingsPage() {
               </div>
 
               <div>
-                <label className="block text-xs text-slate-400 mb-1">Retention</label>
+                <label className="block text-xs text-slate-400 mb-1">
+                  Retention
+                </label>
                 <select
                   className="w-full rounded-lg bg-slate-800 border border-slate-600 p-2 text-sm text-slate-100 focus:ring-2 focus:ring-emerald-500"
                   value={String(state.retentionDays)}
-                  onChange={(e: any) => setState((s) => ({ ...s, retentionDays: Number(e.target.value) }))}
+                  onChange={(e: any) =>
+                    setState((s) => ({
+                      ...s,
+                      retentionDays: Number(e.target.value),
+                    }))
+                  }
                 >
                   <option value="7">7 days</option>
                   <option value="30">30 days</option>

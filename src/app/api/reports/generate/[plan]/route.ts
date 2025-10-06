@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic";
 
 export async function GET(
   _req: Request,
-  { params }: { params: Promise<{ plan: string }> }
+  { params }: { params: Promise<{ plan: string }> },
 ) {
   const { plan: rawPlan } = await params;
   const plan = (rawPlan || "").toLowerCase() as ReportPlan;

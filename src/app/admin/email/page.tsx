@@ -1,6 +1,6 @@
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 export const revalidate = 0;
-export const fetchCache = 'default-no-store';
+export const fetchCache = "default-no-store";
 
 export default function EmailPage() {
   return (
@@ -14,7 +14,9 @@ export default function EmailPage() {
           <li>EMAIL_SERVER_USER</li>
           <li>EMAIL_SERVER_PASSWORD</li>
         </ul>
-        <div className="text-xs opacity-60">Add via Secrets → Export .env → restart dev server.</div>
+        <div className="text-xs opacity-60">
+          Add via Secrets → Export .env → restart dev server.
+        </div>
       </div>
     </div>
   );

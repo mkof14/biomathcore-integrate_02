@@ -18,8 +18,13 @@ export default function MemberFilesPage() {
       </div>
 
       <div>
-        <h1 className="text-2xl font-semibold text-slate-100 mb-1">Your Files</h1>
-        <p className="text-slate-300 text-sm">Manage, preview, share, and download files stored in your Health Black Box.</p>
+        <h1 className="text-2xl font-semibold text-slate-100 mb-1">
+          Your Files
+        </h1>
+        <p className="text-slate-300 text-sm">
+          Manage, preview, share, and download files stored in your Health Black
+          Box.
+        </p>
       </div>
 
       <div className="rounded-2xl border border-slate-700 bg-slate-800/70 p-4">

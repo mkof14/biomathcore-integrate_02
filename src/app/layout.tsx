@@ -4,7 +4,7 @@ import "@/lib/dev/fetch-log";
 
 import { Suspense } from "react";
 import React from "react";
-import FloatingAssistant from '@/components/assistant/FloatingAssistant';
+import FloatingAssistant from "@/components/assistant/FloatingAssistant";
 import AiButtonBinder from "@/components/AiButtonBinder";
 import AiAssistantModal from "@/components/AiAssistantModal";
 import WidgetMount from "@/components/assistant/WidgetMount";
@@ -50,34 +50,32 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       {/* "dark" class will be toggled by DarkModeProvider (client) */}
       <body className="min-h-screen bg-slate-950 text-slate-200">
-      <I18nProvider>
-        <DarkModeProvider>
-          {/* Skip link for a11y */}
-          
+        <I18nProvider>
+          <DarkModeProvider>
+            {/* Skip link for a11y */}
 
-          {/* Global header (fixed) */}
-          <Header />
-            
-            
+            {/* Global header (fixed) */}
+            <Header />
+
             <AiButtonBinder />
             <AiAssistantModal />
-<HideBack />
-{/* Main content (offset for fixed header height) */}
-          <main id="main-content" className="pt-16">
-            {children}
-          </main>
+            <HideBack />
+            {/* Main content (offset for fixed header height) */}
+            <main id="main-content" className="pt-16">
+              {children}
+            </main>
 
-          {/* Floating AI assistant on all pages */}
-          <FloatingAiWidget />
+            {/* Floating AI assistant on all pages */}
+            <FloatingAiWidget />
 
-          {/* Global footer */}
-          <Footer />
-        </DarkModeProvider>
-            </I18nProvider>
-      <WidgetMount />
-    <WidgetMount />
-    <FloatingAssistant />
-</body>
+            {/* Global footer */}
+            <Footer />
+          </DarkModeProvider>
+        </I18nProvider>
+        <WidgetMount />
+        <WidgetMount />
+        <FloatingAssistant />
+      </body>
     </html>
   );
 }

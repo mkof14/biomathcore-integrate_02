@@ -10,20 +10,37 @@ export async function GET(req: Request) {
 
     // Try BlackBoxJob first
     try {
-      const j = await (prisma as unknown).blackBoxJob.findUnique({ where: { id } });
-      if (j) return NextResponse.json({ ok:true, data:{ id: j.id, status: j.status } });
-    } catch { /* TODO: implement or remove */ }
+      const j = await (prisma as unknown).blackBoxJob.findUnique({
+        where: { id },
+      });
+      if (j)
+        return NextResponse.json({
+          ok: true,
+          data: { id: j.id, status: j.status },
+        });
+    } catch {
+      /* TODO: implement or remove */
+    }
 
     // Fallback: simulated via Report row
     try {
       const r = await prisma.report.findUnique({ where: { id } });
-      if (!r) return NextResponse.json({ ok:false, error:"NOT_FOUND" }, { status: 404 });
+      if (!r)
+        return NextResponse.json(
+          { ok: false, error: "NOT_FOUND" },
+          { status: 404 },
+        );
       const status = (r.content as unknown)?.status ?? "queued";
-      return NextResponse.json({ ok:true, data:{ id: r.id, status, kind } });
-    } catch { /* TODO: implement or remove */ }
+      return NextResponse.json({ ok: true, data: { id: r.id, status, kind } });
+    } catch {
+      /* TODO: implement or remove */
+    }
 
-    return NextResponse.json({ ok:false, error:"UNKNOWN" }, { status: 404 });
+    return NextResponse.json({ ok: false, error: "UNKNOWN" }, { status: 404 });
   } catch {
-    return NextResponse.json({ ok:false, error:"POLL_FAILED" }, { status: 500 });
+    return NextResponse.json(
+      { ok: false, error: "POLL_FAILED" },
+      { status: 500 },
+    );
   }
 }

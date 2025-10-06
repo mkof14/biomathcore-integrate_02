@@ -2,7 +2,13 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-export default function StartButton({ questionnaireKey, visibility }: { questionnaireKey: string; visibility: "identified" | "anonymous" }) {
+export default function StartButton({
+  questionnaireKey,
+  visibility,
+}: {
+  questionnaireKey: string;
+  visibility: "identified" | "anonymous";
+}) {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 

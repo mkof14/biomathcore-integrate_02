@@ -5,9 +5,14 @@ export const runtime = "nodejs";
 export async function POST() {
   const hasKey = !!process.env.STRIPE_SECRET_KEY;
   return NextResponse.json(
-    { ok: hasKey, detail: hasKey ? "STRIPE_SECRET_KEY present" : "missing STRIPE_SECRET_KEY" },
-    { status: hasKey ? 200 : 500 }
+    {
+      ok: hasKey,
+      detail: hasKey
+        ? "STRIPE_SECRET_KEY present"
+        : "missing STRIPE_SECRET_KEY",
+    },
+    { status: hasKey ? 200 : 500 },
   );
 }
 
-export { /* TODO: implement or remove */ };
+export /* TODO: implement or remove */ {};

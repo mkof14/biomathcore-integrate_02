@@ -7,7 +7,12 @@ export async function GET() {
   if (!url) {
     return NextResponse.json({ ok: false, error: "DATABASE_URL missing" });
   }
-  const client = new Client({ connectionString: url, ssl: /sslmode=require/i.test(url) ? { rejectUnauthorized: false } : undefined });
+  const client = new Client({
+    connectionString: url,
+    ssl: /sslmode=require/i.test(url)
+      ? { rejectUnauthorized: false }
+      : undefined,
+  });
   try {
     await client.connect();
     const r = await client.query("SELECT 1 as ok");
@@ -15,6 +20,10 @@ export async function GET() {
   } catch (e: unknown) {
     return NextResponse.json({ ok: false, error: e?.message || "db error" });
   } finally {
-    try { await client.end(); } catch { /* TODO: implement or remove */ }
+    try {
+      await client.end();
+    } catch {
+      /* TODO: implement or remove */
+    }
   }
 }

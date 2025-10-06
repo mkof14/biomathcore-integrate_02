@@ -28,7 +28,9 @@ export default function AuthShell({
         <div className="rounded-2xl border border-white/10 bg-white/5 p-6 shadow-2xl backdrop-blur">
           <h1 className="mb-1 text-center text-2xl font-semibold">{title}</h1>
           {subtitle ? (
-            <p className="mb-5 text-center text-sm text-slate-300">{subtitle}</p>
+            <p className="mb-5 text-center text-sm text-slate-300">
+              {subtitle}
+            </p>
           ) : (
             <div className="mb-4" />
           )}

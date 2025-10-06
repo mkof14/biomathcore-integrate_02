@@ -11,7 +11,10 @@ export async function POST(req: Request) {
   const file = form.get("file") as File | null;
 
   if (!file) {
-    return NextResponse.json({ ok: false, error: "No file provided" }, { status: 400 });
+    return NextResponse.json(
+      { ok: false, error: "No file provided" },
+      { status: 400 },
+    );
   }
 
   return NextResponse.json({ ok: true, name: file.name, size: file.size });

@@ -49,8 +49,11 @@ export default function ResetPasswordPage() {
       if (!r.ok) throw new Error(j?.error || "Reset failed");
       setMsg({ ok: "Password changed. You can sign in now." });
       setTimeout(
-        () => router.push(`/sign-in?reset=1&email=${encodeURIComponent(j?.email || "")}`),
-        900
+        () =>
+          router.push(
+            `/sign-in?reset=1&email=${encodeURIComponent(j?.email || "")}`,
+          ),
+        900,
       );
     } catch (e: any) {
       setMsg({ err: e.message || "Server error" });
@@ -68,7 +71,10 @@ export default function ResetPasswordPage() {
   };
 
   return (
-    <AuthShell title="Reset Password" subtitle="Choose a new password for your account.">
+    <AuthShell
+      title="Reset Password"
+      subtitle="Choose a new password for your account."
+    >
       {msg.err && (
         <div className="mb-4 rounded-md bg-red-500/15 text-red-200 px-3 py-2 text-sm">
           {msg.err}

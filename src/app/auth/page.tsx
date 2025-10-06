@@ -104,7 +104,10 @@ export default function SignInPage() {
         </button>
 
         <div className="mt-2 flex items-center justify-between text-sm">
-          <a href="/auth/forgot-password" className="text-sky-300 hover:text-sky-200">
+          <a
+            href="/auth/forgot-password"
+            className="text-sky-300 hover:text-sky-200"
+          >
             Forgot password?
           </a>
           <a href="/auth/sign-up" className="text-sky-300 hover:text-sky-200">

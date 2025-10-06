@@ -10,11 +10,15 @@ export async function POST(req: NextRequest) {
 
     // Very rough: take latest SUBMITTED sessions per questionnaire and aggregate into one JSON
     const sessions = await prisma.responseSession.findMany({
-      where: { status: "SUBMITTED" }, orderBy: { updatedAt: "desc" }, take: 50,
-      include: { answers: true }
+      where: { status: "SUBMITTED" },
+      orderBy: { updatedAt: "desc" },
+      take: 50,
+      include: { answers: true },
     });
 
-    const data: unknown = { /* TODO: implement or remove */ };
+    const data: unknown = {
+      /* TODO: implement or remove */
+    };
     for (const s of sessions) {
       for (const a of s.answers) {
         data[a.questionId] = a.payloadJson; // NOTE: sensitive is already encrypted in storage if enabled
@@ -22,11 +26,11 @@ export async function POST(req: NextRequest) {
     }
 
     const snap = await prisma.userProfileSnapshot.create({
-      data: { userId, kind, dataJson: data }
+      data: { userId, kind, dataJson: data },
     });
 
     return NextResponse.json({ ok: true, id: snap.id });
   } catch (e: unknown) {
-    return NextResponse.json({ ok:false, error: e.message }, { status: 400 });
+    return NextResponse.json({ ok: false, error: e.message }, { status: 400 });
   }
 }

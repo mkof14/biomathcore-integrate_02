@@ -11,10 +11,17 @@ export async function GET() {
   try {
     const p = path.join(process.cwd(), "var", "admin", "audit.log");
     const txt = await fs.readFile(p, "utf8");
-    return new NextResponse(txt, { headers: { "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "no-store" }});
+    return new NextResponse(txt, {
+      headers: {
+        "Content-Type": "text/plain; charset=utf-8",
+        "Cache-Control": "no-store",
+      },
+    });
   } catch {
-    return new NextResponse("No audit log yet.\n", { headers: { "Content-Type": "text/plain; charset=utf-8" }});
+    return new NextResponse("No audit log yet.\n", {
+      headers: { "Content-Type": "text/plain; charset=utf-8" },
+    });
   }
 }
 
-export { /* TODO: implement or remove */ };
+export /* TODO: implement or remove */ {};

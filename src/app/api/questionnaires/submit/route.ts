@@ -5,8 +5,8 @@ import { prisma } from "@/app/lib/prisma";
 
 const AnswerValue = z.union([z.string(), z.number()]);
 const SubmitPayloadSchema = z.object({
-  plan: z.enum(["STANDARD","PREMIUM","MAX"]),
-  metricMode: z.enum(["percent","score","level"]),
+  plan: z.enum(["STANDARD", "PREMIUM", "MAX"]),
+  metricMode: z.enum(["percent", "score", "level"]),
   answers: z.record(AnswerValue),
   elapsedSec: z.number().optional(),
   changes: z.number().optional(),

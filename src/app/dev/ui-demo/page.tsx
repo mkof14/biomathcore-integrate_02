@@ -6,7 +6,7 @@ import EndpointBadge from "@/components/ui/EndpointBadge";
 
 export default function Page() {
   const [count, setCount] = useState(0);
-  const create = () => setCount(c => c + 1);
+  const create = () => setCount((c) => c + 1);
 
   return (
     <div className="max-w-3xl mx-auto p-6 space-y-6">
@@ -18,9 +18,7 @@ export default function Page() {
         endpointPath="/api/voice/health"
       />
 
-      <div className="text-sm text-neutral-400">
-        Created: {count}
-      </div>
+      <div className="text-sm text-neutral-400">Created: {count}</div>
 
       <div className="space-x-3">
         <EndpointBadge path="/api/drug-gene/health" />

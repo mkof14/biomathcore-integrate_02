@@ -15,7 +15,7 @@ export const authOptions: AuthOptions = {
       authorize: async (creds) => {
         try {
           const email = (creds?.email || "").trim().toLowerCase();
-          const password = (creds?.password || "");
+          const password = creds?.password || "";
 
           // краткий лог для диагностики (без пароля)
           console.log("[AUTH] try", { email, hasPass: !!password });
@@ -23,7 +23,10 @@ export const authOptions: AuthOptions = {
           if (!email || !password) return null;
 
           const user = await prisma.user.findUnique({ where: { email } });
-          console.log("[AUTH] user", { found: !!user, hasHash: !!user?.passwordHash });
+          console.log("[AUTH] user", {
+            found: !!user,
+            hasHash: !!user?.passwordHash,
+          });
 
           if (!user?.passwordHash) return null;
 
@@ -31,7 +34,11 @@ export const authOptions: AuthOptions = {
           console.log("[AUTH] compare", ok);
           if (!ok) return null;
 
-          return { id: user.id, email: user.email, name: user.name ?? undefined };
+          return {
+            id: user.id,
+            email: user.email,
+            name: user.name ?? undefined,
+          };
         } catch (e) {
           console.error("[AUTH] error", e);
           return null;
@@ -40,7 +47,6 @@ export const authOptions: AuthOptions = {
     }),
   ],
   // можно оставить включённым до завершения настройки
-
 };
 
 const handler = NextAuth(authOptions);

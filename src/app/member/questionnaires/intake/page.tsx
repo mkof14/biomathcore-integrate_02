@@ -4,9 +4,27 @@ import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 
 type Field =
-  | { name: string; label: string; type: "text" | "textarea"; required?: boolean }
-  | { name: string; label: string; type: "number"; required?: boolean; min?: number; max?: number }
-  | { name: string; label: string; type: "select"; required?: boolean; options: string[] }
+  | {
+      name: string;
+      label: string;
+      type: "text" | "textarea";
+      required?: boolean;
+    }
+  | {
+      name: string;
+      label: string;
+      type: "number";
+      required?: boolean;
+      min?: number;
+      max?: number;
+    }
+  | {
+      name: string;
+      label: string;
+      type: "select";
+      required?: boolean;
+      options: string[];
+    }
   | { name: string; label: string; type: "checkbox"; required?: boolean };
 
 const STORAGE_KEY = "bmc.catalog.selected";
@@ -22,15 +40,18 @@ export default function IntakePage() {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       const arr = JSON.parse(raw || "[]");
-      return Array.isArray(arr) ? arr as string[] : [];
-    } catch { return []; }
+      return Array.isArray(arr) ? (arr as string[]) : [];
+    } catch {
+      return [];
+    }
   }
 
   const refresh = async () => {
     const cats = loadSelected();
     setSelected(cats);
     const res = await fetch("/api/questionnaires/dynamic-intake", {
-      method: "POST", headers: { "Content-Type": "application/json" },
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ categories: cats }),
     });
     const data = await res.json();
@@ -66,7 +87,8 @@ export default function IntakePage() {
     }
     const payload = { categories: selected, answers: values };
     await fetch("/api/questionnaires/dynamic-intake/submit", {
-      method: "POST", headers: { "Content-Type": "application/json" },
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     });
     alert("Submitted");
@@ -83,7 +105,9 @@ export default function IntakePage() {
     <div className="min-h-screen bg-[#0b142a] text-slate-100">
       <div className="mx-auto max-w-6xl px-6 py-10">
         <div className="mb-8">
-          <h1 className="text-2xl font-semibold tracking-tight">Dynamic Intake</h1>
+          <h1 className="text-2xl font-semibold tracking-tight">
+            Dynamic Intake
+          </h1>
         </div>
 
         <div className="grid gap-6 lg:grid-cols-12">
@@ -93,10 +117,15 @@ export default function IntakePage() {
                 <div>
                   <div className="text-sm font-medium">Selected categories</div>
                   <div className="text-xs text-white/70">
-                    {selected.length ? selected.join(", ") : "No categories selected yet."}
+                    {selected.length
+                      ? selected.join(", ")
+                      : "No categories selected yet."}
                   </div>
                 </div>
-                <button onClick={refresh} className="text-sky-300 text-sm underline underline-offset-4">
+                <button
+                  onClick={refresh}
+                  className="text-sky-300 text-sm underline underline-offset-4"
+                >
                   Refresh
                 </button>
               </div>
@@ -110,39 +139,70 @@ export default function IntakePage() {
                   if (f.type === "text")
                     return (
                       <label key={idx} className="block text-sm">
-                        <span className="mb-1 inline-block">{label}{req && " *"}</span>
-                        <input className={inputBase} value={values[name] ?? ""} onChange={(e)=>setVal(name, e.target.value)} />
+                        <span className="mb-1 inline-block">
+                          {label}
+                          {req && " *"}
+                        </span>
+                        <input
+                          className={inputBase}
+                          value={values[name] ?? ""}
+                          onChange={(e) => setVal(name, e.target.value)}
+                        />
                       </label>
                     );
 
                   if (f.type === "number")
                     return (
                       <label key={idx} className="block text-sm">
-                        <span className="mb-1 inline-block">{label}{req && " *"}</span>
-                        <input type="number" className={inputBase}
-                          value={values[name] ?? ""} onChange={(e)=>setVal(name, e.target.value)}
-                          min={(f as any).min} max={(f as any).max} />
+                        <span className="mb-1 inline-block">
+                          {label}
+                          {req && " *"}
+                        </span>
+                        <input
+                          type="number"
+                          className={inputBase}
+                          value={values[name] ?? ""}
+                          onChange={(e) => setVal(name, e.target.value)}
+                          min={(f as any).min}
+                          max={(f as any).max}
+                        />
                       </label>
                     );
 
                   if (f.type === "textarea")
                     return (
                       <label key={idx} className="block text-sm">
-                        <span className="mb-1 inline-block">{label}{req && " *"}</span>
-                        <textarea className={textareaBase}
-                          value={values[name] ?? ""} onChange={(e)=>setVal(name, e.target.value)} />
+                        <span className="mb-1 inline-block">
+                          {label}
+                          {req && " *"}
+                        </span>
+                        <textarea
+                          className={textareaBase}
+                          value={values[name] ?? ""}
+                          onChange={(e) => setVal(name, e.target.value)}
+                        />
                       </label>
                     );
 
                   if (f.type === "select")
                     return (
                       <label key={idx} className="block text-sm">
-                        <span className="mb-1 inline-block">{label}{req && " *"}</span>
-                        <select className={selectBase}
-                          value={values[name] ?? ""} onChange={(e)=>setVal(name, e.target.value)}>
-                          <option value="" disabled>Select…</option>
-                          {(f as any).options?.map((opt:string)=>(
-                            <option key={opt} value={opt}>{opt}</option>
+                        <span className="mb-1 inline-block">
+                          {label}
+                          {req && " *"}
+                        </span>
+                        <select
+                          className={selectBase}
+                          value={values[name] ?? ""}
+                          onChange={(e) => setVal(name, e.target.value)}
+                        >
+                          <option value="" disabled>
+                            Select…
+                          </option>
+                          {(f as any).options?.map((opt: string) => (
+                            <option key={opt} value={opt}>
+                              {opt}
+                            </option>
                           ))}
                         </select>
                       </label>
@@ -150,12 +210,18 @@ export default function IntakePage() {
 
                   if (f.type === "checkbox")
                     return (
-                      <label key={idx} className="flex items-center gap-2 text-sm">
-                        <input type="checkbox"
+                      <label
+                        key={idx}
+                        className="flex items-center gap-2 text-sm"
+                      >
+                        <input
+                          type="checkbox"
                           checked={!!values[name]}
-                          onChange={(e)=>setVal(name, e.target.checked)}
-                          className="h-4 w-4 rounded border-white/10 bg-slate-950 outline-none focus:ring-2 focus:ring-sky-400" />
-                        {label}{req && " *"}
+                          onChange={(e) => setVal(name, e.target.checked)}
+                          className="h-4 w-4 rounded border-white/10 bg-slate-950 outline-none focus:ring-2 focus:ring-sky-400"
+                        />
+                        {label}
+                        {req && " *"}
                       </label>
                     );
 
@@ -165,8 +231,10 @@ export default function IntakePage() {
                 {error && <div className="text-rose-300 text-sm">{error}</div>}
 
                 <div className="pt-2">
-                  <button type="submit"
-                    className="inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-sky-400 to-emerald-400 px-4 py-2 text-sm font-semibold text-slate-900">
+                  <button
+                    type="submit"
+                    className="inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-sky-400 to-emerald-400 px-4 py-2 text-sm font-semibold text-slate-900"
+                  >
                     Submit
                   </button>
                 </div>
@@ -177,14 +245,21 @@ export default function IntakePage() {
           <aside className="lg:col-span-4">
             <div className="sticky top-6 rounded-2xl border border-white/10 bg-slate-900/60 p-5 shadow-lg">
               <div className="text-sm font-medium">Expanding questionnaire</div>
-              <div className="mt-2 text-xs opacity-80">Fields are added dynamically from your selected categories in the Service Catalog.</div>
+              <div className="mt-2 text-xs opacity-80">
+                Fields are added dynamically from your selected categories in
+                the Service Catalog.
+              </div>
               <div className="mt-4">
-                <Link href="/member/catalog" className="inline-flex items-center rounded-xl border border-white/20 bg-white/10 px-3 py-2 text-sm">
+                <Link
+                  href="/member/catalog"
+                  className="inline-flex items-center rounded-xl border border-white/20 bg-white/10 px-3 py-2 text-sm"
+                >
                   Edit categories
                 </Link>
               </div>
               <div className="mt-3 text-xs opacity-70">
-                Tip: try Sleep &amp; Recovery, Fitness &amp; Performance or Mental Wellness to see extra fields.
+                Tip: try Sleep &amp; Recovery, Fitness &amp; Performance or
+                Mental Wellness to see extra fields.
               </div>
             </div>
           </aside>

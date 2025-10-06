@@ -7,7 +7,13 @@ export async function GET() {
     const items = await prisma.medicalDocument.findMany({
       orderBy: { createdAt: "desc" },
       take: 50,
-      select: { id: true, objectKey: true, contentType: true, sizeBytes: true, createdAt: true },
+      select: {
+        id: true,
+        objectKey: true,
+        contentType: true,
+        sizeBytes: true,
+        createdAt: true,
+      },
     } as unknown);
     return NextResponse.json({ ok: true, items });
   } catch (e) {

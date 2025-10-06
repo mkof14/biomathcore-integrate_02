@@ -1,6 +1,11 @@
 "use client";
 import Link from "next/link";
-import { isSuperAdmin, setSuperAdmin, grantEntitlement, hasEntitlement } from "../questionnaires/engine";
+import {
+  isSuperAdmin,
+  setSuperAdmin,
+  grantEntitlement,
+  hasEntitlement,
+} from "../questionnaires/engine";
 
 export default function AdminPanel() {
   const superOn = isSuperAdmin();
@@ -13,24 +18,48 @@ export default function AdminPanel() {
       <div className="rounded border p-4 bg-white/80 text-black space-y-4">
         <div className="flex items-center gap-3">
           <span className="font-medium">Role:</span>
-          <span className={`px-2 py-1 rounded ${superOn ? "bg-emerald-300" : "bg-slate-200"} text-black`}>{superOn ? "SUPER ADMIN" : "USER"}</span>
-          <button onClick={() => { setSuperAdmin(!superOn); location.reload(); }} className="ml-auto px-4 py-2 rounded bg-sky-400 text-black font-semibold">
+          <span
+            className={`px-2 py-1 rounded ${superOn ? "bg-emerald-300" : "bg-slate-200"} text-black`}
+          >
+            {superOn ? "SUPER ADMIN" : "USER"}
+          </span>
+          <button
+            onClick={() => {
+              setSuperAdmin(!superOn);
+              location.reload();
+            }}
+            className="ml-auto px-4 py-2 rounded bg-sky-400 text-black font-semibold"
+          >
             {superOn ? "Disable Super Admin" : "Enable Super Admin"}
           </button>
         </div>
 
         <div className="flex items-center gap-3">
           <span className="font-medium">Entitlement: Sexual Health</span>
-          <span className={`px-2 py-1 rounded ${entSH ? "bg-emerald-300" : "bg-slate-200"} text-black`}>{entSH ? "ENABLED" : "LOCKED"}</span>
-          <button onClick={() => { grantEntitlement("sexual-health", !entSH); location.reload(); }} className="ml-auto px-4 py-2 rounded bg-amber-300 text-black font-semibold">
+          <span
+            className={`px-2 py-1 rounded ${entSH ? "bg-emerald-300" : "bg-slate-200"} text-black`}
+          >
+            {entSH ? "ENABLED" : "LOCKED"}
+          </span>
+          <button
+            onClick={() => {
+              grantEntitlement("sexual-health", !entSH);
+              location.reload();
+            }}
+            className="ml-auto px-4 py-2 rounded bg-amber-300 text-black font-semibold"
+          >
             {entSH ? "Revoke" : "Grant"}
           </button>
         </div>
       </div>
 
       <div className="flex gap-3">
-        
-        <a href="/member/questionnaires/sexual-health?super=1" className="px-4 py-2 rounded bg-rose-300 text-black font-semibold">Open Sexual Health (super)</a>
+        <a
+          href="/member/questionnaires/sexual-health?super=1"
+          className="px-4 py-2 rounded bg-rose-300 text-black font-semibold"
+        >
+          Open Sexual Health (super)
+        </a>
       </div>
     </div>
   );

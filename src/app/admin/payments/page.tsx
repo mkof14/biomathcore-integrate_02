@@ -1,6 +1,6 @@
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 export const revalidate = 0;
-export const fetchCache = 'default-no-store';
+export const fetchCache = "default-no-store";
 
 export default function PaymentsPage() {
   return (
@@ -12,7 +12,10 @@ export default function PaymentsPage() {
           <li>STRIPE_SECRET_KEY</li>
           <li>STRIPE_WEBHOOK_SECRET</li>
         </ul>
-        <div className="text-xs opacity-60">Set in Secrets, export .env, configure webhook URL in Stripe dashboard.</div>
+        <div className="text-xs opacity-60">
+          Set in Secrets, export .env, configure webhook URL in Stripe
+          dashboard.
+        </div>
       </div>
     </div>
   );

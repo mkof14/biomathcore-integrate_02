@@ -19,7 +19,9 @@ export default async function Page(p: PageProps) {
       <main className="relative z-0 mx-auto max-w-3xl px-4 py-8">
         <div className="rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900/80 p-6">
           <div className="text-lg font-semibold">Not found</div>
-          <div className="text-sm opacity-70 mt-2">Unknown questionnaire key: {id}</div>
+          <div className="text-sm opacity-70 mt-2">
+            Unknown questionnaire key: {id}
+          </div>
           <Link
             href="/intake"
             className="inline-block mt-4 rounded-md border border-zinc-300 dark:border-zinc-700 px-3 py-1.5 text-sm"

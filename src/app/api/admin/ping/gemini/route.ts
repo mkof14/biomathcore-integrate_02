@@ -5,9 +5,12 @@ export const runtime = "nodejs";
 export async function POST() {
   const hasKey = !!process.env.GEMINI_API_KEY;
   return NextResponse.json(
-    { ok: hasKey, detail: hasKey ? "GEMINI_API_KEY present" : "missing GEMINI_API_KEY" },
-    { status: hasKey ? 200 : 500 }
+    {
+      ok: hasKey,
+      detail: hasKey ? "GEMINI_API_KEY present" : "missing GEMINI_API_KEY",
+    },
+    { status: hasKey ? 200 : 500 },
   );
 }
 
-export { /* TODO: implement or remove */ };
+export /* TODO: implement or remove */ {};

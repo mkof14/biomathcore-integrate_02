@@ -15,10 +15,14 @@ if (!g.__PROFILE_STORE__) g.__PROFILE_STORE__ = new Map<string, Profile>();
 function getUserIdFromCookie(req: Request): string {
   const raw = req.headers.get("cookie") || "";
   const pairs = Object.fromEntries(
-    raw.split(/;\s*/).filter(Boolean).map(kv => {
-      const i = kv.indexOf("="); if (i < 0) return [kv, ""];
-      return [kv.slice(0, i), decodeURIComponent(kv.slice(i + 1))];
-    })
+    raw
+      .split(/;\s*/)
+      .filter(Boolean)
+      .map((kv) => {
+        const i = kv.indexOf("=");
+        if (i < 0) return [kv, ""];
+        return [kv.slice(0, i), decodeURIComponent(kv.slice(i + 1))];
+      }),
   );
   return (pairs["bmc_dev_user"] as string) || "dev-user-001";
 }
@@ -41,24 +45,39 @@ export async function GET(req: Request) {
 
 export async function PATCH(req: Request) {
   const userId = getUserIdFromCookie(req);
-  const body = await req.json().catch(() => ({ /* TODO: implement or remove */ }));
+  const body = await req.json().catch(() => ({
+    /* TODO: implement or remove */
+  }));
   if (!body || typeof body !== "object") {
-    return NextResponse.json({ ok: false, error: "invalid_body" }, { status: 400 });
+    return NextResponse.json(
+      { ok: false, error: "invalid_body" },
+      { status: 400 },
+    );
   }
 
   const current: Profile =
     g.__PROFILE_STORE__.get(userId) ||
-    ({ userId, name: "Member", email: `${userId}@example.com`, avatarDataUrl: null, updatedAt: new Date().toISOString() } as Profile);
+    ({
+      userId,
+      name: "Member",
+      email: `${userId}@example.com`,
+      avatarDataUrl: null,
+      updatedAt: new Date().toISOString(),
+    } as Profile);
 
   const next: Profile = {
     ...current,
-    name: typeof body.name === "string" && body.name.trim() ? body.name.trim() : current.name,
+    name:
+      typeof body.name === "string" && body.name.trim()
+        ? body.name.trim()
+        : current.name,
     avatarDataUrl:
-      typeof body.avatarDataUrl === "string" && body.avatarDataUrl.startsWith("data:")
+      typeof body.avatarDataUrl === "string" &&
+      body.avatarDataUrl.startsWith("data:")
         ? body.avatarDataUrl
         : body.avatarDataUrl === null
-        ? null
-        : current.avatarDataUrl,
+          ? null
+          : current.avatarDataUrl,
     updatedAt: new Date().toISOString(),
   };
 

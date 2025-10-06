@@ -17,7 +17,7 @@ export async function GET(req: Request) {
   });
 
   return NextResponse.json({
-    items: rows.map(r => ({
+    items: rows.map((r) => ({
       id: r.id,
       title: r.title ?? "Report",
       createdAt: r.createdAt.toISOString(),
