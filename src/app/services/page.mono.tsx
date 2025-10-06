@@ -151,7 +151,6 @@ function ServiceModalInline({
   const generate = async () => {
     setBusy(true);
     try {
-     
       const demo = `AI (${aiChannel.toUpperCase()}) • Generated analysis for "${service.title}"\n\nUser input: ${input || "— no text provided —"}\n\nInsight: trends detected, next steps suggested.`;
       await new Promise((r) => setTimeout(r, 600));
       setResult(demo);
@@ -647,7 +646,6 @@ export default function ServicesPageMonolith() {
                               href: href,
                             };
                             setTimeout(() => {
-                             
                               const exists = recent.find(
                                 (r) => r.href === item.href,
                               );

@@ -26,9 +26,14 @@ export default async function ServiceDetailsPage({ params }: Props) {
     <main className="min-h-screen bg-white text-slate-900">
       <section className="mx-auto max-w-3xl px-6 py-12">
         <nav className="mb-6 text-sm flex items-center gap-2 text-slate-600">
-          <Link href="/services" className="hover:text-slate-900">Services</Link>
+          <Link href="/services" className="hover:text-slate-900">
+            Services
+          </Link>
           <span>›</span>
-          <Link href={`/services/${category.slug}`} className="hover:text-slate-900">
+          <Link
+            href={`/services/${category.slug}`}
+            className="hover:text-slate-900"
+          >
             {category.title}
           </Link>
           <span>›</span>

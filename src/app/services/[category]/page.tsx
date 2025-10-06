@@ -29,7 +29,10 @@ export default async function ServicesCategoryPage({ params }: Props) {
     <main className="min-h-screen bg-white text-slate-900">
       <section className="mx-auto max-w-7xl px-6 py-12">
         <nav className="mb-6 text-sm">
-          <Link href="/services" className="text-slate-600 hover:text-slate-900">
+          <Link
+            href="/services"
+            className="text-slate-600 hover:text-slate-900"
+          >
             ← All Categories
           </Link>
         </nav>
