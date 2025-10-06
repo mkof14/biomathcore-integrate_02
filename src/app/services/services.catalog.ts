@@ -1012,3 +1012,6 @@ export function findCategory(slug: string): ServiceCategory | undefined {
 export function findServiceBySlug(slug: string): ServiceItem | undefined {
   return allServicesFlat().find((s) => s.slug === slug);
 }
+export function findCategoryByServiceSlug(slug: string) {
+  return CATEGORIES.find((c) => c.services.some((s) => s.slug === slug));
+}

@@ -77,15 +77,15 @@ export default function ResultsGrid({ scopedTo }: { scopedTo?: string }) {
               </h2>
             </header>
           ) : null}
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {c.services.map((s) => (
               <div
                 key={s.slug}
-                className="relative group rounded-xl border border-slate-200/60 bg-gradient-to-b from-white/80 to-white/60 dark:from-slate-900/60 dark:to-slate-900/40 backdrop-blur-sm shadow-sm hover:shadow-lg transition-all hover:-translate-y-0.5"
+                className="relative group rounded-3xl border border-slate-200/50 bg-gradient-to-br from-white/95 to-white/75 dark:from-slate-900/70 dark:to-slate-900/40 backdrop-blur-md shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-200"
               >
                 <Link
                   href={`/svc/${s.slug}`}
-                  className="block rounded-xl p-4"
+                  className="block rounded-3xl p-5"
                   onClick={() =>
                     track({
                       type: "service_click",
@@ -93,12 +93,12 @@ export default function ResultsGrid({ scopedTo }: { scopedTo?: string }) {
                     })
                   }
                 >
-                  <div className="text-base font-semibold tracking-tight text-slate-900 dark:text-slate-100">
+                  <h3 className="text-lg font-semibold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-sky-600 via-cyan-500 to-teal-500 dark:from-sky-400 dark:via-cyan-300 dark:to-teal-300 drop-shadow-sm">
                     {s.title}
-                  </div>
-                  <div className="mt-2 text-xs text-slate-500 dark:text-slate-400">
-                    Open details
-                  </div>
+                  </h3>
+                  <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">
+                    Click to view details
+                  </p>
                 </Link>
                 <button
                   onClick={() => {
@@ -108,7 +108,7 @@ export default function ResultsGrid({ scopedTo }: { scopedTo?: string }) {
                       meta: { service: s.slug, active: !favs.includes(s.slug) },
                     });
                   }}
-                  className={`absolute top-2 right-2 h-8 w-8 inline-flex items-center justify-center rounded-full border border-slate-200/60 bg-white/80 dark:bg-slate-900/50 text-lg ${favs.includes(s.slug) ? "text-amber-500" : "text-slate-400 group-hover:text-slate-600"}`}
+                  className={`absolute top-3 right-3 h-9 w-9 inline-flex items-center justify-center rounded-full border border-slate-200/60 bg-white/90 dark:bg-slate-900/50 text-lg shadow-sm ${favs.includes(s.slug) ? "text-amber-500" : "text-slate-400 group-hover:text-slate-600"}`}
                   title="Toggle favorite"
                 >
                   ★

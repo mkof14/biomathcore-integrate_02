@@ -37,7 +37,7 @@ export default function HomePage() {
           <Link
             key={cat.slug}
             href={`/services/${cat.slug}`}
-            className="group rounded-2xl p-5 border border-slate-200/60 bg-gradient-to-b from-white/80 to-white/60 dark:from-slate-900/60 dark:to-slate-900/40 backdrop-blur-sm shadow-sm hover:shadow-lg transition-all hover:-translate-y-0.5"
+            className="group rounded-3xl p-6 border border-slate-200/50 bg-gradient-to-br from-white/95 to-white/75 dark:from-slate-900/70 dark:to-slate-900/40 backdrop-blur-md shadow-md hover:shadow-xl hover:-translate-y-1 transition-all"
           >
             <div className="flex items-center justify-between">
               <div className="text-lg font-semibold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-sky-600 to-teal-500 dark:from-sky-400 dark:to-teal-300">

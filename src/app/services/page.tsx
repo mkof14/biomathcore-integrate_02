@@ -34,7 +34,7 @@ export default function ServicesPage() {
       <div className="mb-6">
         <TagFilter />
       </div>
-      <div className="rounded-2xl border border-slate-200/60 bg-white/70 dark:bg-slate-900/40 backdrop-blur-sm p-5 shadow-sm">
+      <div className="rounded-3xl border border-slate-200/50 bg-gradient-to-br from-white/90 to-white/60 dark:from-slate-900/60 dark:to-slate-900/30 backdrop-blur-md p-6 shadow-lg hover:shadow-xl transition-all">
         <ResultsGrid />
       </div>
     </main>
