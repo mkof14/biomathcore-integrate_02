@@ -1,3 +1,5 @@
+import PromoDualAI from "@/app/_components/PromoDualAI";
+import HomeAdsBand from "@/app/_components/HomeAdsBand";
 import Link from "next/link";
 import { CATEGORIES } from "./services/services.catalog";
 

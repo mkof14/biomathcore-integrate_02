@@ -13,6 +13,7 @@ import HideBack from "@/components/HideBack";
 // src/app/layout.tsx
 import type { Metadata } from "next";
 import "./globals.css";
+import "@/app/_styles/nasa.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { DarkModeProvider } from "@/context/DarkModeContext";
