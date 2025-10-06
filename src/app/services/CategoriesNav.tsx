@@ -1,5 +1,5 @@
+"use client";
 import { CategoryTitle } from "@/app/_components/CategoryVisual";
-("use client");
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { CATEGORIES } from "./services.catalog";
