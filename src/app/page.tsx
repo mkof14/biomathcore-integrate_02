@@ -17,14 +17,7 @@ export default function HomePage() {
           Evidence-first wellness & longevity tools — {servicesCount}+ services
           across {CATEGORIES.length} categories.
         </p>
-        <div className="mt-6 flex flex-wrap gap-3">
-          <a
-            href="#categories"
-            className="rounded-lg border border-slate-300 dark:border-slate-700 px-5 py-3 text-sm hover:bg-slate-50 dark:hover:bg-slate-800/30"
-          >
-            All Categories
-          </a>
-        </div>
+        <div className="mt-6 flex flex-wrap gap-3"></div>
       </section>
 
       <section

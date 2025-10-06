@@ -61,17 +61,3 @@
 .cat-glass:hover {
   @apply bg-white/10 dark:bg-slate-900/40;
 }
-
-@layer utilities {
-  .cta-dark {
-    @apply bg-slate-800 text-slate-50 hover:bg-slate-700 active:bg-slate-900
-           ring-1 ring-slate-700/50 shadow-sm transition-colors;
-  }
-  .cat-glass {
-    @apply bg-white/10 dark:bg-slate-900/30 backdrop-blur-md
-           ring-1 ring-white/20 dark:ring-slate-800/60;
-  }
-  .cat-glass:hover {
-    @apply bg-white/20 dark:bg-slate-900/40;
-  }
-}
