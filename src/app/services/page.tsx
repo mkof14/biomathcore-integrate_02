@@ -1,8 +1,15 @@
 import Breadcrumbs from "./Breadcrumbs";
 import SearchBox from "./SearchBox";
-import TagFilter from "./TagFilter";
 import { CATEGORIES } from "./services.catalog";
 import ResultsGrid from "./ResultsGrid";
+import SortControl from "./SortControl";
+import TagFilter from "./TagFilter";
+
+export const metadata = {
+  title: "Services",
+  description:
+    "Browse BioMath Core categories and services. Filter and open detailed modules.",
+};
 
 export default function ServicesPage() {
   return (
@@ -10,19 +17,26 @@ export default function ServicesPage() {
       <Breadcrumbs
         items={[{ href: "/", label: "Home" }, { label: "Services" }]}
       />
-      <header className="mb-5">
-        <h1 className="text-2xl md:text-3xl font-bold">Services</h1>
-        <p className="mt-2 text-slate-600">
+      <header className="mb-6">
+        <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-sky-600 via-teal-500 to-emerald-500 dark:from-sky-400 dark:via-teal-300 dark:to-emerald-300">
+          Services
+        </h1>
+        <p className="mt-2 text-slate-600 dark:text-slate-300/90">
           All categories ({CATEGORIES.length}) and services.
         </p>
       </header>
-      <div className="mb-4">
-        <SearchBox placeholder="Search across all services…" />
+      <div className="mb-4 flex flex-col md:flex-row md:items-center gap-3">
+        <div className="flex-1">
+          <SearchBox placeholder="Search across all services…" />
+        </div>
+        <SortControl />
       </div>
       <div className="mb-6">
         <TagFilter />
       </div>
-      <ResultsGrid />
+      <div className="rounded-2xl border border-slate-200/60 bg-white/70 dark:bg-slate-900/40 backdrop-blur-sm p-5 shadow-sm">
+        <ResultsGrid />
+      </div>
     </main>
   );
 }
