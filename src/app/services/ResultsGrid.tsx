@@ -1,4 +1,5 @@
 "use client";
+import { memo } from "react";
 import React, { useState, useEffect } from "react";
 import { useParams, useSearchParams } from "next/navigation";
 import { categoryColorFor } from "@/app/_components/CategoryVisual";
@@ -8,7 +9,8 @@ import { CATEGORIES } from "./services.catalog";
 import { useFavorites } from "./useFavorites";
 import { useAnalyticsEvent } from "./useAnalyticsEvent";
 
-export default function ResultsGrid({ scopedTo }: { scopedTo?: string }) {
+function ResultsGrid({ scopedTo }: { scopedTo?: string }) {
+  const sendEvent = useAnalyticsEvent();
   const __catSlug =
     (typeof scopedTo !== "undefined" && scopedTo) ||
     (typeof category !== "undefined" && (category as any)?.slug) ||
@@ -201,3 +203,5 @@ export default function ResultsGrid({ scopedTo }: { scopedTo?: string }) {
     </div>
   );
 }
+
+export default memo(ResultsGrid);

@@ -1,4 +1,5 @@
 "use client";
+import { useAnalyticsEvent } from "@/app/services/useAnalyticsEvent";
 export default function ServiceQuickActions({
   title,
   description,
@@ -6,6 +7,7 @@ export default function ServiceQuickActions({
   title: string;
   description?: string;
 }) {
+  const sendEvent = useAnalyticsEvent();
   const isFav =
     typeof favorites !== "undefined" && typeof svc !== "undefined"
       ? !!favorites?.has?.(svc?.slug || svc?.id || svc?.key)

@@ -1,3 +1,4 @@
+import { useAnalyticsEvent } from "@/app/services/useAnalyticsEvent";
 import Link from "next/link";
 
 type Service = {
@@ -12,6 +13,7 @@ type Props = {
 };
 
 export default function ServiceCard({ service }: Props) {
+  const sendEvent = useAnalyticsEvent();
   const isFav =
     typeof favorites !== "undefined" && typeof svc !== "undefined"
       ? !!favorites?.has?.(svc?.slug || svc?.id || svc?.key)

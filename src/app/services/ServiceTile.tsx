@@ -1,5 +1,7 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import { memo } from "react";
+import { useAnalyticsEvent } from "./useAnalyticsEvent";
+import React, { useState, useEffect, memo } from "react";
 import { Star } from "lucide-react";
 import { useParams } from "next/navigation";
 import { categoryClassFor } from "@/app/_components/CategoryVisual";
@@ -12,7 +14,8 @@ import { findCategoryByServiceSlug } from "@/app/services/services.catalog";
 import Link from "next/link";
 import type { ServiceCategory } from "./services.catalog";
 
-export default function ServiceTile({ cat }: { cat: ServiceCategory }) {
+function ServiceTile({ cat }: { cat: ServiceCategory }) {
+  const sendEvent = useAnalyticsEvent();
   const __catSlug =
     (typeof scopedTo !== "undefined" && scopedTo) ||
     (typeof category !== "undefined" && (category as any)?.slug) ||
@@ -111,3 +114,5 @@ export default function ServiceTile({ cat }: { cat: ServiceCategory }) {
     </Link>
   );
 }
+
+export default memo(ServiceTile);
