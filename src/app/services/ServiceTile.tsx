@@ -1,3 +1,5 @@
+import { categoryClassFor } from "@/app/_components/CategoryVisual";
+import { categoryColorFor } from "@/app/_components/CategoryVisual";
 import {
   CATEGORY_COLOR,
   CATEGORY_ICON,
@@ -7,6 +9,8 @@ import Link from "next/link";
 import type { ServiceCategory } from "./services.catalog";
 
 export default function ServiceTile({ cat }: { cat: ServiceCategory }) {
+  const titleColor = categoryClassFor(slug);
+
   const cat = findCategoryByServiceSlug?.(item?.slug) as any;
   const slug = cat?.slug ?? "";
   const color = (CATEGORY_COLOR as any)[slug] ?? "text-slate-200";
@@ -15,7 +19,7 @@ export default function ServiceTile({ cat }: { cat: ServiceCategory }) {
   return (
     <Link
       href={`/services/${cat.slug}`}
-      className="group nasa-card block rounded-3xl p-6 border border-slate-200/50 bg-gradient-to-br from-white/95 to-white/75 dark:from-slate-900/70 dark:to-slate-900/40 backdrop-blur-md shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-200 cat-glass"
+      className="group nasa-card block rounded-3xl p-6 border border-slate-200/50  /95 /75 dark:/70 dark:/40 backdrop-blur-md shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-200 cat-glass"
     >
       <div className="flex items-center justify-between gap-4">
         <h3 className="text-xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">
