@@ -6,7 +6,7 @@ export default function HomePage() {
   return (
     <main className="px-6 py-12 md:py-16 max-w-6xl mx-auto">
       <section className="mb-10">
-        <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-sky-600 via-teal-500 to-emerald-500 dark:from-sky-400 dark:via-teal-300">
+        <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-sky-800 dark:text-sky-300">
           BioMath Core
         </h1>
         <p className="mt-3 text-lg text-slate-700 dark:text-slate-300/90">
@@ -40,7 +40,7 @@ export default function HomePage() {
             className="group rounded-3xl p-6 border border-slate-200/50 bg-gradient-to-br from-white/95 to-white/75 dark:from-slate-900/70 dark:to-slate-900/40 backdrop-blur-md shadow-md hover:shadow-xl hover:-translate-y-1 transition-all"
           >
             <div className="flex items-center justify-between">
-              <div className="text-lg font-semibold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-sky-600 to-teal-500 dark:from-sky-400 dark:to-teal-300">
+              <div className="text-lg font-semibold tracking-tight text-sky-800 dark:text-sky-300">
                 {cat.title}
               </div>
               <span className="text-xs text-slate-500">

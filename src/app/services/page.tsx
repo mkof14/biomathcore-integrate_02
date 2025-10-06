@@ -18,7 +18,7 @@ export default function ServicesPage() {
         items={[{ href: "/", label: "Home" }, { label: "Services" }]}
       />
       <header className="mb-6">
-        <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-sky-600 via-teal-500 to-emerald-500 dark:from-sky-400 dark:via-teal-300 dark:to-emerald-300">
+        <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-sky-800 dark:text-sky-300">
           Services
         </h1>
         <p className="mt-2 text-slate-600 dark:text-slate-300/90">

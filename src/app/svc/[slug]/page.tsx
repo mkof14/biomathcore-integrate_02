@@ -26,7 +26,7 @@ export default async function ServicePage({
   return (
     <main className="px-6 py-8 max-w-3xl mx-auto">
       <BackClient />
-      <h1 className="mt-2 text-3xl md:text-4xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-sky-600 via-teal-500 to-emerald-500 dark:from-sky-400 dark:via-teal-300 dark:to-emerald-300">
+      <h1 className="mt-2 text-3xl md:text-4xl font-extrabold tracking-tight text-sky-700 dark:text-sky-400">
         {s.title}
       </h1>
       <p className="mt-2 text-slate-600 dark:text-slate-300/90">

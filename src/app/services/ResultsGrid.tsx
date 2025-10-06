@@ -77,7 +77,7 @@ export default function ResultsGrid({ scopedTo }: { scopedTo?: string }) {
               </h2>
             </header>
           ) : null}
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid motion-safe:animate-bmc-fade-in gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {c.services.map((s) => (
               <div
                 key={s.slug}

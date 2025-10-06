@@ -28,7 +28,7 @@ export default async function CategoryPage({
         ]}
       />
       <header className="mb-6">
-        <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-sky-600 via-teal-500 to-emerald-500 dark:from-sky-400 dark:via-teal-300 dark:to-emerald-300">
+        <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-sky-800 dark:text-sky-300">
           {cat.title}
         </h1>
         {cat.description ? (

@@ -97,7 +97,7 @@ export default function ClientActions({
 
       <button
         onClick={downloadSummary}
-        className="inline-flex items-center gap-2 rounded-md bg-gradient-to-r from-sky-600 via-teal-500 to-emerald-500 text-white px-3 py-2 text-sm hover:opacity-95"
+        className="inline-flex items-center gap-2 rounded-md bg-sky-600 text-white hover:bg-sky-700 px-3 py-2 text-sm "
       >
         <Download className="h-4 w-4" /> Download
       </button>
