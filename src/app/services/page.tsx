@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import Breadcrumbs from "./Breadcrumbs";
 import SearchBox from "./SearchBox";
 import { CATEGORIES } from "./services.catalog";
@@ -35,7 +36,9 @@ export default function ServicesPage() {
         <TagFilter />
       </div>
       <div className="rounded-3xl border border-slate-200/50 bg-gradient-to-br from-white/90 to-white/60 dark:from-slate-900/60 dark:to-slate-900/30 backdrop-blur-md p-6 shadow-lg hover:shadow-xl transition-all">
-        <ResultsGrid />
+        <Suspense fallback={<div className="min-h-[120px]" />}>
+          <ResultsGrid />
+        </Suspense>
       </div>
     </main>
   );
