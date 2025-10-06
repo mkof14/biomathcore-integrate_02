@@ -3,10 +3,10 @@ import { notFound } from "next/navigation";
 import {
   allServicesFlat,
   findServiceBySlug,
-  findCategory as findCat,
   findCategoryByServiceSlug,
 } from "@/app/services/services.catalog";
 import ClientActions from "./ClientActions";
+import BackClient from "./BackClient";
 
 export async function generateStaticParams() {
   return allServicesFlat().map((s) => ({ slug: s.slug }));
@@ -20,17 +20,11 @@ export default async function ServicePage({
   const { slug } = await params;
   const s = findServiceBySlug(slug);
   if (!s) return notFound();
-  const cat =
-    findCategoryByServiceSlug(slug) || (s ? findCat(s.slug) : undefined); // fallback
+  const cat = findCategoryByServiceSlug(slug);
 
   return (
     <main className="px-6 py-8 max-w-3xl mx-auto">
-      <button
-        onClick={() => history.back()}
-        className="inline-flex items-center gap-2 text-sm text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white"
-      >
-        ← Назад
-      </button>
+      <BackClient />
       <h1 className="mt-2 text-3xl md:text-4xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-sky-600 via-teal-500 to-emerald-500 dark:from-sky-400 dark:via-teal-300 dark:to-emerald-300">
         {s.title}
       </h1>
