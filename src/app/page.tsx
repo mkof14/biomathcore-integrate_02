@@ -6,7 +6,7 @@ export default function HomePage() {
   return (
     <main className="px-6 py-12 md:py-16 max-w-6xl mx-auto">
       <section className="mb-10">
-        <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-sky-600 via-teal-500 to-emerald-500 dark:from-sky-400 dark:via-teal-300 dark:to-emerald-300">
+        <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-sky-600 via-teal-500 to-emerald-500 dark:from-sky-400 dark:via-teal-300">
           BioMath Core
         </h1>
         <p className="mt-3 text-lg text-slate-700 dark:text-slate-300/90">
@@ -21,19 +21,19 @@ export default function HomePage() {
             Explore Services
           </Link>
           <a
-            href="#highlights"
+            href="#categories"
             className="rounded-lg border border-slate-300 dark:border-slate-700 px-5 py-3 text-sm hover:bg-slate-50 dark:hover:bg-slate-800/30"
           >
-            Highlights
+            All Categories
           </a>
         </div>
       </section>
 
       <section
-        id="highlights"
+        id="categories"
         className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
       >
-        {CATEGORIES.slice(0, 6).map((cat) => (
+        {CATEGORIES.map((cat) => (
           <Link
             key={cat.slug}
             href={`/services/${cat.slug}`}
