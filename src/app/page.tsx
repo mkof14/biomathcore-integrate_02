@@ -14,12 +14,6 @@ export default function HomePage() {
           across {CATEGORIES.length} categories.
         </p>
         <div className="mt-6 flex flex-wrap gap-3">
-          <Link
-            href="/services"
-            className="rounded-lg bg-gradient-to-r from-sky-600 via-teal-500 to-emerald-500 text-white px-5 py-3 text-sm hover:opacity-95"
-          >
-            Explore Services
-          </Link>
           <a
             href="#categories"
             className="rounded-lg border border-slate-300 dark:border-slate-700 px-5 py-3 text-sm hover:bg-slate-50 dark:hover:bg-slate-800/30"
@@ -55,6 +49,14 @@ export default function HomePage() {
           </Link>
         ))}
       </section>
+
+      <div className="mt-6 flex justify-center">
+        <a href="/services" className="nasa-cta">
+          Explore Services
+        </a>
+      </div>
+      <PromoDualAI />
+      <HomeAdsBand />
     </main>
   );
 }
