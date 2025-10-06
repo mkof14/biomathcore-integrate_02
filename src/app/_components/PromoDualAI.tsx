@@ -19,12 +19,12 @@ export default function PromoDualAI() {
           </div>
         </div>
         <div className="md:ml-auto flex gap-2">
-          <Link href="/services" className="nasa-cta text-sm">
+          <Link href="/services" className="nasa-cta text-sm cta-dark">
             Explore Services
           </Link>
           <Link
             href="/svc/ai-medication-adherence"
-            className="nasa-cta text-sm"
+            className="nasa-cta text-sm cta-dark"
           >
             See Example
           </Link>

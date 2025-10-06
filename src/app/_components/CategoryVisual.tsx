@@ -30,17 +30,17 @@ export const CATEGORY_ICON: Record<string, any> = {
 
 export const CATEGORY_COLOR: Record<string, string> = {
   "longevity-and-anti-aging": "text-teal-500 dark:text-teal-300",
-  "mental-wellness": "text-indigo-500 dark:text-indigo-300",
-  "critical-health": "text-rose-500 dark:text-rose-300",
-  "mens-health": "text-blue-500 dark:text-blue-300",
-  "everyday-wellness": "text-emerald-500 dark:text-emerald-300",
-  "sleep-health": "text-sky-500 dark:text-sky-300",
-  "metabolic-health": "text-amber-500 dark:text-amber-300",
-  "cardio-health": "text-red-500 dark:text-red-300",
-  "lab-diagnostics": "text-fuchsia-500 dark:text-fuchsia-300",
-  vaccinations: "text-cyan-500 dark:text-cyan-300",
-  "fitness-performance": "text-violet-500 dark:text-violet-300",
-  default: "text-slate-400 dark:text-slate-300",
+  "mental-wellness": "text-indigo-600 dark:text-indigo-300",
+  "critical-health": "text-rose-600 dark:text-rose-300",
+  "mens-health": "text-blue-600 dark:text-blue-300",
+  "everyday-wellness": "text-emerald-600 dark:text-emerald-300",
+  "sleep-health": "text-sky-600 dark:text-sky-300",
+  "metabolic-health": "text-amber-600 dark:text-amber-300",
+  "cardio-health": "text-red-600 dark:text-red-300",
+  "lab-diagnostics": "text-fuchsia-600 dark:text-fuchsia-300",
+  vaccinations: "text-cyan-600 dark:text-cyan-300",
+  "fitness-performance": "text-violet-600 dark:text-violet-300",
+  default: "text-slate-500 dark:text-slate-300",
 };
 
 export function CategoryTitle({

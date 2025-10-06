@@ -3,6 +3,7 @@ import HomeAdsBand from "@/app/_components/HomeAdsBand";
 import Link from "next/link";
 import { CATEGORIES } from "./services/services.catalog";
 import { CategoryTitle } from "@/app/_components/CategoryVisual";
+import { categoryGlass } from "@/app/_components/CategoryVisual";
 
 export default function HomePage() {
   const servicesCount = CATEGORIES.reduce((n, c) => n + c.services.length, 0);
@@ -34,7 +35,7 @@ export default function HomePage() {
           <Link
             key={cat.slug}
             href={`/services/${cat.slug}`}
-            className="group nasa-card rounded-3xl p-6 border border-slate-200/50 bg-gradient-to-br from-white/95 to-white/75 dark:from-slate-900/70 dark:to-slate-900/40 backdrop-blur-md shadow-md hover:shadow-xl hover:-translate-y-1 transition-all"
+            className="group nasa-card rounded-3xl p-6 border border-slate-200/50 bg-gradient-to-br from-white/95 to-white/75 dark:from-slate-900/70 dark:to-slate-900/40 backdrop-blur-md shadow-md hover:shadow-xl hover:-translate-y-1 transition-all cat-glass"
           >
             <div className="flex items-center justify-between">
               <div className="text-lg font-semibold tracking-tight text-sky-800 dark:text-sky-300">
