@@ -5,7 +5,7 @@ import { Prisma } from "@prisma/client";
 export async function auditLogOptional(
   userId: string | null | undefined,
   action: string,
-  meta?: Prisma.InputJsonValue
+  meta?: Prisma.InputJsonValue,
 ) {
   if (!userId) return;
   await prisma.accessLog.create({

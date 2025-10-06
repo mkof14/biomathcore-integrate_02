@@ -45,17 +45,38 @@ export default function ChatDock() {
         aria-label="Open AI Assistant"
         className="fixed bottom-6 right-6 z-[70] inline-flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-violet-500 to-fuchsia-600 shadow-[0_10px_30px_rgba(139,92,246,0.5)] ring-1 ring-white/20 outline-none transition hover:scale-105 hover:shadow-[0_14px_40px_rgba(139,92,246,0.6)]"
       >
-        <svg viewBox="0 0 48 48" className="h-7 w-7 text-white" aria-hidden="true">
+        <svg
+          viewBox="0 0 48 48"
+          className="h-7 w-7 text-white"
+          aria-hidden="true"
+        >
           <defs>
             <linearGradient id="aiHeadGradDock" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stopColor="#A78BFA"/><stop offset="100%" stopColor="#D946EF"/>
+              <stop offset="0%" stopColor="#A78BFA" />
+              <stop offset="100%" stopColor="#D946EF" />
             </linearGradient>
           </defs>
-          <circle cx="24" cy="24" r="20" fill="url(#aiHeadGradDock)"/>
-          <rect x="12" y="16" width="24" height="16" rx="6" ry="6" fill="none" stroke="white" strokeWidth="2"/>
-          <circle cx="19" cy="24" r="3" fill="white"/>
-          <circle cx="29" cy="24" r="3" fill="white"/>
-          <path d="M18 30c2.5 2 9.5 2 12 0" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+          <circle cx="24" cy="24" r="20" fill="url(#aiHeadGradDock)" />
+          <rect
+            x="12"
+            y="16"
+            width="24"
+            height="16"
+            rx="6"
+            ry="6"
+            fill="none"
+            stroke="white"
+            strokeWidth="2"
+          />
+          <circle cx="19" cy="24" r="3" fill="white" />
+          <circle cx="29" cy="24" r="3" fill="white" />
+          <path
+            d="M18 30c2.5 2 9.5 2 12 0"
+            fill="none"
+            stroke="white"
+            strokeWidth="2"
+            strokeLinecap="round"
+          />
         </svg>
       </button>
 
@@ -75,11 +96,25 @@ export default function ChatDock() {
             <div className="relative flex h-14 items-center justify-between border-b border-black/10 px-4 dark:border-white/10">
               <div className="flex items-center gap-3">
                 <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-violet-500 to-fuchsia-600 ring-1 ring-white/20">
-                  <svg viewBox="0 0 48 48" className="h-5 w-5 text-white" aria-hidden="true">
-                    <circle cx="24" cy="24" r="20" fill="#A78BFA"/>
-                    <rect x="12" y="16" width="24" height="16" rx="6" ry="6" fill="none" stroke="white" strokeWidth="2"/>
-                    <circle cx="19" cy="24" r="3" fill="white"/>
-                    <circle cx="29" cy="24" r="3" fill="white"/>
+                  <svg
+                    viewBox="0 0 48 48"
+                    className="h-5 w-5 text-white"
+                    aria-hidden="true"
+                  >
+                    <circle cx="24" cy="24" r="20" fill="#A78BFA" />
+                    <rect
+                      x="12"
+                      y="16"
+                      width="24"
+                      height="16"
+                      rx="6"
+                      ry="6"
+                      fill="none"
+                      stroke="white"
+                      strokeWidth="2"
+                    />
+                    <circle cx="19" cy="24" r="3" fill="white" />
+                    <circle cx="29" cy="24" r="3" fill="white" />
                   </svg>
                 </span>
                 <div className="flex flex-col leading-tight">

@@ -7,13 +7,20 @@ import { prisma } from "@/lib/prisma";
 export async function DELETE() {
   const session = await getServerSession(authOptions as any);
   const email = session?.user?.email;
-  if (!email) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  if (!email)
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const user = await prisma.user.findUnique({ where: { email }, select: { id: true } });
-  if (!user) return NextResponse.json({ error: "User not found" }, { status: 404 });
+  const user = await prisma.user.findUnique({
+    where: { email },
+    select: { id: true },
+  });
+  if (!user)
+    return NextResponse.json({ error: "User not found" }, { status: 404 });
 
-  const res = await prisma.serviceSelection.deleteMany({ where: { userId: user.id } });
+  const res = await prisma.serviceSelection.deleteMany({
+    where: { userId: user.id },
+  });
   return NextResponse.json({ ok: true, deleted: res.count });
 }
 
-export { /* TODO: implement or remove */ };
+export /* TODO: implement or remove */ {};

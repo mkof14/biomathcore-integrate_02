@@ -2,12 +2,26 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 
-export type Report = { id: string; title: string; status: string; createdAt: string; updatedAt: string };
-export type Filters = { q?: string; status?: "draft"|"ready"|"archived"|""; from?: string; to?: string };
+export type Report = {
+  id: string;
+  title: string;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+};
+export type Filters = {
+  q?: string;
+  status?: "draft" | "ready" | "archived" | "";
+  from?: string;
+  to?: string;
+};
 
-function buildQuery(filters: Filters, extra: Record<string, string|number|undefined> = {}) {
+function buildQuery(
+  filters: Filters,
+  extra: Record<string, string | number | undefined> = {},
+) {
   const p = new URLSearchParams();
-  const push = (k: string, v?: string|number|undefined) => {
+  const push = (k: string, v?: string | number | undefined) => {
     if (v === undefined || v === null || v === "") return;
     p.set(k, String(v));
   };
@@ -15,7 +29,7 @@ function buildQuery(filters: Filters, extra: Record<string, string|number|undefi
   push("status", filters.status);
   push("from", filters.from);
   push("to", filters.to);
-  for (const [k,v] of Object.entries(extra)) push(k, v);
+  for (const [k, v] of Object.entries(extra)) push(k, v);
   return p.toString();
 }
 
@@ -29,14 +43,21 @@ export default function ReportsList({ filters }: { filters: Filters }) {
   // при изменении фильтров — ресет списка и первая страница
   useEffect(() => {
     let alive = true;
-    setRows([]); setCursor(undefined); setNextCursor(undefined); setErr(null);
+    setRows([]);
+    setCursor(undefined);
+    setNextCursor(undefined);
+    setErr(null);
     (async () => {
       setLoading(true);
       try {
         const qs = buildQuery(filters, { limit: 20 });
         const r = await fetch(`/api/reports?${qs}`, { cache: "no-store" });
         const j = await r.json();
-        const items: Report[] = Array.isArray(j.data?.items) ? j.data.items : (Array.isArray(j.data) ? j.data : []);
+        const items: Report[] = Array.isArray(j.data?.items)
+          ? j.data.items
+          : Array.isArray(j.data)
+            ? j.data
+            : [];
         if (!alive) return;
         setRows(items);
         setNextCursor(j.data?.nextCursor);
@@ -48,18 +69,25 @@ export default function ReportsList({ filters }: { filters: Filters }) {
         if (alive) setLoading(false);
       }
     })();
-    return () => { alive = false; };
+    return () => {
+      alive = false;
+    };
   }, [filters]);
 
   const loadMore = async () => {
     if (!nextCursor || loading) return;
-    setLoading(true); setErr(null);
+    setLoading(true);
+    setErr(null);
     try {
       const qs = buildQuery(filters, { limit: 20, cursor: nextCursor });
       const r = await fetch(`/api/reports?${qs}`, { cache: "no-store" });
       const j = await r.json();
-      const items: Report[] = Array.isArray(j.data?.items) ? j.data.items : (Array.isArray(j.data) ? j.data : []);
-      setRows(prev => prev.concat(items));
+      const items: Report[] = Array.isArray(j.data?.items)
+        ? j.data.items
+        : Array.isArray(j.data)
+          ? j.data
+          : [];
+      setRows((prev) => prev.concat(items));
       setNextCursor(j.data?.nextCursor);
       setCursor(nextCursor);
     } catch (e: any) {
@@ -84,16 +112,25 @@ export default function ReportsList({ filters }: { filters: Filters }) {
             </tr>
           </thead>
           <tbody>
-            {hasRows ? rows.map((r) => (
-              <tr key={r.id} className="odd:bg-white even:bg-gray-50">
-                <td className="p-2 border">{r.title}</td>
-                <td className="p-2 border">{r.status}</td>
-                <td className="p-2 border">{new Date(r.createdAt).toLocaleString()}</td>
-                <td className="p-2 border">
-                  <Link className="underline" href={`/member-zone/reports/${r.id}`}>open</Link>
-                </td>
-              </tr>
-            )) : (
+            {hasRows ? (
+              rows.map((r) => (
+                <tr key={r.id} className="odd:bg-white even:bg-gray-50">
+                  <td className="p-2 border">{r.title}</td>
+                  <td className="p-2 border">{r.status}</td>
+                  <td className="p-2 border">
+                    {new Date(r.createdAt).toLocaleString()}
+                  </td>
+                  <td className="p-2 border">
+                    <Link
+                      className="underline"
+                      href={`/member-zone/reports/${r.id}`}
+                    >
+                      open
+                    </Link>
+                  </td>
+                </tr>
+              ))
+            ) : (
               <tr>
                 <td className="p-2 border text-gray-500" colSpan={4}>
                   {loading ? "Loading…" : "No items."}

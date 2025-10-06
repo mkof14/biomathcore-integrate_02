@@ -19,7 +19,7 @@ const store = new Map<Key, Bucket>();
 export function rateLimit(
   key: Key,
   max: number,
-  windowMs: number
+  windowMs: number,
 ): RateLimitResult {
   const now = Date.now();
   const cutoff = now - windowMs;

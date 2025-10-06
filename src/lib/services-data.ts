@@ -306,7 +306,6 @@ correlates them with sleep and lifestyle inputs, and produces clear, actionable 
   },
 ];
 
-
 export function findServiceBySlug(slug: string): ServiceItem | null {
   const s = SERVICES.find((s) => s.slug === slug);
   return s ?? null;

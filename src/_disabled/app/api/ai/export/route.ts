@@ -9,10 +9,20 @@ export async function GET(req: Request) {
   const { data } = await listAI({ limit });
   const zip = new JSZip();
   zip.file("ai.json", JSON.stringify(data, null, 2));
-  const csv = new Json2Csv({ fields: Object.keys(data[0] || { /* TODO: implement or remove */ }) }).parse(data);
+  const csv = new Json2Csv({
+    fields: Object.keys(
+      data[0] ||
+        {
+          /* TODO: implement or remove */
+        },
+    ),
+  }).parse(data);
   zip.file("ai.csv", csv);
   const blob = await zip.generateAsync({ type: "nodebuffer" });
   return new Response(blob, {
-    headers: { "Content-Type":"application/zip", "Content-Disposition":'attachment; filename="ai-export.zip"' }
+    headers: {
+      "Content-Type": "application/zip",
+      "Content-Disposition": 'attachment; filename="ai-export.zip"',
+    },
   });
 }

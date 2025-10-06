@@ -8,7 +8,11 @@ function baseSections(): GeneratedReport["sections"] {
       description: "High-level snapshot with simple language.",
       items: [
         { label: "Biological age (est.)", value: 38 },
-        { label: "Stress level (self-report)", value: "moderate", hint: "Daily questionnaire average" },
+        {
+          label: "Stress level (self-report)",
+          value: "moderate",
+          hint: "Daily questionnaire average",
+        },
         { label: "Activity trend (7-day)", value: "up" },
       ],
       notes: [
@@ -23,7 +27,9 @@ function baseSections(): GeneratedReport["sections"] {
         { label: "Cardio risk (10y, est.)", value: "low-moderate" },
         { label: "Sleep debt (7d)", value: "1.3h" },
       ],
-      notes: ["Simple actions beat complex plans. Add 20–30 min earlier bedtime, hydrate, short evening walk."],
+      notes: [
+        "Simple actions beat complex plans. Add 20–30 min earlier bedtime, hydrate, short evening walk.",
+      ],
     },
   ];
 }
@@ -37,7 +43,11 @@ function planSpecific(plan: ReportPlan): GeneratedReport["sections"] {
         items: [
           { label: "HbA1c", value: "5.3%" },
           { label: "LDL-C", value: "112 mg/dL" },
-          { label: "Vitamin D", value: "28 ng/mL", hint: "Slightly low → consider supplement after clinician advice" },
+          {
+            label: "Vitamin D",
+            value: "28 ng/mL",
+            hint: "Slightly low → consider supplement after clinician advice",
+          },
         ],
       },
     ];
@@ -61,19 +71,37 @@ function planSpecific(plan: ReportPlan): GeneratedReport["sections"] {
       title: "Deep Analytics",
       description: "Extra sections and charts.",
       charts: [
-        { id: "hrv_trend", kind: "line", data: [{ d: "Mon", v: 42 }, { d: "Tue", v: 45 }, { d: "Wed", v: 47 }, { d: "Thu", v: 50 }] },
+        {
+          id: "hrv_trend",
+          kind: "line",
+          data: [
+            { d: "Mon", v: 42 },
+            { d: "Tue", v: 45 },
+            { d: "Wed", v: 47 },
+            { d: "Thu", v: 50 },
+          ],
+        },
       ],
     },
   ];
 }
 
-export function buildSampleReport(plan: ReportPlan, userId?: string): GeneratedReport {
+export function buildSampleReport(
+  plan: ReportPlan,
+  userId?: string,
+): GeneratedReport {
   return {
     plan,
     generatedAt: new Date().toISOString(),
     userId,
-    title: plan === "daily" ? "Daily Brief" : plan === "core" ? "Core Health Report" : "Max (Extended) Report",
-    summary: "Straightforward, human-readable summary with plain recommendations.",
+    title:
+      plan === "daily"
+        ? "Daily Brief"
+        : plan === "core"
+          ? "Core Health Report"
+          : "Max (Extended) Report",
+    summary:
+      "Straightforward, human-readable summary with plain recommendations.",
     sections: [...baseSections(), ...planSpecific(plan)],
     meta: { version: 1 },
   };

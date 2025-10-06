@@ -3,8 +3,12 @@ import { NextResponse } from "next/server";
 import { listBlackbox, createBlackbox } from "@/lib/repos/blackboxRepo";
 export const runtime = "nodejs";
 
-function ok(data: unknown){ return NextResponse.json({ ok:true, data }); }
-function bad(msg: string, code=400){ return NextResponse.json({ ok:false, error: msg }, { status: code }); }
+function ok(data: unknown) {
+  return NextResponse.json({ ok: true, data });
+}
+function bad(msg: string, code = 400) {
+  return NextResponse.json({ ok: false, error: msg }, { status: code });
+}
 
 export async function GET(req: Request) {
   const url = new URL(req.url);
@@ -15,7 +19,9 @@ export async function GET(req: Request) {
 }
 
 export async function POST(req: Request) {
-  const body = await req.json().catch(() => ({ /* TODO: implement or remove */ }));
+  const body = await req.json().catch(() => ({
+    /* TODO: implement or remove */
+  }));
   if (!body || typeof body !== "object") return bad("invalid_body");
   const prompt = String(body.prompt || "");
   if (!prompt.trim()) return bad("empty_prompt");

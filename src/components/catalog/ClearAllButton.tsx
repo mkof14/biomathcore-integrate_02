@@ -15,7 +15,8 @@ export default function ClearAllButton() {
       body: JSON.stringify({ serviceIds: [] }),
     });
     const data = await res.json().catch(() => ({}));
-    if (!res.ok) throw new Error(String(data?.error || data?.message || "Failed"));
+    if (!res.ok)
+      throw new Error(String(data?.error || data?.message || "Failed"));
     const n = Number(data?.updated ?? data?.count ?? 0);
     return isFinite(n) ? n : 0;
   }
@@ -23,7 +24,8 @@ export default function ClearAllButton() {
   async function clearViaDelete() {
     const res = await fetch("/api/catalog/selections", { method: "DELETE" });
     const data = await res.json().catch(() => ({}));
-    if (!res.ok) throw new Error(String(data?.error || data?.message || "Failed"));
+    if (!res.ok)
+      throw new Error(String(data?.error || data?.message || "Failed"));
     const n = Number(data?.deleted ?? data?.count ?? 0);
     return isFinite(n) ? n : 0;
   }
@@ -31,7 +33,9 @@ export default function ClearAllButton() {
   async function onClick() {
     if (busy) return;
     if (!window.confirm("Clear all selected services?")) return;
-    setBusy(true); setMsg(""); setErr("");
+    setBusy(true);
+    setMsg("");
+    setErr("");
     try {
       let cleared = 0;
       try {
@@ -40,8 +44,10 @@ export default function ClearAllButton() {
         cleared = await clearViaDelete();
       }
       setMsg(`Cleared ${cleared} selections`);
-      try { router.refresh(); } catch {}
-    } catch (e:any) {
+      try {
+        router.refresh();
+      } catch {}
+    } catch (e: any) {
       setErr(e?.message || "Failed to clear");
     } finally {
       setBusy(false);
@@ -58,9 +64,13 @@ export default function ClearAllButton() {
         {busy ? "Clearing..." : "Clear selections"}
       </button>
       {msg && (
-        <div className={`mt-3 rounded-xl border px-3 py-2 text-sm ${/Cleared\s+0\b/.test(msg)
-          ? "bg-amber-50 border-amber-200 text-amber-800 dark:bg-amber-950 dark:border-amber-900 dark:text-amber-300"
-          : "bg-green-50 border-green-200 text-green-800 dark:bg-green-950 dark:border-green-900 dark:text-green-300"}`}>
+        <div
+          className={`mt-3 rounded-xl border px-3 py-2 text-sm ${
+            /Cleared\s+0\b/.test(msg)
+              ? "bg-amber-50 border-amber-200 text-amber-800 dark:bg-amber-950 dark:border-amber-900 dark:text-amber-300"
+              : "bg-green-50 border-green-200 text-green-800 dark:bg-green-950 dark:border-green-900 dark:text-green-300"
+          }`}
+        >
           {msg}
         </div>
       )}

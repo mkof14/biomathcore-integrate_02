@@ -9,14 +9,17 @@ export const authOptions: NextAuthOptions = {
       name: "credentials",
       credentials: {
         email: { label: "email", type: "text" },
-        password: { label: "password", type: "password" }
+        password: { label: "password", type: "password" },
       },
       async authorize(credentials) {
         if (!credentials?.email) return null;
-        const user: Partial<User> = { id: credentials.email, email: credentials.email };
+        const user: Partial<User> = {
+          id: credentials.email,
+          email: credentials.email,
+        };
         return user as User;
-      }
-    })
+      },
+    }),
   ],
   callbacks: {
     async jwt({ token, user }) {
@@ -24,8 +27,9 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
     async session({ session, token }) {
-      if (token?.email && session.user) session.user.email = String(token.email);
+      if (token?.email && session.user)
+        session.user.email = String(token.email);
       return session;
-    }
-  }
+    },
+  },
 };

@@ -1,5 +1,11 @@
 "use client";
-export default function KPILabel({ abbr, full }: { abbr: string; full: string }) {
+export default function KPILabel({
+  abbr,
+  full,
+}: {
+  abbr: string;
+  full: string;
+}) {
   return (
     <div className="mt-1 text-[11px] text-neutral-400">
       <span className="font-mono text-xs text-neutral-300">{abbr}</span>

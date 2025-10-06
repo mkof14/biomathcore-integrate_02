@@ -2,10 +2,10 @@
 "use client";
 import { create } from "zustand";
 
-type Lang = "en"|"es"|"ru";
+type Lang = "en" | "es" | "ru";
 type State = {
   lang: Lang;
-  setLang: (l: Lang)=>void;
+  setLang: (l: Lang) => void;
 };
 
 const initial = ((): Lang => {
@@ -20,5 +20,5 @@ export const useLang = create<State>((set) => ({
   setLang: (l) => {
     if (typeof window !== "undefined") localStorage.setItem("lang", l);
     set({ lang: l });
-  }
+  },
 }));

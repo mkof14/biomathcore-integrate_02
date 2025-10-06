@@ -4,7 +4,15 @@ import { usePathname } from "next/navigation";
 import React from "react";
 
 /**         (hint). */
-export default function SidebarLink({ href, label, hint }: { href: string; label: string; hint?: string }) {
+export default function SidebarLink({
+  href,
+  label,
+  hint,
+}: {
+  href: string;
+  label: string;
+  hint?: string;
+}) {
   const pathname = usePathname();
   const active = pathname === href || pathname.startsWith(href + "/");
   return (
@@ -15,18 +23,28 @@ export default function SidebarLink({ href, label, hint }: { href: string; label
       className="block px-3 py-2 rounded-xl transition border text-sm"
       style={{
         background: active ? "var(--link-active-bg)" : "var(--link-bg)",
-        borderColor: active ? "var(--link-active-border)" : "var(--link-border)",
+        borderColor: active
+          ? "var(--link-active-border)"
+          : "var(--link-border)",
         color: "var(--page-fg)",
       }}
       onMouseOver={(e: any) => {
-        if (!active) (e.currentTarget as HTMLAnchorElement).style.background = "var(--link-bg-hover)";
+        if (!active)
+          (e.currentTarget as HTMLAnchorElement).style.background =
+            "var(--link-bg-hover)";
       }}
       onMouseOut={(e: any) => {
-        if (!active) (e.currentTarget as HTMLAnchorElement).style.background = "var(--link-bg)";
+        if (!active)
+          (e.currentTarget as HTMLAnchorElement).style.background =
+            "var(--link-bg)";
       }}
     >
       <div className="font-medium">{label}</div>
-      {hint ? <div className="text-[11px]" style={{ color: "var(--link-fg-muted)" }}>{hint}</div> : null}
+      {hint ? (
+        <div className="text-[11px]" style={{ color: "var(--link-fg-muted)" }}>
+          {hint}
+        </div>
+      ) : null}
     </Link>
   );
 }

@@ -10,9 +10,11 @@ export const runtime = "nodejs";
 export async function GET() {
   const mgr = getSecretsManager();
   const list = await mgr.list();
-  const masked = list.map(r => ({
+  const masked = list.map((r) => ({
     key: r.key,
-    valuePreview: r.value ? r.value.slice(0,2) + "***" + r.value.slice(-2) : "",
+    valuePreview: r.value
+      ? r.value.slice(0, 2) + "***" + r.value.slice(-2)
+      : "",
     updatedAt: r.updatedAt,
   }));
   return NextResponse.json({ items: masked });
@@ -22,10 +24,17 @@ export async function GET() {
  *  Создать/обновить секрет.
  *  Body: { key: string, value: string }
  */
-export async function POST(req: NextRequest) {  const body = await req.json().catch(() => ({ /* TODO: implement or remove */ }));
+export async function POST(req: NextRequest) {
+  const body = await req.json().catch(() => ({
+    /* TODO: implement or remove */
+  }));
   const key = String(body.key || "");
   const value = String(body.value || "");
-  if (!key || !value) return NextResponse.json({ error: "key and value required" }, { status: 400 });
+  if (!key || !value)
+    return NextResponse.json(
+      { error: "key and value required" },
+      { status: 400 },
+    );
   await mgr.set(key, value);
   await writeAudit({ kind: "secret_set", key });
   return NextResponse.json({ ok: true });
@@ -36,10 +45,12 @@ export async function POST(req: NextRequest) {  const body = await req.json().ca
  */
 export async function DELETE(req: NextRequest) {
   const mgr = getSecretsManager();
-  const { searchParams } = new URL(req.url);  if (!key) return NextResponse.json({ error: "key required" }, { status: 400 });
+  const { searchParams } = new URL(req.url);
+  if (!key)
+    return NextResponse.json({ error: "key required" }, { status: 400 });
   await mgr.delete(key);
   await writeAudit({ kind: "secret_delete", key });
   return NextResponse.json({ ok: true });
 }
 
-export { /* TODO: implement or remove */ };
+export /* TODO: implement or remove */ {};

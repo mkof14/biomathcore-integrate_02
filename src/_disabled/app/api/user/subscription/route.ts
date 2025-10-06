@@ -10,7 +10,7 @@ type MockSub = {
 
 function mock(): MockSub {
   const now = new Date();
-  const next = new Date(now.getTime() + 30*24*60*60*1000);
+  const next = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
   return {
     plan: "Pro",
     status: "active",
@@ -22,11 +22,16 @@ function mock(): MockSub {
 export async function GET() {
   try {
     // пробуем «реальный» обработчик, если он существует в проекте
-    const real = await import("./route.real").catch(() => null) as unknown;
+    const real = (await import("./route.real").catch(() => null)) as unknown;
     if (real?.GET) {
       const res = await real.GET();
       if (res?.ok || res?.status === 200) return res;
     }
-  } catch { /* TODO: implement or remove */ }
-  return Response.json({ ok: true, data: mock(), mock: true }, { headers: { "Cache-Control": "no-store" }});
+  } catch {
+    /* TODO: implement or remove */
+  }
+  return Response.json(
+    { ok: true, data: mock(), mock: true },
+    { headers: { "Cache-Control": "no-store" } },
+  );
 }

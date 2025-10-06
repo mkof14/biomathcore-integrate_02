@@ -16,7 +16,12 @@ export async function GET() {
     if (process.env[k] && String(process.env[k]).length > 0) present.push(k);
     else missing.push(k);
   }
-  return NextResponse.json({ checkedAt: now, present, missing, total: REQUIRED_ENV.length });
+  return NextResponse.json({
+    checkedAt: now,
+    present,
+    missing,
+    total: REQUIRED_ENV.length,
+  });
 }
 
-export { /* TODO: implement or remove */ };
+export /* TODO: implement or remove */ {};

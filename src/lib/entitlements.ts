@@ -13,12 +13,18 @@ export function getUserPlans(userId: string): Promise<PlanCode[]> {
 
 export function isAdmin(): boolean {
   if (typeof process !== "undefined") {
-    return process.env.NEXT_PUBLIC_ADMIN_MODE === "1" || process.env.NEXT_PUBLIC_ADMIN_MODE === "true";
+    return (
+      process.env.NEXT_PUBLIC_ADMIN_MODE === "1" ||
+      process.env.NEXT_PUBLIC_ADMIN_MODE === "true"
+    );
   }
   return false;
 }
 
-export function canSeeForm(form: { visibility: string; gates?: string[] }, userPlans: PlanCode[]): boolean {
+export function canSeeForm(
+  form: { visibility: string; gates?: string[] },
+  userPlans: PlanCode[],
+): boolean {
   if (isAdmin()) return true;
   if (form.visibility === "PUBLIC") return true;
   if (form.visibility === "INVITE_ONLY") return false; // позже — проверка инвайтов

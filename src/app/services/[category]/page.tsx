@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { categoryColorFor } from "@/app/_components/CategoryVisual";
 import Breadcrumbs from "../Breadcrumbs";
 import SearchBox from "../SearchBox";
 import { CATEGORIES, findCategory } from "../services.catalog";

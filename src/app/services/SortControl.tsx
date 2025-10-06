@@ -23,7 +23,7 @@ export default function SortControl({ scopedTo }: { scopedTo?: string }) {
       <select
         value={sort}
         onChange={(e) => apply(e.target.value)}
-        className="rounded-md border border-slate-300 dark:border-slate-700 bg-white/70 dark:bg-slate-900/40 px-2 py-2 text-sm"
+        className="rounded-md border border-slate-300 dark:border-slate-700 bg-white/70 dark:bg-slate-900/40 px-2 py-2 text-sm services-sort pr-8 services-sort pr-8"
         aria-label="Sort"
       >
         <option value="az">A–Z</option>

@@ -21,7 +21,11 @@ export default function ManageSubscriptionButton() {
     }
   }
   return (
-    <button onClick={go} disabled={loading} className="border rounded px-4 py-2 disabled:opacity-50">
+    <button
+      onClick={go}
+      disabled={loading}
+      className="border rounded px-4 py-2 disabled:opacity-50"
+    >
       {loading ? "Opening…" : "Manage subscription"}
     </button>
   );

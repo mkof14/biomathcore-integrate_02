@@ -6,7 +6,7 @@ export const runtime = "nodejs";
 
 export const POST = withLog(async () => {
   await resetReports?.();
-  return NextResponse.json({ ok:true, reset:true });
+  return NextResponse.json({ ok: true, reset: true });
 }, "reports.dev.reset");
 
-export { /* TODO: implement or remove */ };
+export /* TODO: implement or remove */ {};

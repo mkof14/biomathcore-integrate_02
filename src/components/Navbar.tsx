@@ -4,8 +4,6 @@ import { usePathname } from "next/navigation";
 import Logo from "@/components/Logo";
 import { useState } from "react";
 
-
-
 const NAV_ITEMS = [
   { href: "/", label: "Home" },
   { href: "/services", label: "Services" },
@@ -14,7 +12,6 @@ const NAV_ITEMS = [
   { href: "/about", label: "About" },
   { href: "/investors", label: "Investors" },
   { href: "/contact", label: "Contact" },
- 
 ];
 
 function cx(...parts: Array<string | false | undefined>) {

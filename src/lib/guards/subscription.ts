@@ -27,11 +27,15 @@ async function refreshFromStripe(subId: string) {
   return s;
 }
 
-export async function requireActive(minTier: "core" | "daily" | "max" = "core"): Promise<GuardResult> {
+export async function requireActive(
+  minTier: "core" | "daily" | "max" = "core",
+): Promise<GuardResult> {
   const session = await getServerSessionSafe();
   if (!session?.user?.email) return { ok: false, reason: "UNAUTHENTICATED" };
 
-  const user = await prisma.user.findUnique({ where: { email: session.user.email } });
+  const user = await prisma.user.findUnique({
+    where: { email: session.user.email },
+  });
   if (!user) return { ok: false, reason: "USER_NOT_FOUND" };
 
   const local = await readLatestLocal(user.id);
@@ -52,7 +56,9 @@ export async function requireActive(minTier: "core" | "daily" | "max" = "core"):
             stripePriceId: s.items.data[0]?.price?.id || null,
             plan: tier ?? null,
             status,
-            currentPeriodEnd: s.current_period_end ? new Date(s.current_period_end * 1000) : null,
+            currentPeriodEnd: s.current_period_end
+              ? new Date(s.current_period_end * 1000)
+              : null,
           },
         });
       }
@@ -67,7 +73,8 @@ export async function requireActive(minTier: "core" | "daily" | "max" = "core"):
   const active = status === "active" || status === "trialing";
 
   if (!active) return { ok: false, reason: "INACTIVE", tier, status };
-  if (haveIdx < needIdx) return { ok: false, reason: "INSUFFICIENT_TIER", tier, status };
+  if (haveIdx < needIdx)
+    return { ok: false, reason: "INSUFFICIENT_TIER", tier, status };
 
   return { ok: true, tier, status };
 }

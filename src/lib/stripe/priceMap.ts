@@ -1,8 +1,6 @@
 /* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
 // src/lib/stripe/priceMap.ts
 
-
-
 export type PlanTier = "core" | "daily" | "max";
 
 const priceMap: Record<string, PlanTier> = {

@@ -57,7 +57,8 @@ export function useSubscription() {
         if (!alive) return;
         setState({
           loading: false,
-          error: (e instanceof Error ? e.message : String(e)) || "REQUEST_ERROR",
+          error:
+            (e instanceof Error ? e.message : String(e)) || "REQUEST_ERROR",
           data: { user: null, subscription: null },
         });
       }

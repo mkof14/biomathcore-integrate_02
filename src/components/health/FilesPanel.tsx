@@ -14,7 +14,10 @@ export default function FilesPanel({ userId = "U1001" }: { userId?: string }) {
   useEffect(() => {
     (async () => {
       try {
-        const res = await fetch(`/api/hbx/files?userId=${encodeURIComponent(userId)}`, { cache: "no-store" });
+        const res = await fetch(
+          `/api/hbx/files?userId=${encodeURIComponent(userId)}`,
+          { cache: "no-store" },
+        );
         const data = await res.json();
         setRows(Array.isArray(data?.files) ? data.files : []);
       } catch (e: any) {
@@ -72,7 +75,10 @@ export default function FilesPanel({ userId = "U1001" }: { userId?: string }) {
       const form = new FormData();
       form.append("file", file);
       try {
-        const res = await fetch("/api/hbx/upload", { method: "POST", body: form });
+        const res = await fetch("/api/hbx/upload", {
+          method: "POST",
+          body: form,
+        });
         await res.json();
       } catch {}
     }
@@ -104,10 +110,18 @@ export default function FilesPanel({ userId = "U1001" }: { userId?: string }) {
       <div className="flex items-center justify-between">
         <div>
           <h3 className="text-lg font-semibold text-slate-100">Files</h3>
-          <p className="text-xs text-slate-400">Preview • Send/Share • Print • Download</p>
+          <p className="text-xs text-slate-400">
+            Preview • Send/Share • Print • Download
+          </p>
         </div>
         <div className="flex items-center gap-2">
-          <input ref={inputRef} type="file" className="hidden" multiple onChange={onInputChange} />
+          <input
+            ref={inputRef}
+            type="file"
+            className="hidden"
+            multiple
+            onChange={onInputChange}
+          />
           <button
             onClick={() => inputRef.current?.click()}
             className="px-3 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-600 text-sm font-medium text-slate-100"
@@ -123,7 +137,9 @@ export default function FilesPanel({ userId = "U1001" }: { userId?: string }) {
         onDragOver={onDragOver}
         onDragLeave={onDragLeave}
         className={`rounded-xl border p-4 text-center text-sm transition-colors ${
-          isOver ? "border-cyan-500/60 bg-cyan-500/10 text-cyan-200" : "border-slate-700 bg-slate-900/60 text-slate-200"
+          isOver
+            ? "border-cyan-500/60 bg-cyan-500/10 text-cyan-200"
+            : "border-slate-700 bg-slate-900/60 text-slate-200"
         }`}
       >
         Drag & drop files here, or use the Upload button.
@@ -147,36 +163,63 @@ export default function FilesPanel({ userId = "U1001" }: { userId?: string }) {
               <tbody>
                 {rows.length === 0 && (
                   <tr>
-                    <td colSpan={3} className="py-6 text-center text-slate-400">No files yet</td>
+                    <td colSpan={3} className="py-6 text-center text-slate-400">
+                      No files yet
+                    </td>
                   </tr>
                 )}
                 {rows.map((row) => (
-                  <tr key={row.id} className="border-b border-slate-800 hover:bg-slate-800/40">
+                  <tr
+                    key={row.id}
+                    className="border-b border-slate-800 hover:bg-slate-800/40"
+                  >
                     <td className="py-2 pr-3 text-slate-100">
                       {row.url ? (
-                        <a href={row.url} target="_blank" className="underline underline-offset-2">
+                        <a
+                          href={row.url}
+                          target="_blank"
+                          className="underline underline-offset-2"
+                        >
                           {row.name}
                         </a>
                       ) : (
                         row.name
                       )}
                     </td>
-                    <td className="py-2 pr-3 text-slate-200">{formatSize(row.sizeBytes)}</td>
+                    <td className="py-2 pr-3 text-slate-200">
+                      {formatSize(row.sizeBytes)}
+                    </td>
                     <td className="py-2">
                       <div className="flex flex-wrap gap-2">
-                        <a href={row.url || "#"} target={row.url ? "_blank" : "_self"} className="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 border border-slate-600 text-xs text-slate-100">
+                        <a
+                          href={row.url || "#"}
+                          target={row.url ? "_blank" : "_self"}
+                          className="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 border border-slate-600 text-xs text-slate-100"
+                        >
                           Preview
                         </a>
-                        <button onClick={() => handleShare(row)} className="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 border border-slate-600 text-xs text-slate-100">
+                        <button
+                          onClick={() => handleShare(row)}
+                          className="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 border border-slate-600 text-xs text-slate-100"
+                        >
                           Send link
                         </button>
-                        <button onClick={() => handleShare(row)} className="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 border border-slate-600 text-xs text-slate-100">
+                        <button
+                          onClick={() => handleShare(row)}
+                          className="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 border border-slate-600 text-xs text-slate-100"
+                        >
                           Share
                         </button>
-                        <button onClick={() => handlePrint(row)} className="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 border border-slate-600 text-xs text-slate-100">
+                        <button
+                          onClick={() => handlePrint(row)}
+                          className="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 border border-slate-600 text-xs text-slate-100"
+                        >
                           Print
                         </button>
-                        <button onClick={() => handleDownload(row)} className="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 border border-slate-600 text-xs text-slate-100">
+                        <button
+                          onClick={() => handleDownload(row)}
+                          className="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 border border-slate-600 text-xs text-slate-100"
+                        >
                           Download
                         </button>
                       </div>

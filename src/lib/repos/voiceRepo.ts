@@ -16,7 +16,7 @@ type ListArgs = {
   from?: string;
   to?: string;
   limit?: number;
-  cursor?: string|undefined;
+  cursor?: string | undefined;
 };
 
 function mem() {
@@ -42,7 +42,10 @@ export async function getVoice(id: string): Promise<VoiceRow | null> {
   return mem().get(id) || null;
 }
 
-export async function updateVoice(id: string, patch: Partial<VoiceRow>): Promise<VoiceRow> {
+export async function updateVoice(
+  id: string,
+  patch: Partial<VoiceRow>,
+): Promise<VoiceRow> {
   const m = mem();
   const cur = m.get(id);
   if (!cur) throw new Error("not_found");
@@ -64,23 +67,27 @@ export async function deleteVoice(id: string): Promise<VoiceRow> {
   return cur;
 }
 
-export async function listVoice(args: ListArgs = { /* TODO: implement or remove */ }): Promise<{data: VoiceRow[]; nextCursor?: string}> {
+export async function listVoice(
+  args: ListArgs = {
+    /* TODO: implement or remove */
+  },
+): Promise<{ data: VoiceRow[]; nextCursor?: string }> {
   const { id, q, status, from, to, limit = 20, cursor } = args;
   const all = Array.from(mem().values());
-  let rows = all.sort((a,b)=> (a.createdAt < b.createdAt ? 1 : -1));
+  let rows = all.sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
 
-  if (id) rows = rows.filter(r => r.id === id);
+  if (id) rows = rows.filter((r) => r.id === id);
   if (q) {
     const qq = q.toLowerCase();
-    rows = rows.filter(r => r.title.toLowerCase().includes(qq));
+    rows = rows.filter((r) => r.title.toLowerCase().includes(qq));
   }
-  if (status) rows = rows.filter(r => r.status === status);
-  if (from) rows = rows.filter(r => r.createdAt >= from);
-  if (to) rows = rows.filter(r => r.createdAt <= to);
+  if (status) rows = rows.filter((r) => r.status === status);
+  if (from) rows = rows.filter((r) => r.createdAt >= from);
+  if (to) rows = rows.filter((r) => r.createdAt <= to);
 
   let start = 0;
   if (cursor) {
-    const idx = rows.findIndex(r => r.id === cursor);
+    const idx = rows.findIndex((r) => r.id === cursor);
     if (idx >= 0) start = idx + 1;
   }
   const take = Math.max(1, Math.min(1000, limit));
@@ -94,10 +101,10 @@ export async function countVoice(): Promise<number> {
 }
 
 export async function seedVoice(n = 3): Promise<number> {
-  for (let i=0;i<n;i++){
+  for (let i = 0; i < n; i++) {
     await createVoice({
-      title: `Sample voice #${i+1}`,
-      status: (i%2===0 ? "recorded" : "processed") as unknown
+      title: `Sample voice #${i + 1}`,
+      status: (i % 2 === 0 ? "recorded" : "processed") as unknown,
     });
   }
   return mem().size;

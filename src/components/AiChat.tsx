@@ -250,11 +250,7 @@ export default function AiChat() {
         </button>
       </div>
 
-      {!apiKey && (
-        <p className="text-red-500 text-xs text-center p-2">
-           
-        </p>
-      )}
+      {!apiKey && <p className="text-red-500 text-xs text-center p-2"></p>}
     </div>
   );
 }

@@ -10,7 +10,7 @@ export type SearchItem = {
 };
 
 export function buildIndex(): SearchItem[] {
-  const cats: SearchItem[] = CATEGORIES.map(c => ({
+  const cats: SearchItem[] = CATEGORIES.map((c) => ({
     type: "category",
     slug: c.slug,
     title: c.title,
@@ -19,7 +19,7 @@ export function buildIndex(): SearchItem[] {
     score: 0,
   }));
 
-  const srvs: SearchItem[] = getAllServices().map(s => ({
+  const srvs: SearchItem[] = getAllServices().map((s) => ({
     type: "service",
     slug: s.slug,
     title: s.title,
@@ -38,8 +38,9 @@ export function searchCatalog(q: string, limit = 20): SearchItem[] {
   const terms = query.split(/\s+/).filter(Boolean);
   const idx = buildIndex();
 
-  const scored = idx.map(item => {
-    const hay = `${item.title} ${item.slug} ${item.summary ?? ""}`.toLowerCase();
+  const scored = idx.map((item) => {
+    const hay =
+      `${item.title} ${item.slug} ${item.summary ?? ""}`.toLowerCase();
     let score = 0;
 
     for (const t of terms) {
@@ -56,7 +57,7 @@ export function searchCatalog(q: string, limit = 20): SearchItem[] {
   });
 
   return scored
-    .filter(x => x.score > 0)
+    .filter((x) => x.score > 0)
     .sort((a, b) => b.score - a.score || a.title.localeCompare(b.title))
     .slice(0, limit);
 }

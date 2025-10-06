@@ -10,9 +10,12 @@ export default function AnonymizeButton({ sessionId }: { sessionId: string }) {
     setBusy(true);
     setErr(null);
     try {
-      const res = await fetch(`/api/responses/${sessionId}/anonymize`, { method: "POST" });
+      const res = await fetch(`/api/responses/${sessionId}/anonymize`, {
+        method: "POST",
+      });
       const json = await res.json();
-      if (!res.ok || !json.ok) throw new Error(json.error || "Failed to anonymize");
+      if (!res.ok || !json.ok)
+        throw new Error(json.error || "Failed to anonymize");
       setDone(true);
     } catch (e: any) {
       setErr(e.message || "Error");

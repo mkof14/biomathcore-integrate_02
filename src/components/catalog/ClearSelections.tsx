@@ -12,8 +12,10 @@ type ServicesResp =
 function countSelections(data: ServicesResp) {
   if (!data) return 0;
   if (Array.isArray(data)) return data.length;
-  if (Array.isArray((data as any).selections)) return (data as any).selections.length;
-  if (Array.isArray((data as any).services)) return (data as any).services.length;
+  if (Array.isArray((data as any).selections))
+    return (data as any).selections.length;
+  if (Array.isArray((data as any).services))
+    return (data as any).services.length;
   return 0;
 }
 
@@ -88,8 +90,18 @@ export default function ClearSelections() {
         </button>
       </div>
       <div className="mt-3 space-y-2">
-        {msg && <div className="rounded-xl px-4 py-2 text-sm border bg-green-50 text-green-800 dark:bg-green-900/30 dark:text-green-200"> {msg} </div>}
-        {err && <div className="rounded-xl px-4 py-2 text-sm border bg-red-50 text-red-800 dark:bg-red-900/30 dark:text-red-200"> {err} </div>}
+        {msg && (
+          <div className="rounded-xl px-4 py-2 text-sm border bg-green-50 text-green-800 dark:bg-green-900/30 dark:text-green-200">
+            {" "}
+            {msg}{" "}
+          </div>
+        )}
+        {err && (
+          <div className="rounded-xl px-4 py-2 text-sm border bg-red-50 text-red-800 dark:bg-red-900/30 dark:text-red-200">
+            {" "}
+            {err}{" "}
+          </div>
+        )}
       </div>
     </div>
   );

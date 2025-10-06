@@ -10,12 +10,20 @@ export const runtime = "nodejs";
 export async function GET() {
   const session = await getServerSessionSafe();
   if (!session?.user?.email) {
-    return NextResponse.json({ ok: false, error: "UNAUTHENTICATED" }, { status: 401 });
+    return NextResponse.json(
+      { ok: false, error: "UNAUTHENTICATED" },
+      { status: 401 },
+    );
   }
 
-  const user = await prisma.user.findUnique({ where: { email: session.user.email } });
+  const user = await prisma.user.findUnique({
+    where: { email: session.user.email },
+  });
   if (!user) {
-    return NextResponse.json({ ok: false, error: "USER_NOT_FOUND" }, { status: 404 });
+    return NextResponse.json(
+      { ok: false, error: "USER_NOT_FOUND" },
+      { status: 404 },
+    );
   }
 
   const sub = await prisma.subscription.findFirst({
@@ -34,7 +42,9 @@ export async function GET() {
       const s = await stripe.subscriptions.retrieve(sub.stripeSubscriptionId);
       tier = resolveTierFromSubscription(s) ?? sub?.plan ?? null;
       status = s.status ?? status;
-      currentPeriodEnd = s.current_period_end ? new Date(s.current_period_end * 1000) : currentPeriodEnd;
+      currentPeriodEnd = s.current_period_end
+        ? new Date(s.current_period_end * 1000)
+        : currentPeriodEnd;
 
       await prisma.subscription.update({
         where: { stripeSubscriptionId: sub.stripeSubscriptionId },
@@ -57,7 +67,9 @@ export async function GET() {
     subscription: {
       tier,
       status,
-      currentPeriodEnd: currentPeriodEnd ? currentPeriodEnd.toISOString() : null,
+      currentPeriodEnd: currentPeriodEnd
+        ? currentPeriodEnd.toISOString()
+        : null,
       stripeCustomerId: user.stripeCustomerId ?? null,
       stripeSubscriptionId: sub?.stripeSubscriptionId ?? null,
     },

@@ -4,7 +4,10 @@ import { useState } from "react";
 
 export default function ReferClient() {
   const [copied, setCopied] = useState(false);
-  const link = typeof window !== "undefined" ? window.location.origin + "/?ref=you" : "https://biomathcore.com/?ref=you";
+  const link =
+    typeof window !== "undefined"
+      ? window.location.origin + "/?ref=you"
+      : "https://biomathcore.com/?ref=you";
 
   const onCopy = async () => {
     try {

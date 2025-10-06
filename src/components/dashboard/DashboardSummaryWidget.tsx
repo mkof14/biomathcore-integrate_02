@@ -5,7 +5,12 @@ import Link from "next/link";
 import LatestList from "./LatestList";
 
 type Counts = { ai: number; voice: number; drugGene: number };
-type Item = { id: string; title?: string; status?: string; createdAt?: string | Date };
+type Item = {
+  id: string;
+  title?: string;
+  status?: string;
+  createdAt?: string | Date;
+};
 type Summary = {
   counts: Counts;
   latest: { ai: Item[]; voice: Item[]; drugGene: Item[] };
@@ -14,16 +19,29 @@ type Summary = {
 export default function DashboardSummaryWidget() {
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState<string>("");
-  const [counts, setCounts] = useState<Counts>({ ai: 0, voice: 0, drugGene: 0 });
-  const [latest, setLatest] = useState<Summary["latest"]>({ ai: [], voice: [], drugGene: [] });
+  const [counts, setCounts] = useState<Counts>({
+    ai: 0,
+    voice: 0,
+    drugGene: 0,
+  });
+  const [latest, setLatest] = useState<Summary["latest"]>({
+    ai: [],
+    voice: [],
+    drugGene: [],
+  });
 
   async function load() {
     setLoading(true);
     setErr("");
     try {
       const res = await fetch("/api/dashboard/summary", { cache: "no-store" });
-      const j = (await res.json()) as { ok: boolean; data?: Summary; error?: string };
-      if (!res.ok || !j?.ok || !j.data) throw new Error(j?.error || "summary_error");
+      const j = (await res.json()) as {
+        ok: boolean;
+        data?: Summary;
+        error?: string;
+      };
+      if (!res.ok || !j?.ok || !j.data)
+        throw new Error(j?.error || "summary_error");
       setCounts(j.data.counts);
       setLatest(j.data.latest);
     } catch (e: any) {
@@ -33,19 +51,34 @@ export default function DashboardSummaryWidget() {
     }
   }
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => {
+    load();
+  }, []);
 
   const tiles = [
-    { key: "ai",    title: "AI runs",     count: counts.ai,    href: "/dev/demo-ai" },
-    { key: "voice", title: "Voice notes", count: counts.voice, href: "/dev/demo-voice" },
-    { key: "dg",    title: "Drug–Gene",   count: counts.drugGene, href: "/dev/demo-drug-gene" },
+    { key: "ai", title: "AI runs", count: counts.ai, href: "/dev/demo-ai" },
+    {
+      key: "voice",
+      title: "Voice notes",
+      count: counts.voice,
+      href: "/dev/demo-voice",
+    },
+    {
+      key: "dg",
+      title: "Drug–Gene",
+      count: counts.drugGene,
+      href: "/dev/demo-drug-gene",
+    },
   ];
 
   return (
     <div className="space-y-6">
       <div className="grid md:grid-cols-3 gap-4">
         {tiles.map((it) => (
-          <div key={it.key} className="rounded-2xl border border-neutral-200/50 bg-white/70 p-4 shadow-sm">
+          <div
+            key={it.key}
+            className="rounded-2xl border border-neutral-200/50 bg-white/70 p-4 shadow-sm"
+          >
             <div className="text-sm text-neutral-500">{it.title}</div>
             <div className="mt-1 text-3xl font-semibold tabular-nums">
               {loading ? "…" : it.count}
@@ -56,7 +89,15 @@ export default function DashboardSummaryWidget() {
                 className="inline-flex items-center gap-1 rounded-lg border px-3 py-1.5 text-sm hover:bg-neutral-50"
               >
                 Open
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeWidth="2" d="M7 17L17 7M7 7h10v10"/></svg>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-4 w-4 opacity-70"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path strokeWidth="2" d="M7 17L17 7M7 7h10v10" />
+                </svg>
               </Link>
               <button
                 onClick={load}
@@ -73,9 +114,21 @@ export default function DashboardSummaryWidget() {
       </div>
 
       <div className="grid md:grid-cols-3 gap-4">
-        <LatestList title="Latest AI" rows={latest.ai ?? []} emptyText="No AI runs yet." />
-        <LatestList title="Latest Voice" rows={latest.voice ?? []} emptyText="No voice notes yet." />
-        <LatestList title="Latest Drug–Gene" rows={latest.drugGene ?? []} emptyText="No DG items yet." />
+        <LatestList
+          title="Latest AI"
+          rows={latest.ai ?? []}
+          emptyText="No AI runs yet."
+        />
+        <LatestList
+          title="Latest Voice"
+          rows={latest.voice ?? []}
+          emptyText="No voice notes yet."
+        />
+        <LatestList
+          title="Latest Drug–Gene"
+          rows={latest.drugGene ?? []}
+          emptyText="No DG items yet."
+        />
       </div>
     </div>
   );

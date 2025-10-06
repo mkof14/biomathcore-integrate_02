@@ -8,7 +8,13 @@ type Msg = { role: "user" | "assistant"; content: string };
 
 function MicIcon({ active }: { active: boolean }) {
   return (
-    <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2">
+    <svg
+      viewBox="0 0 24 24"
+      className="h-5 w-5"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+    >
       <path d="M12 3a3 3 0 0 0-3 3v6a3 3 0 1 0 6 0V6a3 3 0 0 0-3-3Z" />
       <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
       <path d="M12 19v3" />
@@ -18,7 +24,13 @@ function MicIcon({ active }: { active: boolean }) {
 }
 function SpeakerIcon({ on }: { on: boolean }) {
   return (
-    <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2">
+    <svg
+      viewBox="0 0 24 24"
+      className="h-5 w-5"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+    >
       <path d="M5 10v4h3l5 4V6l-5 4H5Z" />
       {on ? (
         <>
@@ -42,7 +54,9 @@ function VuBars({ volume }: { volume: number }) {
           <div
             key={i}
             className={`flex-1 rounded-sm transition-all duration-100 ${
-              filled ? "bg-gradient-to-t from-emerald-400 to-cyan-400" : "bg-slate-700/60"
+              filled
+                ? "bg-gradient-to-t from-emerald-400 to-cyan-400"
+                : "bg-slate-700/60"
             }`}
             style={{ height: `${((i + 1) / bars) * 100}%` }}
           />
@@ -77,16 +91,28 @@ export default function AssistantChat({
 
   // TTS disabled by default; persist user choice
   const [ttsEnabled, setTtsEnabled] = useState(false);
-  useEffect(() => { try { const s = localStorage.getItem("ai_tts_enabled"); if (s!=null) setTtsEnabled(s==="1"); } catch {} }, []);
-  useEffect(() => { try { localStorage.setItem("ai_tts_enabled", ttsEnabled ? "1":"0"); } catch {} }, [ttsEnabled]);
+  useEffect(() => {
+    try {
+      const s = localStorage.getItem("ai_tts_enabled");
+      if (s != null) setTtsEnabled(s === "1");
+    } catch {}
+  }, []);
+  useEffect(() => {
+    try {
+      localStorage.setItem("ai_tts_enabled", ttsEnabled ? "1" : "0");
+    } catch {}
+  }, [ttsEnabled]);
 
   const endRef = useRef<HTMLDivElement>(null);
 
   const locale = langToLocale(lang);
-  const { recState, startListening, stopListening, speak, stopSpeak, volume } = useVoice(locale);
+  const { recState, startListening, stopListening, speak, stopSpeak, volume } =
+    useVoice(locale);
   const listening = recState === "listening";
 
-  useEffect(() => { endRef.current?.scrollIntoView({ behavior: "smooth" }); }, [messages, isTyping]);
+  useEffect(() => {
+    endRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages, isTyping]);
 
   // Speak only when user enabled TTS
   useEffect(() => {
@@ -115,11 +141,15 @@ export default function AssistantChat({
       if (!reply) reply = "Thanks — I’m here to help. Tell me more.";
       setMessages((m) => [...m, { role: "assistant", content: reply }]);
       // 🔔 notify parent (FAB) for unread pulse
-      try { onAssistantReply?.(reply); } catch {}
+      try {
+        onAssistantReply?.(reply);
+      } catch {}
     } catch {
       const err = "Sorry, something went wrong.";
       setMessages((m) => [...m, { role: "assistant", content: err }]);
-      try { onAssistantReply?.(err); } catch {}
+      try {
+        onAssistantReply?.(err);
+      } catch {}
     } finally {
       setIsTyping(false);
     }
@@ -129,7 +159,9 @@ export default function AssistantChat({
     <div className="rounded-2xl border border-slate-600/70 bg-slate-900/80 p-4 sm:p-5 space-y-4">
       {!hideHeader && (
         <div className="flex items-center justify-between">
-          <div className="text-lg font-semibold text-slate-100">AI Health Assistant</div>
+          <div className="text-lg font-semibold text-slate-100">
+            AI Health Assistant
+          </div>
           <div className="flex items-center gap-2 text-xs">
             <span className="text-slate-300/80">{A.t(lang, "language")}:</span>
             <select
@@ -149,7 +181,10 @@ export default function AssistantChat({
 
       <div className="rounded-xl border border-slate-700 bg-slate-900/70 p-3 h-[50vh] min-h-[360px] overflow-y-auto space-y-3">
         {messages.map((m, i) => (
-          <div key={i} className={`max-w-[80%] ${m.role === "assistant" ? "mr-auto" : "ml-auto"}`}>
+          <div
+            key={i}
+            className={`max-w-[80%] ${m.role === "assistant" ? "mr-auto" : "ml-auto"}`}
+          >
             <div
               className={`px-3 py-2 rounded-lg text-sm shadow-sm ${
                 m.role === "assistant"
@@ -161,9 +196,7 @@ export default function AssistantChat({
             </div>
           </div>
         ))}
-        {isTyping && (
-          <div className="text-cyan-300/80 text-xs">Typing…</div>
-        )}
+        {isTyping && <div className="text-cyan-300/80 text-xs">Typing…</div>}
         <div ref={endRef} />
       </div>
 
@@ -178,7 +211,10 @@ export default function AssistantChat({
                 : startListening({
                     locale,
                     onInterim: (txt) => setInput(txt),
-                    onFinal: (txt: string) => { setInput(txt); void send(txt); },
+                    onFinal: (txt: string) => {
+                      setInput(txt);
+                      void send(txt);
+                    },
                   })
             }
             title={listening ? "Stop mic" : "Start mic"}
@@ -200,7 +236,9 @@ export default function AssistantChat({
             onClick={() => {
               const next = !ttsEnabled;
               setTtsEnabled(next);
-              if (!next) { stopSpeak(); }
+              if (!next) {
+                stopSpeak();
+              }
             }}
             title={ttsEnabled ? "Voice: on" : "Voice: off"}
             className={`px-2 py-2 rounded-lg border text-sm ${
@@ -218,7 +256,10 @@ export default function AssistantChat({
             value={input}
             onChange={(e: any) => setInput(e.target.value)}
             onKeyDown={(e: any) => {
-              if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); void send(); }
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                void send();
+              }
             }}
             placeholder={A.t(lang, "inputPlaceholder")}
             className="flex-1 px-3 py-2 rounded-lg bg-slate-800/90 border border-slate-600 text-slate-100 placeholder:text-slate-300"

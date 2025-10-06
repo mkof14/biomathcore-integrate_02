@@ -3,7 +3,12 @@ import type { Report } from "@/lib/report-engine/contracts/reportSchemas";
 
 export function makePrismaReportRepo(prisma: PrismaClient) {
   return {
-    async create(data: { userId: string; title: string; lines?: string[]; meta?: any }): Promise<Report> {
+    async create(data: {
+      userId: string;
+      title: string;
+      lines?: string[];
+      meta?: any;
+    }): Promise<Report> {
       const r = await prisma.report.create({
         data: {
           userId: data.userId,

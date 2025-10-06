@@ -6,9 +6,14 @@ type AnyRec = Record<string, unknown>;
 function toCsv(rows: AnyRec[]): string {
   const headers = Array.from(
     rows.reduce<Set<string>>((acc, r) => {
-      Object.keys(r ?? { /* TODO: implement or remove */ }).forEach((k) => acc.add(k));
+      Object.keys(
+        r ??
+          {
+            /* TODO: implement or remove */
+          },
+      ).forEach((k) => acc.add(k));
       return acc;
-    }, new Set<string>())
+    }, new Set<string>()),
   );
 
   const esc = (v: unknown) => {
@@ -17,7 +22,7 @@ function toCsv(rows: AnyRec[]): string {
     const needQuotes = /[",\n]/.test(s);
     const safe = s.replace(/"/g, '""');
     return needQuotes ? `"${safe}"` : safe;
-    };
+  };
 
   const head = headers.join(",");
   const body = rows
@@ -35,14 +40,20 @@ function toCsv(rows: AnyRec[]): string {
  */
 export async function exportReport(
   reportId: string,
-  format: "json" | "csv" = "json"
+  format: "json" | "csv" = "json",
 ): Promise<{ filename: string; mime: string; content: string }> {
   const r = await prisma.report.findUnique({ where: { id: reportId } });
   if (!r) {
     throw new Error("REPORT_NOT_FOUND");
   }
 
-  const baseName = r.title?.trim() ? r.title.trim().toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9\-]+/g, "") : "report";
+  const baseName = r.title?.trim()
+    ? r.title
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, "-")
+        .replace(/[^a-z0-9\-]+/g, "")
+    : "report";
   const filename = `${baseName}.${format}`;
 
   // Try to parse report.body as JSON

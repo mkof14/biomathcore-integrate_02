@@ -11,5 +11,5 @@ export const POST = withLog(async () => {
     { text: "Dictation", status: "failed" },
   ];
   for (const s of samples) await createVoiceRun(s as unknown);
-  return NextResponse.json({ ok:true, created: samples.length });
+  return NextResponse.json({ ok: true, created: samples.length });
 }, "voice.dev.seed");

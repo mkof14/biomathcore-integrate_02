@@ -10,14 +10,19 @@ export async function POST() {
     return NextResponse.json({ error: "UNAUTHENTICATED" }, { status: 401 });
   }
 
-  const user = await prisma.user.findUnique({ where: { email: session.user.email } });
+  const user = await prisma.user.findUnique({
+    where: { email: session.user.email },
+  });
   if (!user?.stripeCustomerId) {
     return NextResponse.json({ error: "NO_CUSTOMER" }, { status: 404 });
   }
 
   const secret = process.env.STRIPE_SECRET_KEY;
   if (!secret) {
-    return NextResponse.json({ error: "MISSING_STRIPE_SECRET" }, { status: 500 });
+    return NextResponse.json(
+      { error: "MISSING_STRIPE_SECRET" },
+      { status: 500 },
+    );
   }
 
   const stripe = new Stripe(secret, { apiVersion: "2024-06-20" });

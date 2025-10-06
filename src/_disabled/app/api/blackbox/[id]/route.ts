@@ -10,7 +10,14 @@ function ok<T>(data: T, init?: ResponseInit) {
 }
 function bad(status: number, code: string, extra?: Record<string, unknown>) {
   return NextResponse.json(
-    { ok: false, error: code, ...(extra || { /* TODO: implement or remove */ }) },
+    {
+      ok: false,
+      error: code,
+      ...(extra ||
+        {
+          /* TODO: implement or remove */
+        }),
+    },
     { status },
   );
 }
@@ -42,10 +49,26 @@ export async function PATCH(req: Request, { params }: Params) {
   const updated = await prisma.blackBoxNote.updateMany({
     where: { id: params.id, userId: user.id },
     data: {
-      ...(patch.title !== undefined ? { title: patch.title } : { /* TODO: implement or remove */ }),
-      ...(patch.body !== undefined ? { body: patch.body } : { /* TODO: implement or remove */ }),
-      ...(patch.tags !== undefined ? { tags: patch.tags } : { /* TODO: implement or remove */ }),
-      ...(patch.status !== undefined ? { status: patch.status } : { /* TODO: implement or remove */ }),
+      ...(patch.title !== undefined
+        ? { title: patch.title }
+        : {
+            /* TODO: implement or remove */
+          }),
+      ...(patch.body !== undefined
+        ? { body: patch.body }
+        : {
+            /* TODO: implement or remove */
+          }),
+      ...(patch.tags !== undefined
+        ? { tags: patch.tags }
+        : {
+            /* TODO: implement or remove */
+          }),
+      ...(patch.status !== undefined
+        ? { status: patch.status }
+        : {
+            /* TODO: implement or remove */
+          }),
       updatedAt: new Date(),
     },
   });

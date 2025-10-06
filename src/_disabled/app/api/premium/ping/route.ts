@@ -10,14 +10,35 @@ export async function GET() {
 
   const session = await getServerSessionSafe();
   const email = session?.user?.email || null;
-  const user = email ? await prisma.user.findUnique({ where: { email } }) : null;
+  const user = email
+    ? await prisma.user.findUnique({ where: { email } })
+    : null;
   const userId = user?.id ?? null;
 
   if (!guard.ok) {
-    await auditLogOptional(userId, "premium_ping_denied", { reason: guard.reason, tier: guard.tier, status: guard.status });
-    return NextResponse.json({ ok: false, error: guard.reason, tier: guard.tier, status: guard.status }, { status: 403 });
+    await auditLogOptional(userId, "premium_ping_denied", {
+      reason: guard.reason,
+      tier: guard.tier,
+      status: guard.status,
+    });
+    return NextResponse.json(
+      {
+        ok: false,
+        error: guard.reason,
+        tier: guard.tier,
+        status: guard.status,
+      },
+      { status: 403 },
+    );
   }
 
-  await auditLogOptional(userId, "premium_ping_ok", { tier: guard.tier, status: guard.status });
-  return NextResponse.json({ ok: true, tier: guard.tier, status: guard.status });
+  await auditLogOptional(userId, "premium_ping_ok", {
+    tier: guard.tier,
+    status: guard.status,
+  });
+  return NextResponse.json({
+    ok: true,
+    tier: guard.tier,
+    status: guard.status,
+  });
 }

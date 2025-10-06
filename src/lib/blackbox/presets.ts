@@ -6,7 +6,19 @@ export type BBPreset = {
 };
 
 export const BLACKBOX_PRESETS: BBPreset[] = [
-  { slug: "basic-audit", title: "Basic Audit", params: { kind: "audit", depth: 1 } },
-  { slug: "deep-audit",  title: "Deep Audit",  params: { kind: "audit", depth: 3 } },
-  { slug: "quick-summary", title: "Quick Summary", params: { kind: "summarize" } },
+  {
+    slug: "basic-audit",
+    title: "Basic Audit",
+    params: { kind: "audit", depth: 1 },
+  },
+  {
+    slug: "deep-audit",
+    title: "Deep Audit",
+    params: { kind: "audit", depth: 3 },
+  },
+  {
+    slug: "quick-summary",
+    title: "Quick Summary",
+    params: { kind: "summarize" },
+  },
 ];

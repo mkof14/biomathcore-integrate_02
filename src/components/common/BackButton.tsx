@@ -1,1 +1,3 @@
-export default function BackButton(_: any){ return null; }
+export default function BackButton(_: any) {
+  return null;
+}

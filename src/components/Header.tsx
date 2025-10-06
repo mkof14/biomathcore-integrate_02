@@ -16,22 +16,40 @@ export default function Header() {
             priority
           />
           <span className="flex items-baseline gap-1">
-            <span className="text-3xl md:text-4xl font-semibold text-sky-400">BioMath</span>
-            <span className="text-3xl md:text-4xl font-semibold text-white">Core</span>
+            <span className="text-3xl md:text-4xl font-semibold text-sky-400">
+              BioMath
+            </span>
+            <span className="text-3xl md:text-4xl font-semibold text-white">
+              Core
+            </span>
           </span>
         </Link>
 
         <nav className="hidden md:flex items-center gap-8 text-lg">
-          <Link href="/" className="text-slate-200 hover:text-white">Home</Link>
-          <Link href="/about" className="text-slate-200 hover:text-white">About</Link>
-          <Link href="/services" className="text-slate-200 hover:text-white">Services</Link>
-  <Link href="/pricing" className="text-slate-200 hover:text-white">Pricing</Link>
-          <Link href="/member" className="text-slate-200 hover:text-white">Member</Link>
-          <Link href="/investors" className="text-slate-200 hover:text-white">Investors</Link>
+          <Link href="/" className="text-slate-200 hover:text-white">
+            Home
+          </Link>
+          <Link href="/about" className="text-slate-200 hover:text-white">
+            About
+          </Link>
+          <Link href="/services" className="text-slate-200 hover:text-white">
+            Services
+          </Link>
+          <Link href="/pricing" className="text-slate-200 hover:text-white">
+            Pricing
+          </Link>
+          <Link href="/member" className="text-slate-200 hover:text-white">
+            Member
+          </Link>
+          <Link href="/investors" className="text-slate-200 hover:text-white">
+            Investors
+          </Link>
         </nav>
 
         <div className="flex items-center text-lg">
-          <Link href="/sign-in" className="text-slate-200 hover:text-white">Sign In/Up</Link>
+          <Link href="/sign-in" className="text-slate-200 hover:text-white">
+            Sign In/Up
+          </Link>
         </div>
       </div>
     </header>

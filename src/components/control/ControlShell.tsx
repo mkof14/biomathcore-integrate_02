@@ -26,7 +26,8 @@ export default function ControlShell({
   ];
 
   const isActive = (href: string) =>
-    pathname === href || (href !== "/control-center" && pathname?.startsWith(href));
+    pathname === href ||
+    (href !== "/control-center" && pathname?.startsWith(href));
 
   return (
     <div
@@ -58,7 +59,9 @@ export default function ControlShell({
               <h1 className="text-lg font-semibold tracking-wide">{title}</h1>
               <p
                 className={
-                  theme === "dark" ? "text-xs text-neutral-300" : "text-xs text-neutral-600"
+                  theme === "dark"
+                    ? "text-xs text-neutral-300"
+                    : "text-xs text-neutral-600"
                 }
               >
                 {subtitle}

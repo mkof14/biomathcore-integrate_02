@@ -13,7 +13,6 @@ export default function SurveyForm() {
     e.preventDefault();
     console.log("Survey Data:", formData);
     setSubmitted(true);
-   
   };
 
   return (

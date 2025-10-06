@@ -22,9 +22,16 @@ export async function POST(req: NextRequest) {
   const rawBody = await req.text();
 
   try {
-    event = stripe.webhooks.constructEvent(rawBody, stripeSignature, webhookSecret);
+    event = stripe.webhooks.constructEvent(
+      rawBody,
+      stripeSignature,
+      webhookSecret,
+    );
   } catch (err: any) {
-    return new NextResponse(`Webhook signature verification failed: ${err.message}`, { status: 400 });
+    return new NextResponse(
+      `Webhook signature verification failed: ${err.message}`,
+      { status: 400 },
+    );
   }
 
   try {
@@ -32,10 +39,13 @@ export async function POST(req: NextRequest) {
       case "checkout.session.completed": {
         const session = event.data.object as Stripe.Checkout.Session;
         const clientReferenceId = session.client_reference_id ?? undefined;
-        const customerEmail = (session.customer_details && session.customer_details.email) || undefined;
+        const customerEmail =
+          (session.customer_details && session.customer_details.email) ||
+          undefined;
         const priceId =
           // @ts-ignore optional line_items if expanded via dashboard or future handler
-          Array.isArray(session.line_items?.data) && session.line_items?.data[0]?.price?.id
+          Array.isArray(session.line_items?.data) &&
+          session.line_items?.data[0]?.price?.id
             ? String(session.line_items?.data[0]?.price?.id)
             : undefined;
 
@@ -57,7 +67,9 @@ export async function POST(req: NextRequest) {
         break;
     }
   } catch (err: any) {
-    return new NextResponse(`Webhook handler error: ${err.message}`, { status: 500 });
+    return new NextResponse(`Webhook handler error: ${err.message}`, {
+      status: 500,
+    });
   }
 
   return NextResponse.json({ received: true });

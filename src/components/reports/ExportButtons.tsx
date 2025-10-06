@@ -2,7 +2,9 @@
 import { jsPDF } from "jspdf";
 
 async function fetchReport(id: string) {
-  const r = await fetch(`/api/reports/${encodeURIComponent(id)}`, { cache:"no-store" });
+  const r = await fetch(`/api/reports/${encodeURIComponent(id)}`, {
+    cache: "no-store",
+  });
   const j = await r.json();
   if (!j?.ok) throw new Error("Failed to load report");
   return j.data;
@@ -12,9 +14,9 @@ function toCSV(obj: any): string {
   if (!obj || typeof obj !== "object") return "key,value\nvalue,\n";
   const entries = Object.entries(obj);
   const head = "key,value";
-  const rows = entries.map(([k,v]) => {
+  const rows = entries.map(([k, v]) => {
     let val = typeof v === "object" ? JSON.stringify(v) : String(v ?? "");
-    val = `"${val.replace(/"/g,'""')}"`;
+    val = `"${val.replace(/"/g, '""')}"`;
     return `${k},${val}`;
   });
   return [head, ...rows].join("\n");
@@ -53,9 +55,31 @@ export default function ExportButtons({ id }: { id: string }) {
     downloadBlob(`${title}.pdf`, "application/pdf", blob);
   }
   return (
-    <div style={{ display:"inline-flex", gap:6 }}>
-      <button onClick={onCSV} style={{ padding:"4px 8px", border:"1px solid #ddd", borderRadius:6, cursor:"pointer", background:"white" }}>CSV</button>
-      <button onClick={onPDF} style={{ padding:"4px 8px", border:"1px solid #ddd", borderRadius:6, cursor:"pointer", background:"white" }}>PDF</button>
+    <div style={{ display: "inline-flex", gap: 6 }}>
+      <button
+        onClick={onCSV}
+        style={{
+          padding: "4px 8px",
+          border: "1px solid #ddd",
+          borderRadius: 6,
+          cursor: "pointer",
+          background: "white",
+        }}
+      >
+        CSV
+      </button>
+      <button
+        onClick={onPDF}
+        style={{
+          padding: "4px 8px",
+          border: "1px solid #ddd",
+          borderRadius: 6,
+          cursor: "pointer",
+          background: "white",
+        }}
+      >
+        PDF
+      </button>
     </div>
   );
 }

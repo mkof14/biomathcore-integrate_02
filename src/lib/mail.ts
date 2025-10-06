@@ -26,7 +26,8 @@ function getLogoPath() {
 
 function brandWrap(innerHtml: string, previewText?: string) {
   const appName = "BioMath Core";
-  const baseUrl = process.env.APP_URL || process.env.NEXTAUTH_URL || "http://localhost:3000";
+  const baseUrl =
+    process.env.APP_URL || process.env.NEXTAUTH_URL || "http://localhost:3000";
   // На случай, если CID не сработает в каком-то клиенте — дадим абсолютную ссылку (не все клиенты грузят локалхост)
   const httpLogoUrl = `${baseUrl.replace(/\/$/, "")}/images/BMCore-Logo-33.png`;
 
@@ -134,7 +135,11 @@ export async function sendPasswordReset(toEmail: string, link: string) {
 }
 
 // Универсальная отправка (на будущее/тесты)
-export async function sendGeneric(toEmail: string, subject: string, htmlInner: string) {
+export async function sendGeneric(
+  toEmail: string,
+  subject: string,
+  htmlInner: string,
+) {
   const from = process.env.SMTP_FROM || process.env.SMTP_USER!;
   const transport = getTransport();
   const logoPath = getLogoPath();

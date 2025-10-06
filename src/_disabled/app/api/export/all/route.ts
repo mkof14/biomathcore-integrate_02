@@ -13,17 +13,32 @@ export async function GET() {
   // reports
   const rep = await listReports({ limit: 1000 });
   zip.file("reports/reports.json", JSON.stringify(rep.data, null, 2));
-  zip.file("reports/reports.csv", new Json2Csv({ fields: ["id","title","status","createdAt","updatedAt"] }).parse(rep.data));
+  zip.file(
+    "reports/reports.csv",
+    new Json2Csv({
+      fields: ["id", "title", "status", "createdAt", "updatedAt"],
+    }).parse(rep.data),
+  );
 
   // voice
   const voice = await listVoiceJobs(1000);
   zip.file("voice/jobs.json", JSON.stringify(voice.data, null, 2));
-  zip.file("voice/jobs.csv", new Json2Csv({ fields: ["id","text","status","createdAt","updatedAt"] }).parse(voice.data));
+  zip.file(
+    "voice/jobs.csv",
+    new Json2Csv({
+      fields: ["id", "text", "status", "createdAt", "updatedAt"],
+    }).parse(voice.data),
+  );
 
   // drug-gene
   const dg = await listDrugGene(1000);
   zip.file("drug-gene/list.json", JSON.stringify(dg.data, null, 2));
-  zip.file("drug-gene/list.csv", new Json2Csv({ fields: ["id","drug","gene","effect","createdAt","updatedAt"] }).parse(dg.data));
+  zip.file(
+    "drug-gene/list.csv",
+    new Json2Csv({
+      fields: ["id", "drug", "gene", "effect", "createdAt", "updatedAt"],
+    }).parse(dg.data),
+  );
 
   // health snapshot
   const health = {

@@ -11,7 +11,9 @@ export default function ChatClient() {
   const [loading, setLoading] = useState(false);
   const endRef = useRef<HTMLDivElement | null>(null);
 
-  useEffect(() => { endRef.current?.scrollIntoView({ behavior: "smooth" }); }, [messages]);
+  useEffect(() => {
+    endRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   async function send() {
     const text = input.trim();
@@ -30,10 +32,16 @@ export default function ChatClient() {
       if (data?.reply) {
         setMessages((m) => [...m, { role: "assistant", content: data.reply }]);
       } else {
-        setMessages((m) => [...m, { role: "assistant", content: "Sorry, I couldn't respond." }]);
+        setMessages((m) => [
+          ...m,
+          { role: "assistant", content: "Sorry, I couldn't respond." },
+        ]);
       }
     } catch {
-      setMessages((m) => [...m, { role: "assistant", content: "Network error." }]);
+      setMessages((m) => [
+        ...m,
+        { role: "assistant", content: "Network error." },
+      ]);
     } finally {
       setLoading(false);
     }
@@ -50,7 +58,10 @@ export default function ChatClient() {
     <div className="mx-auto w-full max-w-3xl">
       <div className="h-[60vh] overflow-y-auto rounded-lg border border-white/10 bg-black/20 p-4 backdrop-blur-sm">
         {messages.map((m, i) => (
-          <div key={i} className={`mb-4 flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
+          <div
+            key={i}
+            className={`mb-4 flex ${m.role === "user" ? "justify-end" : "justify-start"}`}
+          >
             <div
               className={`max-w-[80%] whitespace-pre-wrap rounded-2xl px-4 py-2 text-sm leading-relaxed ${
                 m.role === "user"

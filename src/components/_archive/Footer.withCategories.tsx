@@ -21,14 +21,23 @@ type Cat = { label: string; slug: string };
 const CATEGORIES: Cat[] = [
   { label: "Critical Health", slug: "critical-health" },
   { label: "Everyday Wellness", slug: "everyday-wellness" },
-  { label: "Longevity Longevity & Anti-Aging & Anti-Aging Anti-Aging", slug: "longevity-anti-aging" },
+  {
+    label: "Longevity Longevity & Anti-Aging & Anti-Aging Anti-Aging",
+    slug: "longevity-anti-aging",
+  },
   { label: "Mental Wellness", slug: "mental-wellness" },
   { label: "Fitness & Performance", slug: "fitness-performance" },
   { label: "Women’s Health", slug: "womens-health" },
   { label: "Men’s Health", slug: "mens-health" },
-  { label: "Beauty Beauty & Skincare & Skincare Skincare", slug: "beauty-skincare" },
+  {
+    label: "Beauty Beauty & Skincare & Skincare Skincare",
+    slug: "beauty-skincare",
+  },
   { label: "Nutrition Nutrition & Diet & Diet Diet", slug: "nutrition-diet" },
-  { label: "Sleep Sleep & Recovery & Recovery Recovery", slug: "sleep-recovery" },
+  {
+    label: "Sleep Sleep & Recovery & Recovery Recovery",
+    slug: "sleep-recovery",
+  },
   { label: "Environmental Health", slug: "environmental-health" },
   { label: "Family Health", slug: "family-health" },
   {
@@ -39,9 +48,18 @@ const CATEGORIES: Cat[] = [
   { label: "Senior Care", slug: "senior-care" },
   { label: "Eye-Health Suite", slug: "eye-health-suite" },
   { label: "Digital Therapeutics Store", slug: "digital-therapeutics-store" },
-  { label: "General Sexual Longevity & Anti-Aging", slug: "general-sexual-longevity" },
-  { label: "Men's General Sexual Longevity & Anti-Aging", slug: "mens-sexual-health" },
-  { label: "Women's General Sexual Longevity & Anti-Aging", slug: "womens-sexual-health" },
+  {
+    label: "General Sexual Longevity & Anti-Aging",
+    slug: "general-sexual-longevity",
+  },
+  {
+    label: "Men's General Sexual Longevity & Anti-Aging",
+    slug: "mens-sexual-health",
+  },
+  {
+    label: "Women's General Sexual Longevity & Anti-Aging",
+    slug: "womens-sexual-health",
+  },
 ];
 
 // Split into two equal columns
@@ -412,7 +430,9 @@ export default function Footer() {
                 <Link
                   href="/ai-assistant"
                   className="rounded px-1 hover:bg-white/5 hover:text-white"
-                >AI Assistant</Link>
+                >
+                  AI Assistant
+                </Link>
               </li>
             </ul>
           </div>

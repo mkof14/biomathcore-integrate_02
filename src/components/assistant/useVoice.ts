@@ -58,7 +58,9 @@ export const langToLocale = (lang: string): string => {
     ptBR: "pt-BR",
     zh: "zh-CN",
     ja: "ja-JP",
-    ko: "ko-KR"
+    ko: "ko-KR",
   };
-  return map[lang] ?? (lang.includes("-") ? lang : `${lang}-${lang.toUpperCase()}`);
+  return (
+    map[lang] ?? (lang.includes("-") ? lang : `${lang}-${lang.toUpperCase()}`)
+  );
 };

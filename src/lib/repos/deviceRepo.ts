@@ -10,19 +10,19 @@ export type Device = {
   updatedAt: string;
 };
 
-type ListOpts = { limit?: number; cursor?: string | null | undefined; };
+type ListOpts = { limit?: number; cursor?: string | null | undefined };
 
 const g = globalThis as unknown;
 if (!g.__DEVICES__) g.__DEVICES__ = new Map<string, Device>();
 
-export async function listDevices({ limit=50, cursor }: ListOpts) {
+export async function listDevices({ limit = 50, cursor }: ListOpts) {
   const take = Math.max(1, Math.min(200, limit));
-  const all = Array.from(g.__DEVICES__.values()).sort(
-    (a:Device,b:Device)=> (a.createdAt < b.createdAt ? 1 : -1)
+  const all = Array.from(g.__DEVICES__.values()).sort((a: Device, b: Device) =>
+    a.createdAt < b.createdAt ? 1 : -1,
   );
   let start = 0;
   if (cursor) {
-    const idx = all.findIndex((x:Device)=> x.id === cursor);
+    const idx = all.findIndex((x: Device) => x.id === cursor);
     if (idx >= 0) start = idx + 1;
   }
   const slice = all.slice(start, start + take + 1);
@@ -32,9 +32,14 @@ export async function listDevices({ limit=50, cursor }: ListOpts) {
   return { data, nextCursor };
 }
 
-export async function getDevice(id: string){ return g.__DEVICES__.get(id) as Device | undefined; }
+export async function getDevice(id: string) {
+  return g.__DEVICES__.get(id) as Device | undefined;
+}
 
-export async function connectDevice(provider: Device["provider"], label?: string) {
+export async function connectDevice(
+  provider: Device["provider"],
+  label?: string,
+) {
   const now = new Date().toISOString();
   const row: Device = {
     id: uuid(),
@@ -51,7 +56,11 @@ export async function connectDevice(provider: Device["provider"], label?: string
 export async function disconnectDevice(id: string) {
   const row = await getDevice(id);
   if (!row) throw new Error("not_found");
-  const upd: Device = { ...row, status: "disconnected", updatedAt: new Date().toISOString() };
+  const upd: Device = {
+    ...row,
+    status: "disconnected",
+    updatedAt: new Date().toISOString(),
+  };
   g.__DEVICES__.set(id, upd);
   return upd;
 }

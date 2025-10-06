@@ -27,7 +27,9 @@ export default function SidebarNav() {
             key={i.href}
             href={i.href}
             className={`block rounded-lg px-3 py-2 text-sm font-medium ${
-              active ? "bg-gray-900 text-white" : "text-gray-700 hover:bg-gray-100"
+              active
+                ? "bg-gray-900 text-white"
+                : "text-gray-700 hover:bg-gray-100"
             }`}
           >
             {i.label}

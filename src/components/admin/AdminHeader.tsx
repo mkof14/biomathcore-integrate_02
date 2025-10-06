@@ -1,6 +1,12 @@
 export default function AdminHeader({
-  title, desc, actions,
-}: { title: string; desc?: string; actions?: React.ReactNode }) {
+  title,
+  desc,
+  actions,
+}: {
+  title: string;
+  desc?: string;
+  actions?: React.ReactNode;
+}) {
   return (
     <div className="mb-4">
       <div className="text-2xl font-semibold tracking-tight">{title}</div>

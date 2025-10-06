@@ -11,7 +11,9 @@ export default function SessionActions({ id }: { id: string }) {
     setMsg(null);
     start(async () => {
       try {
-        const r = await fetch(`/api/responses/${id}/anonymize`, { method: "POST" });
+        const r = await fetch(`/api/responses/${id}/anonymize`, {
+          method: "POST",
+        });
         const j = await r.json();
         if (!r.ok || !j.ok) throw new Error(j?.error || "Failed to anonymize");
         setMsg("Anonymized");
