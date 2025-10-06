@@ -1,8 +1,8 @@
-import dynamic from "next/dynamic";
 import { Suspense } from "react";
 import Breadcrumbs from "./Breadcrumbs";
 import SearchBox from "./SearchBox";
 import { CATEGORIES } from "./services.catalog";
+import ResultsGrid from "./ResultsGrid";
 import SortControl from "./SortControl";
 import TagFilter from "./TagFilter";
 
@@ -12,9 +12,6 @@ export const metadata = {
     "Browse BioMath Core categories and services. Filter and open detailed modules.",
 };
 
-const ResultsGrid = dynamic(() => import("./ResultsGrid"), { ssr: false });
-
-export const dynamic = "force-dynamic";
 export default function ServicesPage() {
   return (
     <main>
@@ -40,9 +37,7 @@ export default function ServicesPage() {
       </div>
       <div className="rounded-3xl border border-slate-200/50 bg-gradient-to-br from-white/90 to-white/60 dark:from-slate-900/60 dark:to-slate-900/30 backdrop-blur-md p-6 shadow-lg hover:shadow-xl transition-all">
         <Suspense fallback={<div className="min-h-[120px]" />}>
-          <Suspense fallback={<div className="min-h-[120px]" />}>
-            <ResultsGrid />
-          </Suspense>
+          <ResultsGrid />
         </Suspense>
       </div>
     </main>
