@@ -9,6 +9,9 @@ import Link from "next/link";
 import type { ServiceCategory } from "./services.catalog";
 
 export default function ServiceTile({ cat }: { cat: ServiceCategory }) {
+  const slug = item?.categorySlug || category?.slug || item?.slug || "";
+  const svcColor = categoryColorFor(slug, item?.title);
+
   const titleColor = categoryClassFor(slug);
 
   const titleColor = categoryClassFor(slug);

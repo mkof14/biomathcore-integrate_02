@@ -28,45 +28,30 @@ export const CATEGORY_ICON: Record<string, any> = {
   default: Stethoscope,
 };
 
-export const CATEGORY_COLOR: Record<string, string> = {
-  "critical-health": "text-rose-400 dark:text-rose-300",
-  "everyday-wellness": "text-emerald-400 dark:text-emerald-300",
-  "longevity-and-anti-aging": "text-teal-400 dark:text-teal-300",
-  "preventive-medicine-and-longevity": "text-teal-400 dark:text-teal-300",
-  "mental-wellness": "text-indigo-400 dark:text-indigo-300",
-  "sleep-and-recovery": "text-sky-400 dark:text-sky-300",
-  "sleep-health": "text-sky-400 dark:text-sky-300",
-  "fitness-and-performance": "text-violet-400 dark:text-violet-300",
-  "biohacking-and-performance": "text-violet-400 dark:text-violet-300",
-  "womens-health": "text-pink-400 dark:text-pink-300",
-  "womens-sexual-health": "text-pink-400 dark:text-pink-300",
-  "mens-health": "text-blue-400 dark:text-blue-300",
-  "mens-sexual-health": "text-blue-400 dark:text-blue-300",
-  "beauty-and-skincare": "text-fuchsia-400 dark:text-fuchsia-300",
-  "nutrition-and-diet": "text-amber-400 dark:text-amber-300",
-  "environmental-health": "text-lime-400 dark:text-lime-300",
-  "family-health": "text-cyan-400 dark:text-cyan-300",
-  "senior-care": "text-orange-400 dark:text-orange-300",
-  "eye-health-suite": "text-sky-400 dark:text-sky-300",
-  "digital-therapeutics-store": "text-purple-400 dark:text-purple-300",
-  "general-sexual-longevity": "text-teal-400 dark:text-teal-300",
-  "cardio-health": "text-red-400 dark:text-red-300",
-  "lab-diagnostics": "text-fuchsia-400 dark:text-fuchsia-300",
-  vaccinations: "text-cyan-400 dark:text-cyan-300",
-  default: "text-slate-300 dark:text-slate-300",
+export const CATEGORY_COLOR: Record<string,string> = {
+  "critical-health": "cat-critical-health",
+  "eye-health-suite": "cat-eye-health-suite",
+  "women-health": "cat-women-health",
+  "mens-health": "cat-mens-health",
+  "mental-wellness": "cat-mental-wellness",
+  "sleep-health": "cat-sleep-health",
+  "nutrition-and-diet": "cat-nutrition-and-diet",
+  "everyday-wellness": "cat-everyday-wellness",
+  "metabolic-health": "cat-metabolic-health",
+  "cardio-health": "cat-cardio-health",
+  "lab-diagnostics": "cat-lab-diagnostics",
+  "vaccinations": "cat-vaccinations",
+  "fitness-performance": "cat-fitness-performance",
+  "longevity-and-anti-aging": "cat-longevity-and-anti-aging",
+  "skin-dermatology": "cat-skin-dermatology",
+  "senior-care": "cat-senior-care",
+  "default": "cat-default",
 };
 
-export function CategoryTitle({
-  cat,
-}: {
-  cat: { slug?: string; title: string };
-}) {
-  const slug = cat?.slug || "";
-  const Icon = (CATEGORY_ICON as any)[slug] ?? CATEGORY_ICON.default;
-  const color = categoryColorFor(slug, cat?.title);
-  return (
-    <span className="inline-flex items-center gap-2">
-      <Icon className={`h-4 w-4 ${color}`} />
+export export function CategoryTitle({ cat }:{ cat:{ slug?:string; title:string } }) {
+  const color = categoryColorFor(cat?.slug, cat?.title);
+  return <span className={color}>{cat.title}</span>;
+}`} />
       <span className={`${color}`}>{cat.title}</span>
     </span>
   );
