@@ -2,6 +2,7 @@ import PromoDualAI from "@/app/_components/PromoDualAI";
 import HomeAdsBand from "@/app/_components/HomeAdsBand";
 import Link from "next/link";
 import { CATEGORIES } from "./services/services.catalog";
+import { CategoryTitle } from "@/app/_components/CategoryVisual";
 
 export default function HomePage() {
   const servicesCount = CATEGORIES.reduce((n, c) => n + c.services.length, 0);
