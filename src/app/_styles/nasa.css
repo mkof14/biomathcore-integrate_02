@@ -1,0 +1,100 @@
+:root {
+  --nasa-bg: #0b1020; /* deep space */
+  --nasa-panel: #0f172a; /* slate-900 */
+  --nasa-border: rgba(148, 163, 184, 0.18); /* slate-400/18% */
+  --nasa-accent: #60a5fa; /* sky-400 */
+  --nasa-accent-2: #a78bfa; /* violet-400 */
+  --nasa-text: #e5e7eb; /* gray-200 */
+  --nasa-text-dim: #94a3b8; /* slate-400 */
+}
+
+html.dark body {
+  background-color: var(--nasa-bg);
+  color: var(--nasa-text);
+}
+
+/* NASA blocks */
+.nasa-card {
+  border-radius: 16px;
+  border: 1px solid var(--nasa-border);
+  background: linear-gradient(
+    180deg,
+    rgba(15, 23, 42, 0.85),
+    rgba(15, 23, 42, 0.65)
+  );
+  backdrop-filter: blur(6px);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.03) inset,
+    0 8px 24px rgba(2, 6, 23, 0.35);
+}
+.nasa-card:hover {
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.04) inset,
+    0 16px 40px rgba(2, 6, 23, 0.5);
+  transform: translateY(-1px);
+  transition: all 0.25s ease;
+}
+
+.nasa-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid var(--nasa-border);
+  border-radius: 12px;
+  padding: 0.6rem 0.9rem;
+  color: var(--nasa-text);
+  background: rgba(2, 6, 23, 0.35);
+}
+.nasa-cta:hover {
+  background: rgba(2, 6, 23, 0.5);
+  border-color: rgba(148, 163, 184, 0.28);
+}
+
+.nasa-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: 1px solid var(--nasa-border);
+  border-radius: 999px;
+  padding: 0.35rem 0.7rem;
+  font-size: 0.72rem;
+  color: var(--nasa-text-dim);
+  background: rgba(15, 23, 42, 0.55);
+}
+
+.nasa-title {
+  color: var(--nasa-text);
+  letter-spacing: 0.02em;
+}
+.nasa-title-accent {
+  color: var(--nasa-accent);
+}
+.nasa-title-accent-2 {
+  color: var(--nasa-accent-2);
+}
+
+/* Subtle reveals */
+@keyframes nasa-fade {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.motion-safe\:nasa-fade {
+  animation: nasa-fade 0.35s ease-out both;
+}
+
+/* Divider */
+.nasa-divider {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(148, 163, 184, 0.25),
+    transparent
+  );
+}
