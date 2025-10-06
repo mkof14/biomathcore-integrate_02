@@ -54,7 +54,7 @@ export function CategoryTitle({
   return (
     <span className="inline-flex items-center gap-2">
       <Icon className={`h-4 w-4 ${color}`} />
-      {cat.title}
+      <span className={`${color}`}>{cat.title}</span>
     </span>
   );
 }

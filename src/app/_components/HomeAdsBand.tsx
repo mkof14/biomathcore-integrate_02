@@ -19,7 +19,7 @@ export default function HomeAdsBand() {
           </div>
         </div>
         <div className="md:ml-auto flex gap-2">
-          <Link href="/services" className="nasa-cta text-sm cta-dark">
+          <Link href="/services" className="nasa-cta cta-dark text-sm cta-dark">
             <Stars className="h-4 w-4" /> Discover Now
           </Link>
         </div>
