@@ -1,20 +1,30 @@
-import ServiceTile from "./ServiceTile";
+import Breadcrumbs from "./Breadcrumbs";
+import SearchBox from "./SearchBox";
 import { CATEGORIES } from "./services.catalog";
+import ResultsGrid from "./ResultsGrid";
+
+export const metadata = {
+  title: "Services",
+  description:
+    "Browse BioMath Core categories and services. Filter and open detailed modules.",
+};
 
 export default function ServicesPage() {
   return (
-    <main className="px-6 py-8 max-w-6xl mx-auto">
-      <header className="mb-8">
+    <main>
+      <Breadcrumbs
+        items={[{ href: "/", label: "Home" }, { label: "Services" }]}
+      />
+      <header className="mb-5">
         <h1 className="text-2xl md:text-3xl font-bold">Services</h1>
         <p className="mt-2 text-slate-600">
-          Explore categories and open details per topic.
+          All categories ({CATEGORIES.length}) and services.
         </p>
       </header>
-      <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {CATEGORIES.map((cat) => (
-          <ServiceTile key={cat.slug} cat={cat} />
-        ))}
-      </section>
+      <div className="mb-6">
+        <SearchBox placeholder="Search across all services…" />
+      </div>
+      <ResultsGrid />
     </main>
   );
 }
