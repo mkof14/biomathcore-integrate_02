@@ -289,3 +289,9 @@ textarea::placeholder {
   pointer-events: none;
 }
 
+
+/* ai-white-text override v3 */
+.ai-white-text *,
+.ai-white-text :is(.text-orange-400,.text-orange-500,.text-orange-600,.text-orange-700,.text-[#a8431f],.text-[#A8431F]) {
+  color:#fff !important;
+}
