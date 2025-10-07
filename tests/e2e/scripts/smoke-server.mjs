@@ -32,6 +32,11 @@ const server = http.createServer(async (req, res) => {
     return send(res, 200, { ok: true, report: { id, status: "ready", title: "Smoke Report" } });
   }
 
+  if (url.pathname === "/api/blackbox/jobs/clear" && req.method === "POST") {
+    jobs.clear();
+    return send(res, 200, { ok: true, cleared: true });
+  }
+
   if (url.pathname === "/api/blackbox/jobs") {
     if (req.method === "POST") {
       const bufs=[]; for await (const c of req) bufs.push(c); const body=Buffer.concat(bufs).toString();
@@ -60,9 +65,9 @@ const server = http.createServer(async (req, res) => {
 
   if (url.pathname.startsWith("/api/blackbox/jobs/")) {
     const parts = url.pathname.split("/");
-    const id = parts[parts.length-1];
-    const isCancel = parts[parts.length-1]==="cancel";
-    const trueId = isCancel ? parts[parts.length-2] : id;
+    const last = parts[parts.length-1];
+    const isCancel = last === "cancel";
+    const trueId = isCancel ? parts[parts.length-2] : last;
 
     if (req.method === "GET" && !isCancel) {
       const j = jobs.get(trueId); if (!j) return send(res, 404, { ok:false, error:"not_found" });
