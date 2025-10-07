@@ -1,55 +1,17 @@
-import { NextResponse } from "next/server";
+import { withAuthGuard } from "@/lib/auth/guard";
+import type { NextRequest } from "next/server";
 
-const windowMs = Number(process.env.RATE_LIMIT_WINDOW_MS || 60000);
-const maxReq = Number(process.env.RATE_LIMIT_MAX || 120);
-const buckets = new Map<string,{ reset:number; count:number }>();
-function rlOk(ip:string) {
-  const now = Date.now();
-  const b = buckets.get(ip) || { reset: now + windowMs, count: 0 };
-  if (now > b.reset) { b.reset = now + windowMs; b.count = 0; }
-  b.count++;
-  buckets.set(ip, b);
-  return b.count <= maxReq;
-}
-
-export function middleware(req: Request) {
-  const url = new URL(req.url);
-  const ip =
-    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-    (req as any).ip || "0.0.0.0";
-
-  // security headers
-  const res = NextResponse.next();
-  res.headers.set("X-Frame-Options","DENY");
-  res.headers.set("X-Content-Type-Options","nosniff");
-  res.headers.set("Referrer-Policy","no-referrer-when-downgrade");
-  res.headers.set("Permissions-Policy","geolocation=(), microphone=(), camera=()");
-
-  // rate limit (skip _next/public/auth)
-  if (!url.pathname.startsWith("/_next") &&
-      !url.pathname.startsWith("/public") &&
-      !url.pathname.startsWith("/api/auth")) {
-    if (!rlOk(ip)) {
-      return new NextResponse(JSON.stringify({ ok:false, error:"rate_limited" }), {
-        status: 429,
-        headers: { "Content-Type":"application/json" }
-      });
-    }
+import { ensureRequestId } from "@/lib/http/requestId";
+export async function middleware(req: NextRequest) { const id = ensureRequestId(req.headers); const path = new URL(req.url).pathname;
+  if (path.startsWith("/member") || path.startsWith("/reports")) {
+    return withAuthGuard(req, { roles: ["member","admin","staff"] });
   }
-
-  // aliases: /Member* and /member-zone* -> /member*
-  const p = url.pathname;
-  if (p.startsWith("/Member") || p.startsWith("/member-zone") || p.startsWith("/Member%20Zone")) {
-    url.pathname = p
-      .replace(/^\/Member/, "/member")
-      .replace(/^\/member-zone/, "/member")
-      .replace(/^\/Member%20Zone/, "/member");
-    return NextResponse.redirect(url);
+  if (path.startsWith("/admin")) {
+    return withAuthGuard(req, { roles: ["admin"] });
   }
-
-  return res;
+  return new Response(null, { status: 200 });
 }
 
 export const config = {
-  matcher: ["/((?!_next|favicon.ico|robots.txt|sitemap.txt).*)"]
+  matcher: ["/member/:path*","/reports/:path*","/admin/:path*"],
 };

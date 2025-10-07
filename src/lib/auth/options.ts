@@ -1,35 +1,35 @@
-/* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
-import type { NextAuthOptions, User } from "next-auth";
-import Credentials from "next-auth/providers/credentials";
-
-export const authOptions: NextAuthOptions = {
-  session: { strategy: "jwt" },
+import { type NextAuthConfig } from "next-auth";
+import EmailProvider from "next-auth/providers/email";
+export const authConfig = {
   providers: [
-    Credentials({
-      name: "credentials",
-      credentials: {
-        email: { label: "email", type: "text" },
-        password: { label: "password", type: "password" },
+    EmailProvider({
+      server: {
+        host: process.env.EMAIL_SERVER_HOST!,
+        port: Number(process.env.EMAIL_SERVER_PORT || 465),
+        auth: { user: process.env.EMAIL_SERVER_USER!, pass: process.env.EMAIL_SERVER_PASSWORD! },
+        secure: true,
       },
-      async authorize(credentials) {
-        if (!credentials?.email) return null;
-        const user: Partial<User> = {
-          id: credentials.email,
-          email: credentials.email,
-        };
-        return user as User;
+      from: process.env.EMAIL_FROM!,
+      sendVerificationRequest: async ({ identifier, url, provider }) => {
+        if (process.env.NODE_ENV !== "production") {
+          console.log("[magic-link]", identifier, url);
+          return;
+        }
+        const nodemailer = await import("nodemailer");
+        const transport = nodemailer.createTransport(provider.server as any);
+        const result = await transport.sendMail({
+          to: identifier,
+          from: provider.from,
+          subject: "Sign in to BioMath Core",
+          text: `Sign in: ${url}`,
+          html: `<p>Sign in: <a href="${url}">${url}</a></p>`,
+        });
+        const failed = (result.rejected || []).concat(result.pending || []);
+        if (failed.length) throw new Error(`Email(s) failed: ${failed.join(", ")}`);
       },
     }),
   ],
-  callbacks: {
-    async jwt({ token, user }) {
-      if (user?.email) token.email = user.email;
-      return token;
-    },
-    async session({ session, token }) {
-      if (token?.email && session.user)
-        session.user.email = String(token.email);
-      return session;
-    },
-  },
-};
+  session: { strategy: "jwt" },
+  pages: {},
+  trustHost: true,
+} satisfies NextAuthConfig;
