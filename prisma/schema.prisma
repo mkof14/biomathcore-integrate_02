@@ -160,3 +160,10 @@ model PasswordResetToken {
   expiresAt  DateTime
   createdAt  DateTime @default(now())
 }
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  event     String
+  metaJson  String   @db.Text
+  createdAt DateTime @default(now())
+}
