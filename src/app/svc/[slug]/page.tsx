@@ -19,13 +19,14 @@ export default async function ServicePage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
+  const isAI = (slug ?? "").startsWith("ai-");
   const s = findServiceBySlug(slug);
   if (!s) return notFound();
   const cat = findCategoryByServiceSlug(slug);
 
   return (
-    <main className="px-6 py-8 max-w-3xl mx-auto">
-      <BackClient />
+    <main className={`px-6 py-8 max-w-3xl mx-auto ${isAI ? 'ai-white-text' : ''}`}>
+    <BackClient />
       <h1 className="mt-2 text-3xl md:text-4xl font-extrabold tracking-tight text-sky-700 dark:text-sky-400">
         {s.title}
       </h1>

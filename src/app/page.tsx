@@ -15,9 +15,6 @@ export default function HomePage() {
   const servicesCount = CATEGORIES.reduce((n, c) => n + c.services.length, 0);
   return (
     <main className="px-6  md: max-w-6xl mx-auto  md: py-4 md:py-6">
-  <div className="flex justify-center mt-0 mb-6">
-    <Image src="/images/BioMath-Logo-22.png" alt="BioMath Core" width={200} height={70} />
-  </div>
   <div className="flex items-start mb-6">
     <Image src="/images/BioMath-Logo-22.png" alt="BioMath Core Logo" width={180} height={60}  style={{marginTop:"-40px"}}/>
   </div>

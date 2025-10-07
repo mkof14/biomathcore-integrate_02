@@ -1,3 +1,4 @@
+@import "../styles/nasa.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -264,3 +265,17 @@ textarea::placeholder {
   .btn-nasa-icon { @apply h-4 w-4 opacity-90; }
 }
 
+
+
+/* ai white text override */
+.ai-white-text .text-orange-500,
+.ai-white-text .text-orange-600,
+.ai-white-text .text-orange-700,
+.ai-white-text .text-$begin:math:display$\\#a8431f\$end:math:display$,
+.ai-white-text .text-$begin:math:display$\\#A8431F\$end:math:display$,
+.ai-white-text [style*="color:#a8431f"],
+.ai-white-text [style*="color: #a8431f"],
+.ai-white-text [style*="color:#A8431F"],
+.ai-white-text [style*="color: #A8431F"]{
+  color:#fff !important;
+}

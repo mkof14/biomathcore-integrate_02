@@ -30,7 +30,7 @@ export default function ServiceGenerator({
     if (!output) return;
     const w = window.open("", "_blank");
     w?.document.write(
-      `<pre style="font-family: ui-monospace, SFMono-Regular, Menlo, monospace">${output}</pre>`,
+      `<pre style={{ fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace" }}>${output}</pre>`,
     );
     w?.print();
   };
