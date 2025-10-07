@@ -279,3 +279,13 @@ textarea::placeholder {
 .ai-white-text [style*="color: #A8431F"]{
   color:#fff !important;
 }
+
+
+/* AB-пилюли белые буквы */
+.ai-pill-label {
+  color: #fff !important;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  pointer-events: none;
+}
+

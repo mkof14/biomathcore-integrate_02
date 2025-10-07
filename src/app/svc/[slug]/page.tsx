@@ -8,6 +8,7 @@ import {
 import ClientActions from "./ClientActions";
 import BackClient from "./BackClient";
 import AIOpinions from "./AIOpinions";
+import AiWhiteAndAB from "@/app/_components/AiWhiteAndAB";
 
 export async function generateStaticParams() {
   return allServicesFlat().map((s) => ({ slug: s.slug }));
@@ -25,7 +26,7 @@ export default async function ServicePage({
   const cat = findCategoryByServiceSlug(slug);
 
   return (
-    <main className={`px-6 py-8 max-w-3xl mx-auto ${isAI ? 'ai-white-text' : ''}`}>
+    <main className={`px-6 py-8 max-w-3xl mx-auto ${isAI ? 'ai-white-text' : ''}`}>\n      <AiWhiteAndAB />
     <BackClient />
       <h1 className="mt-2 text-3xl md:text-4xl font-extrabold tracking-tight text-sky-700 dark:text-sky-400">
         {s.title}
