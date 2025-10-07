@@ -9,9 +9,9 @@ export default defineConfig({
     trace: 'retain-on-failure',
   },
   webServer: {
-    command: 'NEXT_TELEMETRY_DISABLED=1 pnpm dev',
+    command: "pnpm dev",
     url: process.env.PLAYWRIGHT_BASE_URL || 'http://localhost:3000',
-    reuseExistingServer: true,
+    reuseExistingServer: !process.env.CI,
     timeout: 120000,
   },
   projects: [
