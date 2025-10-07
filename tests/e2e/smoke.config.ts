@@ -9,7 +9,7 @@ export default defineConfig({
     trace: 'retain-on-failure',
   },
   webServer: {
-    command: "node tests/e2e/scripts/smoke-server.mjs",
+    command: "node scripts/start-smoke-server.js",
     url: process.env.PLAYWRIGHT_BASE_URL || 'http://localhost:3000',
     reuseExistingServer: true,
     timeout: 300000,
