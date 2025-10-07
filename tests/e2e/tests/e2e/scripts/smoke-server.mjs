@@ -16,12 +16,10 @@ function send(res, code, obj, extraHeaders={}) {
 const server = http.createServer(async (req, res) => {
   const url = new URL(req.url, `http://${req.headers.host}`);
 
-  // basic
   if (url.pathname === "/" && req.method === "GET") return send(res, 200, { ok: true, status: "root-ok" });
   if (url.pathname === "/api/health" && req.method === "GET") return send(res, 200, { ok: true, status: "ok" });
   if (url.pathname === "/api/status" && req.method === "GET") return send(res, 200, { ok: true, up: true, uptime: Math.round((Date.now()-startedAt)/1000) });
 
-  // reports
   if (url.pathname === "/api/reports/generate" && req.method === "POST") {
     return send(res, 200, { ok: true, id: randomUUID() });
   }
@@ -34,7 +32,6 @@ const server = http.createServer(async (req, res) => {
     return send(res, 200, { ok: true, report: { id, status: "ready", title: "Smoke Report" } });
   }
 
-  // blackbox
   if (url.pathname === "/api/blackbox/jobs") {
     if (req.method === "POST") {
       const bufs=[]; for await (const c of req) bufs.push(c); const body=Buffer.concat(bufs).toString();
@@ -60,16 +57,25 @@ const server = http.createServer(async (req, res) => {
       return send(res, 200, { ok: true, job: j });
     }
   }
-  // blackbox RESTful /:id variants
+
   if (url.pathname.startsWith("/api/blackbox/jobs/")) {
-    const id = url.pathname.split("/").pop();
-    if (req.method === "GET") {
-      const j = jobs.get(id); if (!j) return send(res, 404, { ok:false, error:"not_found" });
+    const parts = url.pathname.split("/");
+    const id = parts[parts.length-1];
+    const isCancel = parts[parts.length-1]==="cancel";
+    const trueId = isCancel ? parts[parts.length-2] : id;
+
+    if (req.method === "GET" && !isCancel) {
+      const j = jobs.get(trueId); if (!j) return send(res, 404, { ok:false, error:"not_found" });
       return send(res, 200, { ok:true, job:j });
     }
-    if (req.method === "DELETE") {
-      const j = jobs.get(id); if (!j) return send(res, 404, { ok:false, error:"not_found" });
-      j.status = "cancelled"; jobs.set(id, j);
+    if (req.method === "DELETE" && !isCancel) {
+      const j = jobs.get(trueId); if (!j) return send(res, 404, { ok:false, error:"not_found" });
+      j.status = "cancelled"; jobs.set(trueId, j);
+      return send(res, 200, { ok:true, job:j });
+    }
+    if (req.method === "POST" && isCancel) {
+      const j = jobs.get(trueId); if (!j) return send(res, 404, { ok:false, error:"not_found" });
+      j.status = "cancelled"; jobs.set(trueId, j);
       return send(res, 200, { ok:true, job:j });
     }
   }
