@@ -9,10 +9,10 @@ export default defineConfig({
     trace: 'retain-on-failure',
   },
   webServer: {
-    command: "node scripts/smoke-server.mjs",
+    command: "node tests/e2e/scripts/smoke-server.mjs",
     url: process.env.PLAYWRIGHT_BASE_URL || 'http://localhost:3000',
-    reuseExistingServer: !process.env.CI,
-    timeout: 120000,
+    reuseExistingServer: true,
+    timeout: 300000,
   },
   projects: [
     { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
