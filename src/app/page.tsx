@@ -5,11 +5,19 @@ import { CATEGORIES } from "./services/services.catalog";
 import { CategoryTitle } from "@/app/_components/CategoryVisual";
 import StatsStrip from "@/app/_components/StatsStrip";
 import HomeCategories from "@/app/_components/HomeCategories";
+import OurAdvantages from "@/app/_components/OurAdvantages";
+import HowItWorks from "@/app/_components/HowItWorks";
+import TrustSecurity from "@/app/_components/TrustSecurity";
+import CtaFooter from "@/app/_components/CtaFooter";
+import Image from "next/image";
 
 export default function HomePage() {
   const servicesCount = CATEGORIES.reduce((n, c) => n + c.services.length, 0);
   return (
     <main className="px-6 py-12 md:py-16 max-w-6xl mx-auto">
+  <div className="flex items-start mb-6">
+    <Image src="/images/BioMath-Logo-22.png" alt="BioMath Core Logo" width={180} height={60}  style={{marginTop:"-40px"}}/>
+  </div>
       <div className="text-center mb-6">
         <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-white">
           BioMath Core
@@ -19,13 +27,17 @@ export default function HomePage() {
         </p>
       </div>
 
-      <HomeCategories /><div className="mt-8">
+      <HomeCategories />
+  <HowItWorks />
+  <TrustSecurity />
+  <CtaFooter /><div className="mt-8">
         <HomeAdsBand />
       </div>
 
       <div className="mt-8">
         <StatsStrip />
       </div>
-    </main>
+      <OurAdvantages />
+</main>
   );
 }
