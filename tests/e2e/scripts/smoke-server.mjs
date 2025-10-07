@@ -2,6 +2,7 @@ import http from "http";
 import { randomUUID } from "crypto";
 
 const PORT = Number(process.env.PORT || 3000);
+const HOST = process.env.HOST || "127.0.0.1";
 
 const jobs = new Map();
 
@@ -10,9 +11,8 @@ function json(res, code, obj) {
   res.writeHead(code, { "content-type": "application/json", "content-length": Buffer.byteLength(body) });
   res.end(body);
 }
-
-function ok(res, data={}) { json(res, 200, { ok: true, ...data }); }
-function bad(res, code, msg) { json(res, code, { ok: false, error: msg }); }
+const ok = (res, data={}) => json(res, 200, { ok: true, ...data });
+const bad = (res, code, msg) => json(res, code, { ok: false, error: msg });
 
 function parseBody(req){
   return new Promise((resolve)=>{
@@ -23,11 +23,11 @@ function parseBody(req){
 const server = http.createServer(async (req, res) => {
   const url = new URL(req.url, `http://${req.headers.host}`);
 
-  if (url.pathname === "/api/health" && req.method === "GET") { return ok(res, { status: "ok" }); }
-  if (url.pathname === "/api/status" && req.method === "GET") { return ok(res, { up: true }); }
+  if (url.pathname === "/" && req.method === "GET") return ok(res, { up: true });
+  if (url.pathname === "/api/health" && req.method === "GET") return ok(res, { status: "ok" });
+  if (url.pathname === "/api/status" && req.method === "GET") return ok(res, { up: true });
 
   if (url.pathname === "/api/reports/generate" && req.method === "POST") {
-    const body = await parseBody(req);
     const id = randomUUID();
     return ok(res, { id });
   }
@@ -68,4 +68,4 @@ const server = http.createServer(async (req, res) => {
   return bad(res, 404, "not_found");
 });
 
-server.listen(PORT, () => { console.log(`SMOKE SERVER :${PORT}`); });
+server.listen(PORT, HOST, () => { console.log(`SMOKE SERVER ${HOST}:${PORT}`); });

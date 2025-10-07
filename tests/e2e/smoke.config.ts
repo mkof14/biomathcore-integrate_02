@@ -4,7 +4,7 @@ export default defineConfig({
   workers: 1,
   use: { baseURL: "http://127.0.0.1:3000" },
   webServer: {
-    command: "node ./tests/e2e/scripts/start-smoke-server.js",
+    command: "node tests/e2e/scripts/start-smoke-server.js",
     url: "http://127.0.0.1:3000",
     reuseExistingServer: true,
     stdout: "pipe",
