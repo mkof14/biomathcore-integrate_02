@@ -1,20 +1,14 @@
-import { defineConfig, devices } from '@playwright/test';
-
+import { defineConfig } from "@playwright/test";
 export default defineConfig({
-  testDir: '.',
-  testMatch: ['tests/e2e/*.smoke.spec.ts'],
-  reporter: [['list'], ['html', { outputFolder: 'tests/e2e/playwright-report', open: 'never' }]],
-  use: {
-    baseURL: process.env.PLAYWRIGHT_BASE_URL || 'http://localhost:3000',
-    trace: 'retain-on-failure',
-  },
+  testDir: "tests/e2e",
+  workers: 1,
+  use: { baseURL: "http://127.0.0.1:3000" },
   webServer: {
     command: "node scripts/start-smoke-server.js",
-    url: process.env.PLAYWRIGHT_BASE_URL || 'http://localhost:3000',
+    url: "http://127.0.0.1:3000",
     reuseExistingServer: true,
-    timeout: 300000,
+    stdout: "pipe",
+    stderr: "pipe",
+    timeout: 300000
   },
-  projects: [
-    { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
-  ],
 });
