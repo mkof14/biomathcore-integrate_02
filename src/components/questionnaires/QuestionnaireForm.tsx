@@ -4,8 +4,13 @@ import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 
 type QuestionType =
-  | "TEXT" | "TEXTAREA" | "NUMBER" | "DATE" | "BOOLEAN"
-  | "SINGLE_CHOICE" | "MULTI_CHOICE";
+  | "TEXT"
+  | "TEXTAREA"
+  | "NUMBER"
+  | "DATE"
+  | "BOOLEAN"
+  | "SINGLE_CHOICE"
+  | "MULTI_CHOICE";
 
 type Question = {
   id: string;
@@ -13,7 +18,7 @@ type Question = {
   questionType: QuestionType;
   isRequired?: boolean;
   options?: string | null; // JSON string of choices if applicable
-  _choices?: string[];     // populated at runtime from options
+  _choices?: string[]; // populated at runtime from options
 };
 
 type Section = {
@@ -94,7 +99,6 @@ export default function QuestionnaireForm({
   return (
     <form onSubmit={onSubmit} className="space-y-8">
       {/* Back button */}
-      
 
       {normalized.map((s) => (
         <section
@@ -140,7 +144,9 @@ export default function QuestionnaireForm({
                     type="number"
                     className="w-full rounded-lg border bg-white/90 text-black px-3 py-2"
                     value={values[q.id] ?? ""}
-                    onChange={(e: any) => setValue(q.id, e.target.valueAsNumber)}
+                    onChange={(e: any) =>
+                      setValue(q.id, e.target.valueAsNumber)
+                    }
                   />
                 )}
 

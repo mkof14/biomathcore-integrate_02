@@ -1,0 +1,1060 @@
+.nasa-card {
+  border-radius: 1rem;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.06),
+    rgba(255, 255, 255, 0.02)
+  );
+  backdrop-filter: blur(6px);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.06) inset,
+    0 10px 30px rgba(2, 6, 23, 0.25);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+.nasa-card:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.08) inset,
+    0 16px 40px rgba(2, 6, 23, 0.35);
+}
+.nasa-cta {
+  display: inline-flex;
+  gap: 0.5rem;
+  align-items: center;
+  padding: 0.65rem 1rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  background: #0ea5e9;
+  color: white;
+  font-weight: 600;
+}
+.nasa-cta:hover {
+  background: #0284c7;
+}
+.nasa-title {
+  letter-spacing: 0.2px;
+}
+.motion-safe\:animate-bmc-fade-in {
+  animation: bmc-fade-in 0.35s ease both;
+}
+@keyframes bmc-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.cta-dark {
+  @apply bg-sky-700 hover:bg-sky-800 text-white ring-1 ring-sky-900/20 shadow-lg;
+}
+
+.cat-glass {
+  @apply bg-white/5 dark:bg-slate-900/30 backdrop-blur-md border border-slate-200/40 dark:border-slate-700/40 transition-all;
+}
+.cat-glass:hover {
+  @apply bg-white/10 dark:bg-slate-900/40;
+}
+
+.cat-eye-health-suite {
+  @apply text-cyan-700 dark:text-cyan-300;
+}
+.cat-women-health {
+  @apply text-pink-600 dark:text-pink-400;
+}
+.cat-mens-health {
+  @apply text-blue-600 dark:text-blue-400;
+}
+.cat-mental-wellness {
+  @apply text-indigo-600 dark:text-indigo-400;
+}
+.cat-sleep-health {
+  @apply text-sky-600 dark:text-sky-400;
+}
+.cat-nutrition-and-diet {
+  @apply text-emerald-600 dark:text-emerald-400;
+}
+.cat-everyday-wellness {
+  @apply text-emerald-700 dark:text-emerald-400;
+}
+.cat-metabolic-health {
+  @apply text-amber-600 dark:text-amber-400;
+}
+.cat-cardio-health {
+  @apply text-red-600 dark:text-red-400;
+}
+.cat-lab-diagnostics {
+  @apply text-fuchsia-600 dark:text-fuchsia-400;
+}
+.cat-vaccinations {
+  @apply text-teal-600 dark:text-teal-400;
+}
+.cat-fitness-performance {
+  @apply text-violet-600 dark:text-violet-400;
+}
+.cat-longevity-and-anti-aging {
+  @apply text-emerald-700 dark:text-emerald-400;
+}
+.cat-skin-dermatology {
+  @apply text-orange-600 dark:text-orange-400;
+}
+.cat-default {
+  @apply text-slate-800 dark:text-slate-100;
+}
+/* category solid colors */
+.cat-critical-health {
+  color: #e11d48;
+}
+.dark .cat-critical-health {
+  color: #fb7185;
+}
+.cat-eye-health-suite {
+  color: #0e7490;
+}
+.dark .cat-eye-health-suite {
+  color: #67e8f9;
+}
+.cat-women-health {
+  color: #db2777;
+}
+.dark .cat-women-health {
+  color: #f472b6;
+}
+.cat-mens-health {
+  color: #2563eb;
+}
+.dark .cat-mens-health {
+  color: #60a5fa;
+}
+.cat-mental-wellness {
+  color: #4f46e5;
+}
+.dark .cat-mental-wellness {
+  color: #a5b4fc;
+}
+.cat-sleep-health {
+  color: #0284c7;
+}
+.dark .cat-sleep-health {
+  color: #7dd3fc;
+}
+.cat-nutrition-and-diet {
+  color: #059669;
+}
+.dark .cat-nutrition-and-diet {
+  color: #6ee7b7;
+}
+.cat-everyday-wellness {
+  color: #047857;
+}
+.dark .cat-everyday-wellness {
+  color: #6ee7b7;
+}
+.cat-metabolic-health {
+  color: #d97706;
+}
+.dark .cat-metabolic-health {
+  color: #fbbf24;
+}
+.cat-cardio-health {
+  color: #dc2626;
+}
+.dark .cat-cardio-health {
+  color: #f87171;
+}
+.cat-lab-diagnostics {
+  color: #a21caf;
+}
+.dark .cat-lab-diagnostics {
+  color: #f0abfc;
+}
+.cat-vaccinations {
+  color: #0d9488;
+}
+.dark .cat-vaccinations {
+  color: #5eead4;
+}
+.cat-fitness-performance {
+  color: #7c3aed;
+}
+.dark .cat-fitness-performance {
+  color: #c4b5fd;
+}
+.cat-longevity-and-anti-aging {
+  color: #047857;
+}
+.dark .cat-longevity-and-anti-aging {
+  color: #6ee7b7;
+}
+.cat-skin-dermatology {
+  color: #ea580c;
+}
+.dark .cat-skin-dermatology {
+  color: #fdba74;
+}
+.cat-senior-care {
+  color: #0ea5e9;
+}
+.dark .cat-senior-care {
+  color: #7dd3fc;
+}
+.cat-default {
+  color: #1f2937;
+}
+.dark .cat-default {
+  color: #e5e7eb;
+}
+
+.cat-critical-health {
+  color: #fb7185;
+}
+.dark .cat-critical-health {
+  color: #fecdd3;
+}
+.cat-everyday-wellness {
+  color: #34d399;
+}
+.dark .cat-everyday-wellness {
+  color: #a7f3d0;
+}
+.cat-longevity-and-anti-aging {
+  color: #34d399;
+}
+.dark .cat-longevity-and-anti-aging {
+  color: #a7f3d0;
+}
+.cat-mental-wellness {
+  color: #a78bfa;
+}
+.dark .cat-mental-wellness {
+  color: #ddd6fe;
+}
+.cat-fitness-performance {
+  color: #c4b5fd;
+}
+.dark .cat-fitness-performance {
+  color: #e9d5ff;
+}
+.cat-womens-health {
+  color: #f472b6;
+}
+.dark .cat-womens-health {
+  color: #fbcfe8;
+}
+.cat-mens-health {
+  color: #60a5fa;
+}
+.dark .cat-mens-health {
+  color: #bfdbfe;
+}
+.cat-sleep-health {
+  color: #7dd3fc;
+}
+.dark .cat-sleep-health {
+  color: #bae6fd;
+}
+.cat-beauty-and-skincare {
+  color: #fdba74;
+}
+.dark .cat-beauty-and-skincare {
+  color: #ffedd5;
+}
+.cat-nutrition-and-diet {
+  color: #86efac;
+}
+.dark .cat-nutrition-and-diet {
+  color: #d1fae5;
+}
+.cat-environmental-health {
+  color: #6ee7b7;
+}
+.dark .cat-environmental-health {
+  color: #a7f3d0;
+}
+.cat-biohacking-and-performance {
+  color: #c4b5fd;
+}
+.dark .cat-biohacking-and-performance {
+  color: #e9d5ff;
+}
+.cat-senior-care {
+  color: #67e8f9;
+}
+.dark .cat-senior-care {
+  color: #bae6fd;
+}
+.cat-eye-health-suite {
+  color: #7dd3fc;
+}
+.dark .cat-eye-health-suite {
+  color: #bae6fd;
+}
+.cat-general-sexual-longevity {
+  color: #86efac;
+}
+.dark .cat-general-sexual-longevity {
+  color: #d1fae5;
+}
+.cat-mens-sexual-health {
+  color: #93c5fd;
+}
+.dark .cat-mens-sexual-health {
+  color: #dbeafe;
+}
+.cat-womens-sexual-health {
+  color: #f9a8d4;
+}
+.dark .cat-womens-sexual-health {
+  color: #fce7f3;
+}
+.cat-preventive-medicine-and-longevity {
+  color: #5eead4;
+}
+.dark .cat-preventive-medicine-and-longevity {
+  color: #ccfbf1;
+}
+.cat-family-health {
+  color: #fda4af;
+}
+.dark .cat-family-health {
+  color: #ffe4e6;
+}
+.cat-digital-therapeutics-store {
+  color: #fcd34d;
+}
+.dark .cat-digital-therapeutics-store {
+  color: #fef3c7;
+}
+
+.cat-critical-health {
+  color: #fb7185;
+}
+.dark .cat-critical-health {
+  color: #fecdd3;
+}
+.cat-everyday-wellness {
+  color: #34d399;
+}
+.dark .cat-everyday-wellness {
+  color: #a7f3d0;
+}
+.cat-longevity-and-anti-aging {
+  color: #34d399;
+}
+.dark .cat-longevity-and-anti-aging {
+  color: #a7f3d0;
+}
+.cat-mental-wellness {
+  color: #a78bfa;
+}
+.dark .cat-mental-wellness {
+  color: #ddd6fe;
+}
+.cat-fitness-performance {
+  color: #c4b5fd;
+}
+.dark .cat-fitness-performance {
+  color: #e9d5ff;
+}
+.cat-womens-health {
+  color: #f472b6;
+}
+.dark .cat-womens-health {
+  color: #fbcfe8;
+}
+.cat-mens-health {
+  color: #60a5fa;
+}
+.dark .cat-mens-health {
+  color: #bfdbfe;
+}
+.cat-sleep-health {
+  color: #7dd3fc;
+}
+.dark .cat-sleep-health {
+  color: #bae6fd;
+}
+.cat-beauty-and-skincare {
+  color: #fdba74;
+}
+.dark .cat-beauty-and-skincare {
+  color: #ffedd5;
+}
+.cat-nutrition-and-diet {
+  color: #86efac;
+}
+.dark .cat-nutrition-and-diet {
+  color: #d1fae5;
+}
+.cat-environmental-health {
+  color: #6ee7b7;
+}
+.dark .cat-environmental-health {
+  color: #a7f3d0;
+}
+.cat-biohacking-and-performance {
+  color: #c4b5fd;
+}
+.dark .cat-biohacking-and-performance {
+  color: #e9d5ff;
+}
+.cat-senior-care {
+  color: #67e8f9;
+}
+.dark .cat-senior-care {
+  color: #bae6fd;
+}
+.cat-eye-health-suite {
+  color: #7dd3fc;
+}
+.dark .cat-eye-health-suite {
+  color: #bae6fd;
+}
+.cat-general-sexual-longevity {
+  color: #86efac;
+}
+.dark .cat-general-sexual-longevity {
+  color: #d1fae5;
+}
+.cat-mens-sexual-health {
+  color: #93c5fd;
+}
+.dark .cat-mens-sexual-health {
+  color: #dbeafe;
+}
+.cat-womens-sexual-health {
+  color: #f9a8d4;
+}
+.dark .cat-womens-sexual-health {
+  color: #fce7f3;
+}
+.cat-preventive-medicine-and-longevity {
+  color: #5eead4;
+}
+.dark .cat-preventive-medicine-and-longevity {
+  color: #ccfbf1;
+}
+.cat-family-health {
+  color: #fda4af;
+}
+.dark .cat-family-health {
+  color: #ffe4e6;
+}
+.cat-digital-therapeutics-store {
+  color: #fcd34d;
+}
+.dark .cat-digital-therapeutics-store {
+  color: #fef3c7;
+}
+
+.cat-critical-health {
+  color: #fb7185;
+}
+.dark .cat-critical-health {
+  color: #fecdd3;
+}
+.cat-eye-health-suite {
+  color: #67e8f9;
+}
+.dark .cat-eye-health-suite {
+  color: #a5f3fc;
+}
+.cat-women-health {
+  color: #f472b6;
+}
+.dark .cat-women-health {
+  color: #f9a8d4;
+}
+.cat-mens-health {
+  color: #60a5fa;
+}
+.dark .cat-mens-health {
+  color: #93c5fd;
+}
+.cat-mental-wellness {
+  color: #a5b4fc;
+}
+.dark .cat-mental-wellness {
+  color: #c7d2fe;
+}
+.cat-sleep-health {
+  color: #7dd3fc;
+}
+.dark .cat-sleep-health {
+  color: #bae6fd;
+}
+.cat-nutrition-and-diet {
+  color: #86efac;
+}
+.dark .cat-nutrition-and-diet {
+  color: #bbf7d0;
+}
+.cat-everyday-wellness {
+  color: #6ee7b7;
+}
+.dark .cat-everyday-wellness {
+  color: #a7f3d0;
+}
+.cat-metabolic-health {
+  color: #fbbf24;
+}
+.dark .cat-metabolic-health {
+  color: #fde68a;
+}
+.cat-cardio-health {
+  color: #f87171;
+}
+.dark .cat-cardio-health {
+  color: #fecaca;
+}
+.cat-lab-diagnostics {
+  color: #f0abfc;
+}
+.dark .cat-lab-diagnostics {
+  color: #f5d0fe;
+}
+.cat-vaccinations {
+  color: #5eead4;
+}
+.dark .cat-vaccinations {
+  color: #99f6e4;
+}
+.cat-fitness-performance {
+  color: #c4b5fd;
+}
+.dark .cat-fitness-performance {
+  color: #ddd6fe;
+}
+.cat-longevity-and-anti-aging {
+  color: #6ee7b7;
+}
+.dark .cat-longevity-and-anti-aging {
+  color: #a7f3d0;
+}
+.cat-skin-dermatology {
+  color: #fdba74;
+}
+.dark .cat-skin-dermatology {
+  color: #fed7aa;
+}
+.cat-senior-care {
+  color: #7dd3fc;
+}
+.dark .cat-senior-care {
+  color: #bae6fd;
+}
+.cat-family-health {
+  color: #93c5fd;
+}
+.dark .cat-family-health {
+  color: #bfdbfe;
+}
+.cat-digital-therapeutics-store {
+  color: #86efac;
+}
+.dark .cat-digital-therapeutics-store {
+  color: #bbf7d0;
+}
+.cat-default {
+  color: #9ca3af;
+}
+.dark .cat-default {
+  color: #e5e7eb;
+}
+
+.cat-family-health {
+  color: #34d399;
+}
+.dark .cat-family-health {
+  color: #86efac;
+}
+
+.cat-digital-therapeutics-store {
+  color: #22d3ee;
+}
+.dark .cat-digital-therapeutics-store {
+  color: #67e8f9;
+}
+
+.services-sort {
+  --tw-ring-offset-shadow: 0 0 #0000;
+  --tw-ring-shadow: 0 0 #0000;
+  background: rgba(255, 255, 255, 0.14);
+  color: #e5e7eb;
+  border: 1px solid rgba(255, 255, 255, 0.34);
+  border-radius: 0.5rem;
+  padding: 0.375rem 0.75rem;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25) inset;
+}
+.dark .services-sort {
+  background: rgba(255, 255, 255, 0.12);
+  color: #eef2ff;
+  border-color: rgba(255, 255, 255, 0.38);
+}
+.services-sort:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+.services-sort:focus {
+  outline: 2px solid rgba(255, 255, 255, 0.6);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.08);
+}
+.services-sort::-ms-expand {
+  display: none;
+}
+.services-sort option {
+  background: #0b1220;
+  color: #e5e7eb;
+}
+@media (prefers-color-scheme: light) {
+  .services-sort option {
+    background: #fff;
+    color: #111827;
+  }
+}
+
+.services-sort {
+  --tw-ring-offset-shadow: 0 0 #0000;
+  --tw-ring-shadow: 0 0 #0000;
+  background: rgba(255, 255, 255, 0.14);
+  color: #e5e7eb;
+  border: 1px solid rgba(255, 255, 255, 0.34);
+  border-radius: 0.5rem;
+  padding: 0.375rem 0.75rem;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25) inset;
+}
+.dark .services-sort {
+  background: rgba(255, 255, 255, 0.12);
+  color: #eef2ff;
+  border-color: rgba(255, 255, 255, 0.38);
+}
+.services-sort:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+.services-sort:focus {
+  outline: 2px solid rgba(255, 255, 255, 0.6);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.08);
+}
+.services-sort::-ms-expand {
+  display: none;
+}
+.services-sort option {
+  background: #0b1220;
+  color: #e5e7eb;
+}
+@media (prefers-color-scheme: light) {
+  .services-sort option {
+    background: #fff;
+    color: #111827;
+  }
+}
+
+.details-accent {
+  color: #93c5fd;
+}
+.dark .details-accent {
+  color: #bfdbfe;
+}
+
+.details-accent {
+  color: #a5b4fc;
+}
+.dark .details-accent {
+  color: #c7d2fe;
+}
+.details-accent:hover {
+  text-decoration: underline;
+}
+
+/* star active color overrides */
+.star-btn[data-active="true"],
+.star-btn[data-active="true"] * {
+  color: #f59e0b !important;
+}
+.dark .star-btn[data-active="true"],
+.dark .star-btn[data-active="true"] * {
+  color: #fbbf24 !important;
+}
+.star-btn[data-active="true"] svg {
+  fill: currentColor !important;
+  stroke: currentColor !important;
+}
+.star-btn svg {
+  transition:
+    fill 0.15s ease,
+    color 0.15s ease,
+    stroke 0.15s ease;
+}
+
+.star-btn {
+  transition:
+    color 0.15s ease,
+    stroke 0.15s ease,
+    fill 0.15s ease;
+}
+.star-btn:hover {
+  color: #fde68a;
+}
+.dark .star-btn:hover {
+  color: #fcd34d;
+}
+.star-btn[aria-pressed="true"],
+.star-btn[aria-pressed="true"] *,
+.star-btn[data-active="true"],
+.star-btn[data-active="true"] * {
+  color: #f59e0b !important;
+}
+.dark .star-btn[aria-pressed="true"],
+.dark .star-btn[aria-pressed="true"] *,
+.dark .star-btn[data-active="true"],
+.dark .star-btn[data-active="true"] * {
+  color: #fbbf24 !important;
+}
+.star-btn[aria-pressed="true"] svg,
+.star-btn[data-active="true"] svg {
+  fill: currentColor !important;
+  stroke: currentColor !important;
+}
+
+.star-btn {
+  transition:
+    color 0.15s ease,
+    stroke 0.15s ease,
+    fill 0.15s ease;
+}
+.star-btn:hover {
+  color: #fde68a;
+}
+.dark .star-btn:hover {
+  color: #fcd34d;
+}
+.star-btn[aria-pressed="true"],
+.star-btn[aria-pressed="true"] *,
+.star-btn[data-active="true"],
+.star-btn[data-active="true"] * {
+  color: #f59e0b !important;
+}
+.dark .star-btn[aria-pressed="true"],
+.dark .star-btn[aria-pressed="true"] *,
+.dark .star-btn[data-active="true"],
+.dark .star-btn[data-active="true"] * {
+  color: #fbbf24 !important;
+}
+.star-btn[aria-pressed="true"] svg,
+.star-btn[data-active="true"] svg,
+.star-btn[aria-pressed="true"] svg path,
+.star-btn[data-active="true"] svg path {
+  fill: currentColor !important;
+  stroke: currentColor !important;
+}
+
+.star-btn {
+  transition:
+    color 0.15s ease,
+    stroke 0.15s ease,
+    fill 0.15s ease;
+}
+.star-btn svg {
+  fill: none !important;
+  stroke: currentColor !important;
+}
+.star-btn:hover {
+  color: #fde68a;
+}
+.dark .star-btn:hover {
+  color: #fcd34d;
+}
+.star-btn[aria-pressed="true"],
+.star-btn[aria-pressed="true"] *,
+.star-btn[data-active="true"],
+.star-btn[data-active="true"] * {
+  color: #f59e0b !important;
+}
+.dark .star-btn[aria-pressed="true"],
+.dark .star-btn[aria-pressed="true"] *,
+.dark .star-btn[data-active="true"],
+.dark .star-btn[data-active="true"] * {
+  color: #fbbf24 !important;
+}
+.star-btn[aria-pressed="true"] svg,
+.star-btn[data-active="true"] svg {
+  fill: currentColor !important;
+  stroke: currentColor !important;
+}
+
+.star-btn {
+  transition:
+    color 0.15s ease,
+    stroke 0.15s ease,
+    fill 0.15s ease;
+}
+.star-btn svg {
+  fill: none !important;
+  stroke: currentColor !important;
+}
+.star-btn:hover {
+  color: #fde68a;
+}
+.dark .star-btn:hover {
+  color: #fcd34d;
+}
+.star-btn[aria-pressed="true"],
+.star-btn[aria-pressed="true"] *,
+.star-btn[data-active="true"],
+.star-btn[data-active="true"] * {
+  color: #f59e0b !important;
+}
+.dark .star-btn[aria-pressed="true"],
+.dark .star-btn[aria-pressed="true"] *,
+.dark .star-btn[data-active="true"],
+.dark .star-btn[data-active="true"] * {
+  color: #fbbf24 !important;
+}
+.star-btn[aria-pressed="true"] svg,
+.star-btn[data-active="true"] svg {
+  fill: currentColor !important;
+  stroke: currentColor !important;
+}
+
+.star-btn {
+  transition:
+    color 0.15s ease,
+    stroke 0.15s ease,
+    fill 0.15s ease;
+}
+.star-btn svg {
+  fill: none !important;
+  stroke: currentColor !important;
+}
+.star-btn:hover {
+  color: #fde68a;
+}
+.dark .star-btn:hover {
+  color: #fcd34d;
+}
+.star-btn[aria-pressed="true"],
+.star-btn[aria-pressed="true"] *,
+.star-btn[data-active="true"],
+.star-btn[data-active="true"] * {
+  color: #f59e0b !important;
+}
+.dark .star-btn[aria-pressed="true"],
+.dark .star-btn[aria-pressed="true"] *,
+.dark .star-btn[data-active="true"],
+.dark .star-btn[data-active="true"] * {
+  color: #fbbf24 !important;
+}
+.star-btn[aria-pressed="true"] svg,
+.star-btn[data-active="true"] svg {
+  fill: currentColor !important;
+  stroke: currentColor !important;
+}
+
+.star-btn {
+  transition:
+    color 0.15s ease,
+    stroke 0.15s ease,
+    fill 0.15s ease;
+}
+.star-btn svg {
+  fill: none !important;
+  stroke: currentColor !important;
+}
+.star-btn:hover {
+  color: #fcd34d;
+}
+.dark .star-btn:hover {
+  color: #fbbf24;
+}
+.star-btn[aria-pressed="true"],
+.star-btn[aria-pressed="true"] *,
+.star-btn[data-active="true"],
+.star-btn[data-active="true"] * {
+  color: #f97316 !important;
+}
+.dark .star-btn[aria-pressed="true"],
+.dark .star-btn[aria-pressed="true"] *,
+.dark .star-btn[data-active="true"],
+.dark .star-btn[data-active="true"] * {
+  color: #fb923c !important;
+}
+.star-btn[aria-pressed="true"] svg,
+.star-btn[data-active="true"] svg {
+  fill: currentColor !important;
+  stroke: currentColor !important;
+}
+
+.star-btn {
+  transition:
+    color 0.15s ease,
+    stroke 0.15s ease,
+    fill 0.15s ease;
+}
+.star-btn svg {
+  fill: none !important;
+  stroke: currentColor !important;
+}
+.star-btn:hover {
+  color: #fcd34d;
+}
+.dark .star-btn:hover {
+  color: #fbbf24;
+}
+.star-btn[aria-pressed="true"],
+.star-btn[aria-pressed="true"] *,
+.star-btn[data-active="true"],
+.star-btn[data-active="true"] * {
+  color: #f97316 !important;
+}
+.dark .star-btn[aria-pressed="true"],
+.dark .star-btn[aria-pressed="true"] *,
+.dark .star-btn[data-active="true"],
+.dark .star-btn[data-active="true"] * {
+  color: #fb923c !important;
+}
+.star-btn[aria-pressed="true"] svg,
+.star-btn[data-active="true"] svg {
+  fill: currentColor !important;
+  stroke: currentColor !important;
+}
+
+.star-btn {
+  transition:
+    color 0.15s ease,
+    stroke 0.15s ease,
+    fill 0.15s ease;
+}
+.star-btn svg {
+  fill: none !important;
+  stroke: currentColor !important;
+}
+.star-btn:hover {
+  color: #fcd34d;
+}
+.dark .star-btn:hover {
+  color: #fbbf24;
+}
+.star-btn[aria-pressed="true"],
+.star-btn[aria-pressed="true"] *,
+.star-btn[data-active="true"],
+.star-btn[data-active="true"] * {
+  color: #f97316 !important;
+}
+.dark .star-btn[aria-pressed="true"],
+.dark .star-btn[aria-pressed="true"] *,
+.dark .star-btn[data-active="true"],
+.dark .star-btn[data-active="true"] * {
+  color: #fb923c !important;
+}
+.star-btn[aria-pressed="true"] svg,
+.star-btn[data-active="true"] svg {
+  fill: currentColor !important;
+  stroke: currentColor !important;
+}
+
+.services-sort {
+  --tw-ring-offset-shadow: 0 0 #0000;
+  --tw-ring-shadow: 0 0 #0000;
+  background: rgba(255, 255, 255, 0.14);
+  color: #0b1220;
+  border: 1px solid rgba(17, 24, 39, 0.12);
+  border-radius: 0.5rem;
+  padding: 0.375rem 0.75rem;
+  appearance: none;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04) inset;
+}
+.dark .services-sort {
+  background: rgba(255, 255, 255, 0.12);
+  color: #e5e7eb;
+  border-color: rgba(255, 255, 255, 0.24);
+}
+.services-sort:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+.services-sort:focus {
+  outline: 2px solid rgba(255, 255, 255, 0.6);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.08);
+}
+
+.az-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+.az-btn {
+  background: rgba(255, 255, 255, 0.65);
+  color: #0b1220;
+  border: 1px solid rgba(17, 24, 39, 0.15);
+  border-radius: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  line-height: 1;
+}
+.az-btn:hover {
+  background: rgba(255, 255, 255, 0.9);
+}
+.dark .az-btn {
+  background: rgba(255, 255, 255, 0.12);
+  color: #e5e7eb;
+  border-color: rgba(255, 255, 255, 0.24);
+}
+.dark .az-btn:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.details-accent {
+  color: #3b82f6;
+}
+.details-accent:hover {
+  text-decoration: underline;
+}
+.dark .details-accent {
+  color: #60a5fa;
+}
+
+.star-btn {
+  transition:
+    color 0.15s ease,
+    stroke 0.15s ease,
+    fill 0.15s ease;
+}
+.star-btn svg {
+  fill: none !important;
+  stroke: currentColor !important;
+}
+.star-btn:hover {
+  color: #fcd34d;
+}
+.dark .star-btn:hover {
+  color: #fbbf24;
+}
+.star-btn[aria-pressed="true"],
+.star-btn[aria-pressed="true"] *,
+.star-btn[data-active="true"],
+.star-btn[data-active="true"] * {
+  color: #f97316 !important;
+}
+.dark .star-btn[aria-pressed="true"],
+.dark .star-btn[aria-pressed="true"] *,
+.dark .star-btn[data-active="true"],
+.dark .star-btn[data-active="true"] * {
+  color: #fb923c !important;
+}
+.star-btn[aria-pressed="true"] svg,
+.star-btn[data-active="true"] svg {
+  fill: currentColor !important;
+  stroke: currentColor !important;
+}

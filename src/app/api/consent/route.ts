@@ -11,10 +11,10 @@ export async function POST(req: NextRequest) {
     const ip = req.headers.get("x-forwarded-for") || "127.0.0.1";
     const ua = req.headers.get("user-agent") || "";
     const rec = await prisma.consent.create({
-      data: { userId, scope, version, ip, userAgent: ua }
+      data: { userId, scope, version, ip, userAgent: ua },
     });
     return NextResponse.json({ ok: true, id: rec.id });
   } catch (e: unknown) {
-    return NextResponse.json({ ok:false, error: e.message }, { status: 400 });
+    return NextResponse.json({ ok: false, error: e.message }, { status: 400 });
   }
 }

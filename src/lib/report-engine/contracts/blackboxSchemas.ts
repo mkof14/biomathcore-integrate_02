@@ -1,6 +1,12 @@
-import type { ReportInput, ReportResult } from "@/lib/report-engine/contracts/reportSchemas";
+import type {
+  ReportInput,
+  ReportResult,
+} from "@/lib/report-engine/contracts/reportSchemas";
 /* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
-import type { ReportInput, ReportResult } from "@/lib/report-engine/contracts/reportSchemas";
+import type {
+  ReportInput,
+  ReportResult,
+} from "@/lib/report-engine/contracts/reportSchemas";
 import { z } from "zod";
 
 export const BlackBoxJobSchema = z.object({

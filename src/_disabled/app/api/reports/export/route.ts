@@ -6,19 +6,16 @@ import { listReports } from "@/lib/repos/reportRepo";
 export const runtime = "nodejs";
 
 export async function GET(req: Request) {
-/* params preamble */
-const { pathname } = new URL(req.url);
-const parts = pathname.split("/").filter(Boolean);
-const apiIdx = parts.findIndex(p => p === "api");
-const base = apiIdx >= 0 ? parts.slice(apiIdx + 1) : parts;
-/* end preamble */
+  /* params preamble */
+  const { pathname } = new URL(req.url);
+  const parts = pathname.split("/").filter(Boolean);
+  const apiIdx = parts.findIndex((p) => p === "api");
+  const base = apiIdx >= 0 ? parts.slice(apiIdx + 1) : parts;
+  /* end preamble */
 
-/* params preamble */
+  /* params preamble */
 
-
-
-
-/* end preamble */
+  /* end preamble */
 
   const url = new URL(req.url);
   const id = url.searchParams.get("id") || undefined;
@@ -29,11 +26,19 @@ const base = apiIdx >= 0 ? parts.slice(apiIdx + 1) : parts;
   const limit = parseInt(url.searchParams.get("limit") || "1000", 10);
   const cursor = url.searchParams.get("cursor") || undefined;
 
-  const { data } = await listReports({ id, q, status, from, to, limit, cursor });
+  const { data } = await listReports({
+    id,
+    q,
+    status,
+    from,
+    to,
+    limit,
+    cursor,
+  });
 
   const zip = new JSZip();
   zip.file("reports.json", JSON.stringify(data, null, 2));
-  const fields = ["id","title","content","status","createdAt","updatedAt"];
+  const fields = ["id", "title", "content", "status", "createdAt", "updatedAt"];
   const csv = new Json2Csv({ fields }).parse(data);
   zip.file("reports.csv", csv);
 
@@ -47,4 +52,4 @@ const base = apiIdx >= 0 ? parts.slice(apiIdx + 1) : parts;
   });
 }
 
-export { /* TODO: implement or remove */ };
+export /* TODO: implement or remove */ {};

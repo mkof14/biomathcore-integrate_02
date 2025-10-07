@@ -1,2 +1,2 @@
-export * from '../../lib/prisma';
-export { default } from '../../lib/prisma';
+export * from "../../lib/prisma";
+export { default } from "../../lib/prisma";

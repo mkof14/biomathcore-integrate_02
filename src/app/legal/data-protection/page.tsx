@@ -1,6 +1,6 @@
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 export const revalidate = 0;
-export const fetchCache = 'default-no-store';
+export const fetchCache = "default-no-store";
 
 import React from "react";
 import LegalNote from "@/components/legal/LegalNote";
@@ -22,9 +22,15 @@ export default function DataProtectionPage() {
         </ul>
 
         <h2 className="text-xl font-semibold mt-6 mb-2">Requests</h2>
-        <p className="mb-4">Submit data subject requests to privacy@biomathcore.com. We verify identity before acting on requests.</p>
+        <p className="mb-4">
+          Submit data subject requests to privacy@biomathcore.com. We verify
+          identity before acting on requests.
+        </p>
 
-        <LegalNote>Note: Additional regional terms may apply; see GDPR section for EU/EEA specifics.</LegalNote>
+        <LegalNote>
+          Note: Additional regional terms may apply; see GDPR section for EU/EEA
+          specifics.
+        </LegalNote>
       </div>
     </div>
   );

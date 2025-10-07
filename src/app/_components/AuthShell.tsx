@@ -13,7 +13,7 @@ export default function AuthShell({
   logoSrc?: string;
 }) {
   return (
-    <div className="min-h-screen w-full bg-[radial-gradient(1200px_800px_at_80%_-10%,#0ea5e933,transparent),linear-gradient(180deg,#020617,#0b1220_60%,#020617)] text-white">
+    <div className="btn-nasa">
       <div className="mx-auto max-w-md px-4 py-10">
         <div className="mb-8 flex items-center justify-center">
           <Image
@@ -28,7 +28,9 @@ export default function AuthShell({
         <div className="rounded-2xl border border-white/10 bg-white/5 p-6 shadow-2xl backdrop-blur">
           <h1 className="mb-1 text-center text-2xl font-semibold">{title}</h1>
           {subtitle ? (
-            <p className="mb-5 text-center text-sm text-slate-300">{subtitle}</p>
+            <p className="mb-5 text-center text-sm text-slate-300">
+              {subtitle}
+            </p>
           ) : (
             <div className="mb-4" />
           )}

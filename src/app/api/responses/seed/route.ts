@@ -9,15 +9,24 @@ type Body = {
 
 export async function POST(req: Request) {
   try {
-    const { questionnaireKey, visibility = "anonymous" } = (await req.json()) as Body;
+    const { questionnaireKey, visibility = "anonymous" } =
+      (await req.json()) as Body;
 
     if (!questionnaireKey) {
-      return NextResponse.json({ ok: false, error: "questionnaireKey is required" }, { status: 400 });
+      return NextResponse.json(
+        { ok: false, error: "questionnaireKey is required" },
+        { status: 400 },
+      );
     }
 
-    const q = await prisma.questionnaire.findUnique({ where: { key: questionnaireKey } });
+    const q = await prisma.questionnaire.findUnique({
+      where: { key: questionnaireKey },
+    });
     if (!q) {
-      return NextResponse.json({ ok: false, error: `Questionnaire not found: ${questionnaireKey}` }, { status: 400 });
+      return NextResponse.json(
+        { ok: false, error: `Questionnaire not found: ${questionnaireKey}` },
+        { status: 400 },
+      );
     }
 
     const version = 1;
@@ -27,14 +36,23 @@ export async function POST(req: Request) {
         questionnaireId: q.id,
         version,
         userId: null,
-        visibility,                   // "anonymous" | "identified"
-        status: "DRAFT",              // enum in schema
+        visibility, // "anonymous" | "identified"
+        status: "DRAFT", // enum in schema
         progress: 0,
       },
     });
 
-    return NextResponse.json({ ok: true, id: s.id, questionnaireId: q.id, status: s.status, visibility: s.visibility });
+    return NextResponse.json({
+      ok: true,
+      id: s.id,
+      questionnaireId: q.id,
+      status: s.status,
+      visibility: s.visibility,
+    });
   } catch (e: unknown) {
-    return NextResponse.json({ ok: false, error: e?.message || "Unexpected error" }, { status: 500 });
+    return NextResponse.json(
+      { ok: false, error: e?.message || "Unexpected error" },
+      { status: 500 },
+    );
   }
 }

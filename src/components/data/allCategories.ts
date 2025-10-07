@@ -586,7 +586,8 @@ const allCategories: Category[] = [
     name: "Sleep & Recovery & Recovery",
     icon: "🌙",
     color: "cyan",
-    description: "Sleep & Recovery quality, recovery, and circadian rhythm management.",
+    description:
+      "Sleep & Recovery quality, recovery, and circadian rhythm management.",
     services: [
       {
         id: "blue-plan",

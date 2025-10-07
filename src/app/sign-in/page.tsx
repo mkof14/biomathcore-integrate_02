@@ -19,7 +19,10 @@ export default function SignInPage() {
 
   const pwdRef = useRef<HTMLInputElement>(null);
 
-  const showResetBanner = useMemo(() => reset && !hideResetBanner, [reset, hideResetBanner]);
+  const showResetBanner = useMemo(
+    () => reset && !hideResetBanner,
+    [reset, hideResetBanner],
+  );
   const showErrorBanner = error === "CredentialsSignin";
 
   useEffect(() => {
@@ -63,10 +66,13 @@ export default function SignInPage() {
     >
       {showResetBanner && (
         <div className="mb-4 flex items-start justify-between gap-3 rounded-lg bg-emerald-500/15 px-3 py-2 text-sm text-emerald-200">
-          <div>✅ Your password has been changed. Please sign in with your new password.</div>
+          <div>
+            ✅ Your password has been changed. Please sign in with your new
+            password.
+          </div>
           <button
             onClick={() => setHideResetBanner(true)}
-            className="shrink-0 rounded-md px-2 py-0.5 text-emerald-200/80 hover:text-white"
+            className="btn-nasa"
             aria-label="Close"
             type="button"
           >
@@ -89,7 +95,11 @@ export default function SignInPage() {
         autoComplete="off"
       >
         <input type="hidden" name="csrfToken" value={csrf} />
-        <input type="hidden" name="callbackUrl" value="/member/questionnaires" />
+        <input
+          type="hidden"
+          name="callbackUrl"
+          value="/member/questionnaires"
+        />
 
         <div className="grid gap-2">
           <label className="text-slate-200 text-sm">Email</label>
@@ -136,13 +146,16 @@ export default function SignInPage() {
         <button
           type="submit"
           disabled={submitting}
-          className="rounded-xl bg-gradient-to-r from-sky-500 to-emerald-400 text-white font-semibold py-3 disabled:opacity-60"
+          className="btn-nasa"
         >
           {submitting ? "Signing in…" : "Sign In"}
         </button>
 
         <div className="mt-2 flex items-center justify-between text-sm">
-          <a href="/auth/forgot-password" className="text-sky-300 hover:text-sky-200">
+          <a
+            href="/auth/forgot-password"
+            className="text-sky-300 hover:text-sky-200"
+          >
             Forgot password?
           </a>
           <a href="/auth/sign-up" className="text-sky-300 hover:text-sky-200">

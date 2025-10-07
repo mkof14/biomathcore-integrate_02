@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useMemo, useState } from "react";
 import BuyButton from "@/components/BuyButton";
@@ -109,9 +109,11 @@ export default function PricingPage() {
   const plans = useMemo(() => PLANS, []);
 
   return (
-    <section className="bg-black text-white py-16 px-6">
+    <section className="btn-nasa">
       <div className="max-w-7xl mx-auto text-center mb-10">
-        <h1 className="text-white text-center text-3xl md:text-4xl font-extrabold text-purple-400 text-white drop-shadow-md">Pricing</h1>
+        <h1 className="btn-nasa">
+          Pricing
+        </h1>
         <p className="text-gray-400 mt-2 text-sm md:text-base">
           Choose a plan you can use every day. Upgrade any time.
         </p>
@@ -126,8 +128,8 @@ export default function PricingPage() {
               onChange={() => setIsYearly(!isYearly)}
               className="sr-only peer"
             />
-            <span className="w-11 h-6 bg-gray-600 rounded-full peer-checked:bg-purple-600 transition-all" />
-            <span className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full peer-checked:translate-x-full transition-transform" />
+            <span className="btn-nasa" />
+            <span className="btn-nasa" />
           </label>
           <span className="text-sm text-gray-400">Yearly</span>
         </div>
@@ -154,7 +156,7 @@ export default function PricingPage() {
               <span className="absolute inset-x-0 top-0 h-[3px] bg-white/10 rounded-t-2xl" />
 
               <div className="mb-4">
-                <h3 className="text-xl font-semibold text-white">
+                <h3 className="btn-nasa">
                   {plan.name}
                 </h3>
                 <p className="text-gray-300 text-sm mt-1">{plan.tagline}</p>
@@ -168,13 +170,13 @@ export default function PricingPage() {
               </div>
 
               <div className="mt-5">
-                <div className="text-sm font-semibold text-white/90 mb-2">
+                <div className="btn-nasa">
                   {plan.bulletTitle}
                 </div>
                 <ul className="space-y-2 text-sm text-gray-200/90">
                   {plan.bullets.map((b) => (
                     <li key={b} className="flex items-start gap-2">
-                      <span className="mt-1 inline-block h-1.5 w-1.5 rounded-full bg-white/50" />
+                      <span className="btn-nasa" />
                       <span>{b}</span>
                     </li>
                   ))}

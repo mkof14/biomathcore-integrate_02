@@ -1,7 +1,11 @@
 "use client";
 import { useState } from "react";
 
-export default function ReportGenerator({ onGenerate }: { onGenerate: () => void | Promise<void> }) {
+export default function ReportGenerator({
+  onGenerate,
+}: {
+  onGenerate: () => void | Promise<void>;
+}) {
   const [report, setReport] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
 

@@ -2,11 +2,17 @@ import type { Report } from "@/lib/report-engine/contracts/reportSchemas";
 
 type Row = Report & { createdAt: Date };
 const mem = new Map<string, Row>();
-const cuid = () => Math.random().toString(36).slice(2) + Date.now().toString(36);
+const cuid = () =>
+  Math.random().toString(36).slice(2) + Date.now().toString(36);
 
 export function makeMemoryReportRepo() {
   return {
-    async create(data: { userId: string; title: string; lines?: string[]; meta?: any }) {
+    async create(data: {
+      userId: string;
+      title: string;
+      lines?: string[];
+      meta?: any;
+    }) {
       const id = cuid();
       const row: Row = {
         id,

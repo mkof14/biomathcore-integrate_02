@@ -16,6 +16,9 @@ export async function POST(req: Request) {
     });
     return NextResponse.json({ ok: true, url: session.url });
   } catch (e: unknown) {
-    return NextResponse.json({ ok: false, error: e.message || "stripe_error" }, { status: 400 });
+    return NextResponse.json(
+      { ok: false, error: e.message || "stripe_error" },
+      { status: 400 },
+    );
   }
 }

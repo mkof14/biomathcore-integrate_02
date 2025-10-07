@@ -31,7 +31,9 @@ export default function BillingActions() {
       const r = await fetch("/api/stripe/portal", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ return_url: `${location.origin}/member-zone/billing` }),
+        body: JSON.stringify({
+          return_url: `${location.origin}/member-zone/billing`,
+        }),
       });
       const j = await r.json();
       if (!r.ok) throw new Error(j.error || "portal_failed");

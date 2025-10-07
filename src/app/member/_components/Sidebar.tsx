@@ -9,7 +9,9 @@ function Item({ href, children }: { href: string; children: React.ReactNode }) {
     <Link
       href={href}
       className={`block rounded-lg px-3 py-2 transition ${
-        active ? "bg-sky-100 text-slate-900 font-medium" : "hover:bg-slate-100 text-slate-700"
+        active
+          ? "bg-sky-100 text-slate-900 font-medium"
+          : "hover:bg-slate-100 text-slate-700"
       }`}
     >
       {children}

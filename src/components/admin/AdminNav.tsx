@@ -17,7 +17,9 @@ export default function AdminNav() {
   const path = usePathname();
   return (
     <aside className="w-64 shrink-0 border-r border-neutral-800/60 bg-neutral-950/40">
-      <div className="px-4 py-5 text-xl font-semibold tracking-tight">Mission Control</div>
+      <div className="px-4 py-5 text-xl font-semibold tracking-tight">
+        Mission Control
+      </div>
       <nav className="px-2 pb-4 space-y-1">
         {items.map((it) => {
           const active = path?.startsWith(it.href);
@@ -27,7 +29,9 @@ export default function AdminNav() {
               href={it.href}
               className={cn(
                 "block rounded-md px-3 py-2 text-sm transition",
-                active ? "bg-neutral-800/60 text-white" : "text-neutral-300 hover:bg-neutral-900/60 hover:text-white"
+                active
+                  ? "bg-neutral-800/60 text-white"
+                  : "text-neutral-300 hover:bg-neutral-900/60 hover:text-white",
               )}
             >
               {it.title}

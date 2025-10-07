@@ -10,6 +10,9 @@ export async function GET(req: Request) {
     const s = await stripe.checkout.sessions.retrieve(id);
     return NextResponse.json({ ok: true, data: s });
   } catch (e: unknown) {
-    return NextResponse.json({ ok: false, error: e.message || "stripe_error" }, { status: 400 });
+    return NextResponse.json(
+      { ok: false, error: e.message || "stripe_error" },
+      { status: 400 },
+    );
   }
 }

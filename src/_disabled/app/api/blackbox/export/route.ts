@@ -12,7 +12,14 @@ export async function GET(req: Request) {
 
   const zip = new JSZip();
   zip.file("blackbox.json", JSON.stringify(data, null, 2));
-  const fields = ["id","prompt","response","status","createdAt","updatedAt"];
+  const fields = [
+    "id",
+    "prompt",
+    "response",
+    "status",
+    "createdAt",
+    "updatedAt",
+  ];
   const csv = new Json2Csv({ fields }).parse(data);
   zip.file("blackbox.csv", csv);
 

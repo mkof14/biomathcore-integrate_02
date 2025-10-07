@@ -13,11 +13,21 @@ export async function GET(req: Request) {
     where: { userId },
     orderBy: { createdAt: "desc" },
     take: 10,
-    select: { id:true, userId:true, model:true, duration:true, tokensIn:true, tokensOut:true, fallback:true, status:true, createdAt:true },
+    select: {
+      id: true,
+      userId: true,
+      model: true,
+      duration: true,
+      tokensIn: true,
+      tokensOut: true,
+      fallback: true,
+      status: true,
+      createdAt: true,
+    },
   });
 
   return NextResponse.json({
-    items: rows.map(r => ({
+    items: rows.map((r) => ({
       id: r.id,
       userId: r.userId,
       model: r.model ?? null,

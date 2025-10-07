@@ -25,12 +25,14 @@ export default function AdminNav() {
         {items.map((it) => {
           const active = path?.startsWith(it.href);
           return (
-            <Link key={it.href} href={it.href}
+            <Link
+              key={it.href}
+              href={it.href}
               className={clsx(
                 "block rounded-md px-3 py-2 text-sm transition",
                 active
                   ? "bg-neutral-800/60 text-white"
-                  : "text-neutral-300 hover:bg-neutral-900/60 hover:text-white"
+                  : "text-neutral-300 hover:bg-neutral-900/60 hover:text-white",
               )}
             >
               {it.title}

@@ -10,7 +10,8 @@ function sha256(s: string) {
 export async function POST(req: Request) {
   try {
     const { email } = await req.json();
-    if (!email) return NextResponse.json({ error: "Email required" }, { status: 400 });
+    if (!email)
+      return NextResponse.json({ error: "Email required" }, { status: 400 });
     const norm = String(email).trim().toLowerCase();
 
     const user = await prisma.user.findUnique({ where: { email: norm } });
@@ -27,7 +28,10 @@ export async function POST(req: Request) {
       data: { tokenHash, userId: user.id, expiresAt: expires },
     });
 
-    const base = process.env.APP_URL || process.env.NEXTAUTH_URL || "http://localhost:3000";
+    const base =
+      process.env.APP_URL ||
+      process.env.NEXTAUTH_URL ||
+      "http://localhost:3000";
     const link = `${base}/auth/reset-password?token=${rawToken}`;
 
     await sendPasswordReset(user.email, link);

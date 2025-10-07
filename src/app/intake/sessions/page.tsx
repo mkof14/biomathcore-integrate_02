@@ -1,11 +1,11 @@
 "use client";
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 type Session = {
   id: string;
   questionnaireId: string;
-  visibility: 'identified'|'anonymous';
-  status: 'DRAFT'|'SUBMITTED';
+  visibility: "identified" | "anonymous";
+  status: "DRAFT" | "SUBMITTED";
   progress: number;
   createdAt: string;
 };
@@ -15,9 +15,9 @@ export default function IntakeSessionsPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/api/responses?take=50')
-      .then(r => r.json())
-      .then(d => setRows(d?.data ?? []))
+    fetch("/api/responses?take=50")
+      .then((r) => r.json())
+      .then((d) => setRows(d?.data ?? []))
       .finally(() => setLoading(false));
   }, []);
 
@@ -29,7 +29,7 @@ export default function IntakeSessionsPage() {
 
       <div className="grid gap-3">
         {loading && (
-          <div className="rounded-xl border border-white/10 bg-black/40 text-white p-4">
+          <div className="btn-nasa">
             Loading...
           </div>
         )}
@@ -38,12 +38,19 @@ export default function IntakeSessionsPage() {
             No sessions yet.
           </div>
         )}
-        {rows.map(s => (
-          <a key={s.id} href={`/api/responses/${s.id}`} target="_blank" rel="noreferrer"
-             className="block rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900 text-gray-900 dark:text-gray-100 p-4 hover:shadow transition">
+        {rows.map((s) => (
+          <a
+            key={s.id}
+            href={`/api/responses/${s.id}`}
+            target="_blank"
+            rel="noreferrer"
+            className="block rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900 text-gray-900 dark:text-gray-100 p-4 hover:shadow transition"
+          >
             <div className="flex items-center justify-between">
               <div className="font-semibold">{s.id}</div>
-              <span className={`text-xs px-2 py-1 rounded-full ${s.status === 'SUBMITTED' ? 'bg-emerald-600 text-white' : 'bg-zinc-700 text-white'}`}>
+              <span
+                className={`text-xs px-2 py-1 rounded-full ${s.status === "SUBMITTED" ? "bg-emerald-600 text-white" : "bg-zinc-700 text-white"}`}
+              >
                 {s.status}
               </span>
             </div>

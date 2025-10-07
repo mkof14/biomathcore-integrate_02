@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import React, { useEffect, useState } from "react";
 import { SectionCard } from "@/components/admin/AdminShell";
@@ -6,7 +6,9 @@ import { SectionCard } from "@/components/admin/AdminShell";
 /**     (   healthchecks ). */
 export default function StatusPage() {
   const [now, setNow] = useState<string>("");
-  useEffect(() => { setNow(new Date().toISOString()); }, []);
+  useEffect(() => {
+    setNow(new Date().toISOString());
+  }, []);
   return (
     <SectionCard title="System Status" descr="   uptime (stub)">
       <div className="grid md:grid-cols-3 gap-4">

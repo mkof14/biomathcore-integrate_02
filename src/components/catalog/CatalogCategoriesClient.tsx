@@ -73,7 +73,9 @@ export default function CatalogCategoriesClient() {
   // fetch current selections
   const fetchSelections = async () => {
     try {
-      const r = await fetch("/api/user/category-selections", { cache: "no-store" });
+      const r = await fetch("/api/user/category-selections", {
+        cache: "no-store",
+      });
       if (!r.ok) {
         // Allow page to render even if not signed in; selections will be empty
         setSelectedIds(new Set());
@@ -106,9 +108,12 @@ export default function CatalogCategoriesClient() {
         // Try DELETE with query param first
         let ok = false;
         try {
-          const r = await fetch(`/api/user/category-selections?id=${encodeURIComponent(cat.id)}`, {
-            method: "DELETE",
-          });
+          const r = await fetch(
+            `/api/user/category-selections?id=${encodeURIComponent(cat.id)}`,
+            {
+              method: "DELETE",
+            },
+          );
           ok = r.ok;
         } catch {}
         // Fallback: DELETE with body if server expects JSON
@@ -147,7 +152,7 @@ export default function CatalogCategoriesClient() {
   const { selectedList, selectedSum, coreCount } = useMemo(() => {
     const core = categories.filter((c) => c.isCoreIncluded);
     const nonCoreSelected = categories.filter(
-      (c) => !c.isCoreIncluded && selectedIds.has(c.id)
+      (c) => !c.isCoreIncluded && selectedIds.has(c.id),
     );
     const sum = nonCoreSelected.reduce((acc, c) => {
       const price = PRICE_MAP[c.title] ?? 5;
@@ -173,8 +178,9 @@ export default function CatalogCategoriesClient() {
       <header className="space-y-2">
         <h1 className="text-2xl font-bold">Catalog</h1>
         <p className="text-sm text-gray-600 dark:text-gray-400">
-          Choose service categories to customize your plan. Core plan includes a fixed set of categories.
-          You can add more categories below — the calculator updates instantly.
+          Choose service categories to customize your plan. Core plan includes a
+          fixed set of categories. You can add more categories below — the
+          calculator updates instantly.
         </p>
       </header>
 
@@ -187,7 +193,8 @@ export default function CatalogCategoriesClient() {
                 You’re at ${subtotal}/mo — MAX plan may be a better deal.
               </p>
               <p className="text-xs text-orange-700/80 dark:text-orange-300/80">
-                MAX includes everything for ${MAX_PRICE}/mo. Consider switching to save.
+                MAX includes everything for ${MAX_PRICE}/mo. Consider switching
+                to save.
               </p>
             </div>
             <a
@@ -211,15 +218,25 @@ export default function CatalogCategoriesClient() {
           </div>
           <div className="text-right">
             <div className="text-xs text-gray-600 dark:text-gray-400">Core</div>
-            <div className="text-lg font-bold text-emerald-700 dark:text-emerald-300">${CORE_PRICE}</div>
+            <div className="text-lg font-bold text-emerald-700 dark:text-emerald-300">
+              ${CORE_PRICE}
+            </div>
           </div>
           <div className="text-right">
-            <div className="text-xs text-gray-600 dark:text-gray-400">Added</div>
-            <div className="text-lg font-bold text-indigo-700 dark:text-indigo-300">${selectedSum}</div>
+            <div className="text-xs text-gray-600 dark:text-gray-400">
+              Added
+            </div>
+            <div className="text-lg font-bold text-indigo-700 dark:text-indigo-300">
+              ${selectedSum}
+            </div>
           </div>
           <div className="text-right">
-            <div className="text-xs text-gray-600 dark:text-gray-400">Total</div>
-            <div className="text-2xl font-extrabold text-fuchsia-700 dark:text-fuchsia-300">${subtotal}</div>
+            <div className="text-xs text-gray-600 dark:text-gray-400">
+              Total
+            </div>
+            <div className="text-2xl font-extrabold text-fuchsia-700 dark:text-fuchsia-300">
+              ${subtotal}
+            </div>
           </div>
         </div>
 
@@ -285,7 +302,9 @@ export default function CatalogCategoriesClient() {
                   {/* price badge (contrasting color) */}
                   {!c.isCoreIncluded && (
                     <div className="text-right">
-                      <div className="text-[11px] text-gray-500 dark:text-gray-400">Price</div>
+                      <div className="text-[11px] text-gray-500 dark:text-gray-400">
+                        Price
+                      </div>
                       <div className="text-lg font-bold text-amber-600 dark:text-amber-300">
                         ${price}
                       </div>
@@ -306,11 +325,15 @@ export default function CatalogCategoriesClient() {
                       c.isCoreIncluded
                         ? "bg-gray-100 dark:bg-neutral-800 text-gray-500 border-gray-200 dark:border-neutral-700 cursor-not-allowed"
                         : selected
-                        ? "bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 border-blue-300 dark:border-blue-700 hover:opacity-90"
-                        : "bg-white/80 dark:bg-neutral-900 text-gray-800 dark:text-gray-200 border-gray-300 dark:border-neutral-700 hover:bg-white",
+                          ? "bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 border-blue-300 dark:border-blue-700 hover:opacity-90"
+                          : "bg-white/80 dark:bg-neutral-900 text-gray-800 dark:text-gray-200 border-gray-300 dark:border-neutral-700 hover:bg-white",
                     ].join(" ")}
                   >
-                    {c.isCoreIncluded ? "Included" : selected ? "Selected — Remove" : "Select"}
+                    {c.isCoreIncluded
+                      ? "Included"
+                      : selected
+                        ? "Selected — Remove"
+                        : "Select"}
                   </button>
                 </div>
               </div>

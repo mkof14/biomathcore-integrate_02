@@ -4,14 +4,15 @@ export function apiUrl(path: string = "/") {
   if (!path) return getBaseUrl();
   if (/^https?:\/\//i.test(path)) return path;
   if (!path.startsWith("/")) path = "/" + path;
-  return getBaseUrl().replace(/\/+$/,'') + path;
+  return getBaseUrl().replace(/\/+$/, "") + path;
 }
 
 /** Нормализуем вход fetch к абсолютному URL */
 function toAbs(input: any, init?: RequestInit): [any, RequestInit | undefined] {
   try {
     if (typeof input === "string") return [apiUrl(input), init];
-    if (typeof URL !== "undefined" && input instanceof URL) return [apiUrl(input.toString()), init];
+    if (typeof URL !== "undefined" && input instanceof URL)
+      return [apiUrl(input.toString()), init];
     if (typeof Request !== "undefined" && input instanceof Request) {
       const abs = apiUrl(input.url);
       const req = new Request(abs, input);
@@ -29,20 +30,31 @@ export function apiFetch(input: any, init?: RequestInit) {
   return fetch(req as any, opts as any);
 }
 
-export async function getJSON<T = any>(path: string, init?: RequestInit): Promise<T> {
+export async function getJSON<T = any>(
+  path: string,
+  init?: RequestInit,
+): Promise<T> {
   const url = apiUrl(path);
-  const r = await fetch(url, { cache: "no-store", ...(init||{}), next: { revalidate: 0 } as any });
+  const r = await fetch(url, {
+    cache: "no-store",
+    ...(init || {}),
+    next: { revalidate: 0 } as any,
+  });
   if (!r.ok) throw new Error(`GET ${url} -> ${r.status}`);
   return r.json();
 }
 
-export async function postJSON<T = any>(path: string, body?: any, init?: RequestInit): Promise<T> {
+export async function postJSON<T = any>(
+  path: string,
+  body?: any,
+  init?: RequestInit,
+): Promise<T> {
   const url = apiUrl(path);
   const r = await fetch(url, {
     method: "POST",
-    headers: { "Content-Type": "application/json", ...(init?.headers||{}) },
+    headers: { "Content-Type": "application/json", ...(init?.headers || {}) },
     body: body != null ? JSON.stringify(body) : undefined,
-    ...(init||{}),
+    ...(init || {}),
   });
   if (!r.ok) throw new Error(`POST ${url} -> ${r.status}`);
   return r.json();

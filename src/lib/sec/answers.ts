@@ -11,7 +11,13 @@ export async function encryptSensitive(obj: unknown) {
   const plaintext = Buffer.from(JSON.stringify(obj), "utf8");
   const enc = Buffer.concat([cipher.update(plaintext), cipher.final()]);
   const tag = cipher.getAuthTag();
-  return { __enc: true, alg: "AES-256-GCM", iv: iv.toString("base64"), tag: tag.toString("base64"), data: enc.toString("base64") };
+  return {
+    __enc: true,
+    alg: "AES-256-GCM",
+    iv: iv.toString("base64"),
+    tag: tag.toString("base64"),
+    data: enc.toString("base64"),
+  };
 }
 
 export async function decryptSensitive(payload: unknown) {

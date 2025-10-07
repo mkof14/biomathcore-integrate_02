@@ -12,7 +12,10 @@ function env(name: string, fallback?: string) {
 
 export type AIResponse = { reply: string };
 
-export async function callAIProvider(prompt: string, system: string = "You are a helpful medical-style assistant. Be concise, empathetic, and avoid diagnosis. Encourage consulting a clinician for medical concerns."): Promise<AIResponse> {
+export async function callAIProvider(
+  prompt: string,
+  system: string = "You are a helpful medical-style assistant. Be concise, empathetic, and avoid diagnosis. Encourage consulting a clinician for medical concerns.",
+): Promise<AIResponse> {
   const provider = (process.env.AI_PROVIDER || "openai").toLowerCase();
 
   switch (provider) {
@@ -39,7 +42,7 @@ async function callOpenAI(prompt: string, system: string): Promise<AIResponse> {
   const res = await fetch("https://api.openai.com/v1/chat/completions", {
     method: "POST",
     headers: {
-      "Authorization": `Bearer ${key}`,
+      Authorization: `Bearer ${key}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
@@ -63,7 +66,10 @@ async function callOpenAI(prompt: string, system: string): Promise<AIResponse> {
 }
 
 /* ---------- Azure OpenAI ---------- */
-async function callAzureOpenAI(prompt: string, system: string): Promise<AIResponse> {
+async function callAzureOpenAI(
+  prompt: string,
+  system: string,
+): Promise<AIResponse> {
   const endpoint = env("AZURE_OPENAI_ENDPOINT");
   const key = env("AZURE_OPENAI_API_KEY");
   const deployment = env("AZURE_OPENAI_DEPLOYMENT");
@@ -94,7 +100,10 @@ async function callAzureOpenAI(prompt: string, system: string): Promise<AIRespon
 }
 
 /* ---------- Anthropic ---------- */
-async function callAnthropic(prompt: string, system: string): Promise<AIResponse> {
+async function callAnthropic(
+  prompt: string,
+  system: string,
+): Promise<AIResponse> {
   const key = env("ANTHROPIC_API_KEY");
   const model = env("ANTHROPIC_MODEL", "claude-3-5-sonnet-latest");
 
@@ -132,7 +141,9 @@ async function callGemini(prompt: string, system: string): Promise<AIResponse> {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      contents: [{ role: "user", parts: [{ text: `${system}\n\nUser: ${prompt}` }] }],
+      contents: [
+        { role: "user", parts: [{ text: `${system}\n\nUser: ${prompt}` }] },
+      ],
       generationConfig: { temperature: 0.4 },
     }),
   });
@@ -150,7 +161,10 @@ async function callGemini(prompt: string, system: string): Promise<AIResponse> {
 }
 
 /* ---------- AWS Bedrock (simple HTTPS; для прод лучше AWS SDK) ---------- */
-async function callBedrock(prompt: string, system: string): Promise<AIResponse> {
+async function callBedrock(
+  prompt: string,
+  system: string,
+): Promise<AIResponse> {
   // Для простоты здесь показан «идеологический» вызов; для прод используйте @aws-sdk/client-bedrock-runtime
   // и подпись SigV4. Этот блок — заглушка с ошибкой по умолчанию:
   throw new Error("Bedrock example: please implement with AWS SDK (SigV4).");

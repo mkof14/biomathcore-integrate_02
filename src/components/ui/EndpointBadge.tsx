@@ -46,7 +46,11 @@ export default function EndpointBadge({
         title="Copy full URL"
         type="button"
       >
-        {done ? <Check className="h-4 w-4 text-emerald-400" /> : <Copy className="h-4 w-4" />}
+        {done ? (
+          <Check className="h-4 w-4 text-emerald-400" />
+        ) : (
+          <Copy className="h-4 w-4" />
+        )}
       </button>
     </div>
   );

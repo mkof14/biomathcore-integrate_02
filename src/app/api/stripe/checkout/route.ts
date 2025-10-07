@@ -5,16 +5,18 @@ import Stripe from "stripe";
 function resolvePriceId(inputPriceId?: string, plan?: string): string | null {
   if (inputPriceId && inputPriceId.startsWith("price_")) return inputPriceId;
   const env = process.env;
-  const map: Record<string,string|undefined> = {
+  const map: Record<string, string | undefined> = {
     core_monthly: env.NEXT_PUBLIC_STRIPE_PRICE_CORE_MONTHLY,
     core_yearly: env.NEXT_PUBLIC_STRIPE_PRICE_CORE_YEARLY,
     daily_monthly: env.NEXT_PUBLIC_STRIPE_DAILY_MONTHLY,
     daily_yearly: env.NEXT_PUBLIC_STRIPE_DAILY_YEARLY,
     max_monthly: env.NEXT_PUBLIC_STRIPE_MAX_MONTHLY,
-    max_yearly: env.NEXT_PUBLIC_STRIPE_MAX_YEARLY
+    max_yearly: env.NEXT_PUBLIC_STRIPE_MAX_YEARLY,
   };
   if (plan && map[plan]) return map[plan] as string;
-  for (const k of Object.values(map)) { if (k && k.startsWith("price_")) return k; }
+  for (const k of Object.values(map)) {
+    if (k && k.startsWith("price_")) return k;
+  }
   return null;
 }
 
@@ -37,7 +39,7 @@ async function createSession(priceId: string, userId?: string) {
     cancel_url: `${baseUrl}/pricing?canceled=1`,
     client_reference_id: userId ?? undefined,
     allow_promotion_codes: true,
-    ui_mode: "hosted"
+    ui_mode: "hosted",
   });
 
   if (!session.url) throw new Error("Stripe did not return a Checkout URL");
@@ -46,10 +48,16 @@ async function createSession(priceId: string, userId?: string) {
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json().catch(() => ({ /* TODO: implement or remove */ }));
+    const body = await req.json().catch(() => ({
+      /* TODO: implement or remove */
+    }));
     const priceId = resolvePriceId(body?.priceId, body?.plan);
     const userId = body?.userId as string | undefined;
-    if (!priceId) return NextResponse.json({ error: "No valid priceId resolved" }, { status: 400 });
+    if (!priceId)
+      return NextResponse.json(
+        { error: "No valid priceId resolved" },
+        { status: 400 },
+      );
 
     const session = await createSession(priceId, userId);
 
@@ -64,11 +72,14 @@ export async function POST(req: NextRequest) {
       checkoutUrl: session.url,
       checkout_url: session.url,
       redirectUrl: session.url,
-      redirect_url: session.url
+      redirect_url: session.url,
     };
     return NextResponse.json(payload, { status: 200 });
   } catch (err: unknown) {
-    return NextResponse.json({ error: String(err?.message || err) }, { status: 500 });
+    return NextResponse.json(
+      { error: String(err?.message || err) },
+      { status: 500 },
+    );
   }
 }
 
@@ -80,7 +91,8 @@ export async function GET(req: NextRequest) {
 
   try {
     const priceId = resolvePriceId(priceIdParam, plan || undefined);
-    if (!priceId) return new NextResponse("No valid priceId resolved", { status: 400 });
+    if (!priceId)
+      return new NextResponse("No valid priceId resolved", { status: 400 });
     const session = await createSession(priceId, userId);
     return NextResponse.redirect(session.url, 302);
   } catch (err: unknown) {

@@ -5,8 +5,16 @@ export function sexualHealthAdvancedModule(): ModuleConfig {
     title: "Sensitive: Sexual health",
     requiresPrivacyConsent: true,
     questions: [
-      { id: "sh.consent", type: "select", label: "Include sexual health questions?", required: true,
-        options: [{ value: "yes", label: "Yes" }, { value: "no", label: "No" }] }
-    ]
+      {
+        id: "sh.consent",
+        type: "select",
+        label: "Include sexual health questions?",
+        required: true,
+        options: [
+          { value: "yes", label: "Yes" },
+          { value: "no", label: "No" },
+        ],
+      },
+    ],
   };
 }

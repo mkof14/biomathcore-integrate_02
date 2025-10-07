@@ -1,6 +1,6 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-let _model: ReturnType<GoogleGenerativeAI['getGenerativeModel']> | null = null;
+let _model: ReturnType<GoogleGenerativeAI["getGenerativeModel"]> | null = null;
 
 export function getGemini(modelName = "gemini-1.5-pro") {
   if (process.env.REPORTS_MOCK === "1") {

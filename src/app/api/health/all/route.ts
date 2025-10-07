@@ -24,7 +24,7 @@ export async function GET(req: Request) {
     "/api/drug-gene?limit=1",
     "/api/health/stripe",
   ];
-  const results = await Promise.all(urls.map(p => ping(o + p)));
+  const results = await Promise.all(urls.map((p) => ping(o + p)));
   const data = Object.fromEntries(urls.map((p, i) => [p, results[i]]));
   return NextResponse.json({ ok: true, data });
 }

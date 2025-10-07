@@ -6,5 +6,5 @@ export const runtime = "nodejs";
 
 export const POST = withLog(async () => {
   await resetVoiceRuns?.();
-  return NextResponse.json({ ok:true, reset:true });
+  return NextResponse.json({ ok: true, reset: true });
 }, "voice.dev.reset");

@@ -2,12 +2,12 @@
 import React from "react";
 import { getLang } from "@/lib/i18n-ui";
 
-const langs = ["en","ru","es"] as const;
+const langs = ["en", "ru", "es"] as const;
 
 export default function LanguageSwitcher() {
   const [cur, setCur] = React.useState(getLang());
 
-  const setLang = (l: typeof langs[number]) => {
+  const setLang = (l: (typeof langs)[number]) => {
     localStorage.setItem("bm_lang", l);
     const u = new URL(window.location.href);
     u.searchParams.set("lang", l);
@@ -16,7 +16,7 @@ export default function LanguageSwitcher() {
 
   return (
     <div className="flex gap-2">
-      {langs.map(l => (
+      {langs.map((l) => (
         <button
           key={l}
           onClick={() => setLang(l)}

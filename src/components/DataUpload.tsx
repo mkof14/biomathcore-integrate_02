@@ -9,7 +9,7 @@ export default function DataUpload() {
   const [downloadUrl, setDownloadUrl] = useState("");
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFile((e.target?.files?.[0] as File | undefined));
+    setFile(e.target?.files?.[0] as File | undefined);
   };
 
   const handleUpload = async () => {
@@ -22,7 +22,10 @@ export default function DataUpload() {
         setDownloadUrl(url);
         setUploadStatus("Upload successful!");
       } catch (error) {
-        setUploadStatus("Upload failed: " + (error instanceof Error ? error.message : String(error)));
+        setUploadStatus(
+          "Upload failed: " +
+            (error instanceof Error ? error.message : String(error)),
+        );
       }
     } else {
       setUploadStatus("Please select a file.");

@@ -25,10 +25,10 @@ export default function SignUpPage() {
   }
 
   return (
-    <section className="min-h-[70vh] grid place-items-center bg-black text-white px-4">
+    <section className="btn-nasa">
       <div className="w-full max-w-md rounded-2xl border border-white/10 bg-white/[0.04] p-6">
         <h1 className="text-2xl font-bold mb-1">Create account</h1>
-        <p className="text-white/70 text-sm mb-6">
+        <p className="btn-nasa">
           One account for your plans and services.
         </p>
 

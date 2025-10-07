@@ -18,5 +18,7 @@ export function saveSelected(slugs: string[]) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(slugs));
     // Notify other tabs/pages and listeners
     window.dispatchEvent(new Event("bmc-catalog-changed"));
-  } catch { /* TODO: implement or remove */ }
+  } catch {
+    /* TODO: implement or remove */
+  }
 }

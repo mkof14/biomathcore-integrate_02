@@ -8,13 +8,18 @@ export async function GET() {
       where: { status: "ACTIVE" },
       orderBy: [{ priority: "asc" }, { title: "asc" }],
       select: {
-        id: true, slug: true, title: true, status: true, priority: true,
-        updatedAt: true, createdAt: true,
+        id: true,
+        slug: true,
+        title: true,
+        status: true,
+        priority: true,
+        updatedAt: true,
+        createdAt: true,
       },
     });
 
     // Keep 'sections' as a temporary stub to satisfy UI expectations
-    const questionnaires = all.map(q => ({ ...q, sections: [] }));
+    const questionnaires = all.map((q) => ({ ...q, sections: [] }));
     return NextResponse.json({ ok: true, questionnaires });
   } catch (err) {
     console.error("questionnaires GET error:", err);

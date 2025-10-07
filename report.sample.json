@@ -1,0 +1,20 @@
+{
+  "plan": "core",
+  "reportId": "sample_001",
+  "generatedAt": "2025-10-07T15:02:01.235Z",
+  "templateVersion": "v1",
+  "summary": "Sample",
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Overview",
+      "metrics": [
+        {
+          "key": "bmi",
+          "label": "BMI",
+          "value": 23.7
+        }
+      ]
+    }
+  ]
+}

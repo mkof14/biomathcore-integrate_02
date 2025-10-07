@@ -4,10 +4,20 @@ import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { loadSelected, saveSelected } from "@/lib/catalogSelection";
 
-type Category = { id: string; slug: string; title: string; price: number; priority: number };
-export default function CatalogClient({ categories }: { categories: Category[] }) {
+type Category = {
+  id: string;
+  slug: string;
+  title: string;
+  price: number;
+  priority: number;
+};
+export default function CatalogClient({
+  categories,
+}: {
+  categories: Category[];
+}) {
   const router = useRouter();
-const CORE = 19;
+  const CORE = 19;
   const CAP = 79;
 
   // 1) selection state
@@ -27,7 +37,7 @@ const CORE = 19;
   // safe toggles
   function toggle(slug: string) {
     setSelected((prev) =>
-      prev.includes(slug) ? prev.filter((s) => s !== slug) : [...prev, slug]
+      prev.includes(slug) ? prev.filter((s) => s !== slug) : [...prev, slug],
     );
   }
   function clear() {
@@ -57,9 +67,19 @@ const CORE = 19;
   function onContinue() {
     try {
       // Try to read selected items from state commonly named "selected" or "selections"
-      const picks = (typeof selected !== "undefined" ? selected : (typeof selections !== "undefined" ? selections : [])) || [];
+      const picks =
+        (typeof selected !== "undefined"
+          ? selected
+          : typeof selections !== "undefined"
+            ? selections
+            : []) || [];
       const val = encodeURIComponent(JSON.stringify(picks));
-      document.cookie = "bmc.selected=" + val + "; Path=/; Max-Age=" + (60*60*24*30) + "; SameSite=Lax";
+      document.cookie =
+        "bmc.selected=" +
+        val +
+        "; Path=/; Max-Age=" +
+        60 * 60 * 24 * 30 +
+        "; SameSite=Lax";
     } catch (e) {}
     router.push("/member/questionnaires");
   }
@@ -68,7 +88,9 @@ const CORE = 19;
     <div className="min-h-screen bg-gradient-to-b from-[#0b142a] via-[#0d1833] to-[#0b142a] text-slate-100">
       <div className="mx-auto max-w-6xl px-6 py-8">
         <div className="mb-6 flex items-baseline justify-between">
-          <h1 className="text-2xl font-semibold tracking-tight">Service Catalog</h1>
+          <h1 className="text-2xl font-semibold tracking-tight">
+            Service Catalog
+          </h1>
           <div className="text-xs opacity-75">{selected.length} selected</div>
         </div>
 
@@ -100,21 +122,32 @@ const CORE = 19;
                       <div className="relative z-10">
                         <div className="flex items-start justify-between">
                           <div className="pr-2">
-                            <div className="text-base font-medium">{c.title}</div>
-                            <div className="mt-1 text-[11px] text-white/70">Priority #{c.priority}</div>
+                            <div className="text-base font-medium">
+                              {c.title}
+                            </div>
+                            <div className="btn-nasa">
+                              Priority #{c.priority}
+                            </div>
                           </div>
-                          <div className="text-sm text-white/85">${c.price}</div>
+                          <div className="btn-nasa">
+                            ${c.price}
+                          </div>
                         </div>
 
                         <div className="mt-3">
                           <span
                             className={[
                               "bmc-add-chip inline-flex items-center gap-2 rounded-full px-2.5 py-1 text-[11px]",
-                              active ? "bg-emerald-400/15 text-emerald-200 border border-emerald-400/40" : "bg-white/10 text-white/85 border border-white/10",
+                              active
+                                ? "bg-emerald-400/15 text-emerald-200 border border-emerald-400/40"
+                                : "bg-white/10 text-white/85 border border-white/10",
                             ].join(" ")}
                           >
                             <span
-                              className={"dot inline-block h-2 w-2 rounded-full " + (active ? "bg-emerald-300" : "bg-white/70")}
+                              className={
+                                "dot inline-block h-2 w-2 rounded-full " +
+                                (active ? "bg-emerald-300" : "bg-white/70")
+                              }
                             />
                             {active ? "Added" : "Add"}
                           </span>
@@ -134,7 +167,9 @@ const CORE = 19;
             <div className="sticky top-6 rounded-2xl border border-white/10 bg-slate-900/60 p-5 shadow-lg">
               <div className="flex items-center justify-between">
                 <div className="text-sm opacity-80">Your plan</div>
-                <div className="text-xs opacity-70">{selected.length} selected</div>
+                <div className="text-xs opacity-70">
+                  {selected.length} selected
+                </div>
               </div>
 
               <div className="mt-4">
@@ -142,11 +177,13 @@ const CORE = 19;
                   <span>$19</span>
                   <span>$79</span>
                 </div>
-                <div className="bmc-progress w-full h-4 rounded-full bg-white/10 overflow-hidden border border-white/15">
+                <div className="btn-nasa">
                   <div
                     className={[
                       "bar h-4 rounded-full transition-all duration-300",
-                      capped ? "bg-gradient-to-r from-rose-400 to-amber-400" : "bg-gradient-to-r from-sky-400 to-emerald-400",
+                      capped
+                        ? "bg-gradient-to-r from-rose-400 to-amber-400"
+                        : "bg-gradient-to-r from-sky-400 to-emerald-400",
                     ].join(" ")}
                     style={{ width: `${progress}%` }}
                   />
@@ -155,27 +192,44 @@ const CORE = 19;
                 <div className="mt-2 flex items-center justify-between text-sm">
                   <div>
                     Total: <span className="font-semibold">${total}</span>
-                    {capped && <span className="ml-2 text-amber-300 font-medium">MAX ($79)</span>}
+                    {capped && (
+                      <span className="ml-2 text-amber-300 font-medium">
+                        MAX ($79)
+                      </span>
+                    )}
                   </div>
-                  {!capped && <div className="text-xs text-slate-300/80">To MAX left: ${CAP - total}</div>}
+                  {!capped && (
+                    <div className="text-xs text-slate-300/80">
+                      To MAX left: ${CAP - total}
+                    </div>
+                  )}
                 </div>
               </div>
 
               <div className="mt-4 space-y-2 text-sm">
-                <div className="flex items-center justify-between"><span>Core plan</span><span>${CORE}</span></div>
-                <div className="flex items-center justify-between"><span>Add-ons</span><span>${addOn}</span></div>
+                <div className="flex items-center justify-between">
+                  <span>Core plan</span>
+                  <span>${CORE}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span>Add-ons</span>
+                  <span>${addOn}</span>
+                </div>
                 <div className="pt-3 mt-2 border-t border-white/10">
                   <div className="flex items-center justify-between">
                     <span className="text-lg font-semibold">Total</span>
-                    <span className="text-3xl font-extrabold tracking-tight">${total}</span>
+                    <span className="text-3xl font-extrabold tracking-tight">
+                      ${total}
+                    </span>
                   </div>
                 </div>
               </div>
 
               <div className="mt-5 flex gap-2">
-                <button type="button"
-                   onClick={clear}
-                  className="w-1/3 rounded-xl px-3 py-2 text-sm font-medium bg-white/10 border border-white/20 text-white hover:bg-white/15 transition-colors"
+                <button
+                  type="button"
+                  onClick={clear}
+                  className="btn-nasa"
                 >
                   Clear
                 </button>

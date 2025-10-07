@@ -21,7 +21,9 @@ function toNumberArray(x: any): number[] {
 
 /** Заглушка: псевдо-вектор SHA-256→256 float’ов (на случай отсутствия ключей/429) */
 export const embedStub: Embedder = async (text: string) => {
-  const h = createHash("sha256").update(text || "").digest();
+  const h = createHash("sha256")
+    .update(text || "")
+    .digest();
   return Array.from(h.slice(0, 256)).map((b) => (b - 128) / 128);
 };
 
@@ -63,7 +65,7 @@ async function embedGemini(text: string): Promise<number[]> {
 
   // Документация: https://ai.google.dev/api/embeddings
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(
-    GEMINI_MODEL
+    GEMINI_MODEL,
   )}:embedContent?key=${encodeURIComponent(key)}`;
 
   const res = await fetch(url, {

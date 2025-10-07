@@ -56,7 +56,6 @@ export default function ConnectDevices() {
     [providers],
   );
 
- 
   const forceHorizontal = {
     writingMode: "horizontal-tb" as const,
     transform: "none",
@@ -239,7 +238,6 @@ export default function ConnectDevices() {
       {}
       {providers && providers.length > 0 && (
         <div
-          
           style={{
             ...forceHorizontal,
             overflowX: "auto",
@@ -248,7 +246,6 @@ export default function ConnectDevices() {
           }}
         >
           <div
-            
             className="cd_wrap"
             style={{
               ...forceHorizontal,

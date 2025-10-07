@@ -8,8 +8,8 @@ export default function DevLogin() {
   async function signIn() {
     const r = await fetch("/api/dev/cookie", {
       method: "POST",
-      headers: { "Content-Type":"application/json" },
-      body: JSON.stringify({ userId })
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userId }),
     });
     const t = await r.text();
     setOut(t);
@@ -22,13 +22,17 @@ export default function DevLogin() {
         <label className="block text-sm">User ID</label>
         <input
           value={userId}
-          onChange={e=>setUserId(e.target.value)}
+          onChange={(e) => setUserId(e.target.value)}
           className="w-full rounded border border-neutral-700 bg-neutral-900/50 px-3 py-2"
           placeholder="dev-user-001"
         />
       </div>
-      <button onClick={signIn} className="border rounded px-4 py-2">Set Dev Cookie</button>
-      <div className="text-xs whitespace-pre-wrap border rounded p-2">{out}</div>
+      <button onClick={signIn} className="border rounded px-4 py-2">
+        Set Dev Cookie
+      </button>
+      <div className="text-xs whitespace-pre-wrap border rounded p-2">
+        {out}
+      </div>
     </div>
   );
 }

@@ -11,5 +11,5 @@ export const POST = withLog(async () => {
     { prompt: "Explain lab", status: "failed" },
   ];
   for (const s of samples) await createAIRun(s as unknown);
-  return NextResponse.json({ ok:true, created: samples.length });
+  return NextResponse.json({ ok: true, created: samples.length });
 }, "ai.dev.seed");

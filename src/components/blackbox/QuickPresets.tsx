@@ -9,8 +9,8 @@ export default function QuickPresets() {
 
   useEffect(() => {
     fetch("/api/blackbox/presets", { cache: "no-store" })
-      .then(r => r.json())
-      .then(j => setPresets(j.data || []))
+      .then((r) => r.json())
+      .then((j) => setPresets(j.data || []))
       .catch(() => setPresets([]));
   }, []);
 
@@ -19,8 +19,8 @@ export default function QuickPresets() {
     try {
       const r = await fetch("/api/blackbox/jobs/quick", {
         method: "POST",
-        headers: { "Content-Type":"application/json" },
-        body: JSON.stringify({ slug })
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ slug }),
       });
       const j = await r.json();
       const id = j?.data?.id;
@@ -35,7 +35,10 @@ export default function QuickPresets() {
     let t: any;
     const tick = async () => {
       try {
-        const r = await fetch(`/api/blackbox/jobs/poll?id=${encodeURIComponent(lastId)}`, { cache:"no-store" });
+        const r = await fetch(
+          `/api/blackbox/jobs/poll?id=${encodeURIComponent(lastId)}`,
+          { cache: "no-store" },
+        );
         const j = await r.json();
         setStatus(j?.data?.status || "unknown");
       } catch {
@@ -49,16 +52,30 @@ export default function QuickPresets() {
 
   return (
     <div style={{ marginBottom: 16 }}>
-      <div style={{ fontSize: 14, opacity: 0.7, marginBottom: 8 }}>Quick presets</div>
+      <div style={{ fontSize: 14, opacity: 0.7, marginBottom: 8 }}>
+        Quick presets
+      </div>
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-        {presets.map(p => (
-          <button key={p.slug} disabled={!!busy}
+        {presets.map((p) => (
+          <button
+            key={p.slug}
+            disabled={!!busy}
             onClick={() => run(p.slug)}
-            style={{ padding: "6px 10px", borderRadius: 8, border: "1px solid #ddd", cursor:"pointer" }}>
+            style={{
+              padding: "6px 10px",
+              borderRadius: 8,
+              border: "1px solid #ddd",
+              cursor: "pointer",
+            }}
+          >
             {busy === p.slug ? "Starting..." : p.title}
           </button>
         ))}
-        {lastId && <span style={{ fontSize: 12, opacity: 0.7 }}>last: {lastId} · {status}</span>}
+        {lastId && (
+          <span style={{ fontSize: 12, opacity: 0.7 }}>
+            last: {lastId} · {status}
+          </span>
+        )}
       </div>
     </div>
   );

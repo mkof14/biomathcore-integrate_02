@@ -20,7 +20,7 @@ export async function GET() {
 
   return NextResponse.json({
     ok: true,
-    sessions: sessions.map(s => ({
+    sessions: sessions.map((s) => ({
       ...s,
       createdAt: s.createdAt.toISOString(),
       updatedAt: s.updatedAt.toISOString(),

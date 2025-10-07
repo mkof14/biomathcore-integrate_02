@@ -6,7 +6,11 @@ type Msg = { id: string; role: Role; content: string };
 
 const ASSISTANT_NAME = "Pulse";
 
-function rankVoices(list: SpeechSynthesisVoice[], locale: string, preferName?: string) {
+function rankVoices(
+  list: SpeechSynthesisVoice[],
+  locale: string,
+  preferName?: string,
+) {
   const lang = (locale || "en-US").toLowerCase();
   const wantRu = lang.startsWith("ru");
   const pref = (preferName || "").toLowerCase();
@@ -20,18 +24,23 @@ function rankVoices(list: SpeechSynthesisVoice[], locale: string, preferName?: s
       if (/(milena|tatyana|yuri|irina|microsoft|google)/.test(n)) s += 40;
     } else {
       if (l.startsWith("en-us") || l.startsWith("en")) s += 60;
-      if (/(samantha|allison|ava|aria|serena|karen|daniel|alex|guy|natural|enhanced|premium|siri)/.test(n)) s += 40;
+      if (
+        /(samantha|allison|ava|aria|serena|karen|daniel|alex|guy|natural|enhanced|premium|siri)/.test(
+          n,
+        )
+      )
+        s += 40;
     }
     if (v.default) s += 5;
     if (v.localService) s += 3;
     return s;
   };
-  return [...list].sort((a,b)=>score(b)-score(a));
+  return [...list].sort((a, b) => score(b) - score(a));
 }
 
-function estimateQualityName(v?: SpeechSynthesisVoice|null) {
+function estimateQualityName(v?: SpeechSynthesisVoice | null) {
   if (!v) return "unknown";
-  const n = (v.name||"").toLowerCase();
+  const n = (v.name || "").toLowerCase();
   if (/(enhanced|premium|neural|natural)/.test(n)) return "high";
   return "normal";
 }
@@ -55,7 +64,15 @@ export default function AssistantCore() {
     const k = "pulse_greeted";
     if (!sessionStorage.getItem(k)) {
       setMessages((m) =>
-        m.length ? m : [{ id: crypto.randomUUID(), role: "assistant", content: `Hi, I’m ${ASSISTANT_NAME}. How can I help you today?` }]
+        m.length
+          ? m
+          : [
+              {
+                id: crypto.randomUUID(),
+                role: "assistant",
+                content: `Hi, I’m ${ASSISTANT_NAME}. How can I help you today?`,
+              },
+            ],
       );
       sessionStorage.setItem(k, "1");
     }
@@ -88,7 +105,9 @@ export default function AssistantCore() {
   }, [voiceName]);
 
   useEffect(() => {
-    const SR: any = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    const SR: any =
+      (window as any).SpeechRecognition ||
+      (window as any).webkitSpeechRecognition;
     if (!SR) return;
     const r = new SR();
     r.lang = navigator.language || "en-US";
@@ -105,7 +124,10 @@ export default function AssistantCore() {
       if (finalText) setInput((t) => (t ? t + " " : "") + finalText.trim());
       interimRef.current = interimText;
     };
-    r.onend = () => { setRecActive(false); interimRef.current = ""; };
+    r.onend = () => {
+      setRecActive(false);
+      interimRef.current = "";
+    };
     recogRef.current = r;
   }, []);
 
@@ -120,7 +142,9 @@ export default function AssistantCore() {
     if (!q || busy) return;
 
     if (recActive && recogRef.current) {
-      try { recogRef.current.stop(); } catch {}
+      try {
+        recogRef.current.stop();
+      } catch {}
       setRecActive(false);
       interimRef.current = "";
     }
@@ -136,7 +160,11 @@ export default function AssistantCore() {
     try {
       const payload = {
         messages: [
-          { role: "system", content: "You are a concise, helpful health and wellness assistant named Pulse." },
+          {
+            role: "system",
+            content:
+              "You are a concise, helpful health and wellness assistant named Pulse.",
+          },
           ...messages.map((m) => ({ role: m.role, content: m.content })),
           { role: "user", content: q },
         ],
@@ -149,11 +177,15 @@ export default function AssistantCore() {
       const txt = await resp.text();
       if (!resp.ok) throw new Error(txt || "upstream error");
       const acc = txt || "";
-      setMessages((prev) => prev.map((m) => (m.id === a.id ? { ...m, content: acc } : m)));
+      setMessages((prev) =>
+        prev.map((m) => (m.id === a.id ? { ...m, content: acc } : m)),
+      );
       if (acc.trim() && speakOn) speak(acc);
     } catch (err: any) {
       const msg = (err?.message || "Error").toString();
-      setMessages((prev) => prev.map((m) => (m.id === a.id ? { ...m, content: msg } : m)));
+      setMessages((prev) =>
+        prev.map((m) => (m.id === a.id ? { ...m, content: msg } : m)),
+      );
     } finally {
       setBusy(false);
     }
@@ -162,18 +194,30 @@ export default function AssistantCore() {
   function toggleRec() {
     const r = recogRef.current;
     if (!r) return;
-    if (recActive) { try { r.stop(); } catch {} setRecActive(false); interimRef.current = ""; }
-    else { try { r.start(); setRecActive(true); } catch {} }
+    if (recActive) {
+      try {
+        r.stop();
+      } catch {}
+      setRecActive(false);
+      interimRef.current = "";
+    } else {
+      try {
+        r.start();
+        setRecActive(true);
+      } catch {}
+    }
   }
 
   function toggleSpeak() {
     setSpeakOn((v) => !v);
-    try { (window as any).speechSynthesis.cancel(); } catch {}
+    try {
+      (window as any).speechSynthesis.cancel();
+    } catch {}
   }
 
   const selectedVoice = useMemo(() => {
     const list = voices;
-    return list.find(v => v.name === voiceName) || list[0] || null;
+    return list.find((v) => v.name === voiceName) || list[0] || null;
   }, [voices, voiceName]);
 
   function speak(text: string) {
@@ -183,8 +227,12 @@ export default function AssistantCore() {
       u.rate = 0.98;
       u.pitch = 1.0;
       u.volume = 1.0;
-      if (selectedVoice) { u.voice = selectedVoice; u.lang = selectedVoice.lang || u.lang; }
-      else { u.lang = navigator.language || "en-US"; }
+      if (selectedVoice) {
+        u.voice = selectedVoice;
+        u.lang = selectedVoice.lang || u.lang;
+      } else {
+        u.lang = navigator.language || "en-US";
+      }
       synth.cancel();
       synth.speak(u);
     } catch {}
@@ -206,7 +254,9 @@ export default function AssistantCore() {
             className="h-9 max-w-[60%] truncate rounded-lg bg-neutral-700 px-2 text-sm outline-none ring-1 ring-white/10"
           >
             {voices.map((v) => (
-              <option key={v.name} value={v.name}>{v.name} · {v.lang}</option>
+              <option key={v.name} value={v.name}>
+                {v.name} · {v.lang}
+              </option>
             ))}
           </select>
           <span className="text-xs opacity-70">{qualityLabel}</span>
@@ -215,7 +265,8 @@ export default function AssistantCore() {
 
       {showTtsHint && (
         <div className="mx-3 mt-2 rounded-lg bg-neutral-700/60 px-3 py-2 text-xs leading-snug ring-1 ring-white/10">
-          For more natural speech, install Enhanced voices in your OS settings and refresh this page.
+          For more natural speech, install Enhanced voices in your OS settings
+          and refresh this page.
         </div>
       )}
 
@@ -240,7 +291,10 @@ export default function AssistantCore() {
 
       <div className="h-px w-full bg-white/10" />
 
-      <form onSubmit={onSubmit} className="mx-auto flex w-full max-w-[600px] items-center gap-2 p-2.5">
+      <form
+        onSubmit={onSubmit}
+        className="mx-auto flex w-full max-w-[600px] items-center gap-2 p-2.5"
+      >
         <button
           type="button"
           onClick={toggleRec}
@@ -249,13 +303,18 @@ export default function AssistantCore() {
           title="Mic"
         >
           <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor">
-            <path d="M12 14a3 3 0 0 0 3-3V6a3 3 0 1 0-6 0v5a3 3 0 0 0 3 3z"/><path d="M5 11a7 7 0 0 0 14 0h-2a5 5 0 0 1-10 0H5z"/><path d="M11 19h2v3h-2z"/>
+            <path d="M12 14a3 3 0 0 0 3-3V6a3 3 0 1 0-6 0v5a3 3 0 0 0 3 3z" />
+            <path d="M5 11a7 7 0 0 0 14 0h-2a5 5 0 0 1-10 0H5z" />
+            <path d="M11 19h2v3h-2z" />
           </svg>
         </button>
 
         <input
           value={visibleInput()}
-          onChange={(e: any) => { setInput(e.target.value); interimRef.current = ""; }}
+          onChange={(e: any) => {
+            setInput(e.target.value);
+            interimRef.current = "";
+          }}
           placeholder="Speak or type…"
           className="flex-1 h-11 rounded-xl bg-neutral-100 px-3 text-[0.95rem] text-neutral-900 placeholder-neutral-500 outline-none ring-1 ring-neutral-300 focus:ring-violet-300"
         />
@@ -269,11 +328,14 @@ export default function AssistantCore() {
         >
           {speakOn ? (
             <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor">
-              <path d="M3 10v4h4l5 4V6L7 10H3z"/><path d="M16 7a5 5 0 0 1 0 10v-2a3 3 0 0 0 0-6V7z"/>
+              <path d="M3 10v4h4l5 4V6L7 10H3z" />
+              <path d="M16 7a5 5 0 0 1 0 10v-2a3 3 0 0 0 0-6V7z" />
             </svg>
           ) : (
             <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor">
-              <path d="M3 10v4h4l5 4V6L7 10H3z"/><path d="M19 5l-3 3"/><path d="M16 16l3 3" stroke="currentColor" strokeWidth="2"/>
+              <path d="M3 10v4h4l5 4V6L7 10H3z" />
+              <path d="M19 5l-3 3" />
+              <path d="M16 16l3 3" stroke="currentColor" strokeWidth="2" />
             </svg>
           )}
         </button>

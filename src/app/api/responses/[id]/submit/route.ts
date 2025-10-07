@@ -6,20 +6,35 @@ type Params = { params: { id: string } };
 
 export async function POST(_req: Request, { params }: Params) {
   const id = params.id;
-  if (!id) return NextResponse.json({ ok:false, error:"Missing id" }, { status:400 });
+  if (!id)
+    return NextResponse.json(
+      { ok: false, error: "Missing id" },
+      { status: 400 },
+    );
 
   const session = await prisma.responseSession.findUnique({
     where: { id },
     include: { answers: true, questionnaire: true },
   });
-  if (!session) return NextResponse.json({ ok:false, error:"Not found" }, { status:404 });
+  if (!session)
+    return NextResponse.json(
+      { ok: false, error: "Not found" },
+      { status: 404 },
+    );
   if (session.status === "SUBMITTED") {
-    return NextResponse.json({ ok:true, id: session.id, status: session.status, submittedAt: session.submittedAt });
+    return NextResponse.json({
+      ok: true,
+      id: session.id,
+      status: session.status,
+      submittedAt: session.submittedAt,
+    });
   }
 
- 
   if (!session.answers || session.answers.length === 0) {
-    return NextResponse.json({ ok:false, error:"No answers to submit" }, { status:400 });
+    return NextResponse.json(
+      { ok: false, error: "No answers to submit" },
+      { status: 400 },
+    );
   }
 
   const updated = await prisma.responseSession.update({
@@ -31,5 +46,10 @@ export async function POST(_req: Request, { params }: Params) {
     },
   });
 
-  return NextResponse.json({ ok:true, id: updated.id, status: updated.status, submittedAt: updated.submittedAt });
+  return NextResponse.json({
+    ok: true,
+    id: updated.id,
+    status: updated.status,
+    submittedAt: updated.submittedAt,
+  });
 }

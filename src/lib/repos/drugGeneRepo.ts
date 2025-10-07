@@ -18,7 +18,7 @@ type ListArgs = {
   from?: string;
   to?: string;
   limit?: number;
-  cursor?: string|undefined;
+  cursor?: string | undefined;
 };
 
 function mem() {
@@ -46,7 +46,10 @@ export async function getDG(id: string): Promise<DGRow | null> {
   return mem().get(id) || null;
 }
 
-export async function updateDG(id: string, patch: Partial<DGRow>): Promise<DGRow> {
+export async function updateDG(
+  id: string,
+  patch: Partial<DGRow>,
+): Promise<DGRow> {
   const m = mem();
   const cur = m.get(id);
   if (!cur) throw new Error("not_found");
@@ -70,27 +73,32 @@ export async function deleteDG(id: string): Promise<DGRow> {
   return cur;
 }
 
-export async function listDG(args: ListArgs = { /* TODO: implement or remove */ }): Promise<{data: DGRow[]; nextCursor?: string}> {
+export async function listDG(
+  args: ListArgs = {
+    /* TODO: implement or remove */
+  },
+): Promise<{ data: DGRow[]; nextCursor?: string }> {
   const { id, q, status, from, to, limit = 20, cursor } = args;
   const all = Array.from(mem().values());
-  let rows = all.sort((a,b)=> (a.createdAt < b.createdAt ? 1 : -1));
+  let rows = all.sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
 
-  if (id) rows = rows.filter(r => r.id === id);
+  if (id) rows = rows.filter((r) => r.id === id);
   if (q) {
     const qq = q.toLowerCase();
-    rows = rows.filter(r =>
-      r.drugName.toLowerCase().includes(qq) ||
-      r.geneSymbol.toLowerCase().includes(qq) ||
-      r.relation.toLowerCase().includes(qq)
+    rows = rows.filter(
+      (r) =>
+        r.drugName.toLowerCase().includes(qq) ||
+        r.geneSymbol.toLowerCase().includes(qq) ||
+        r.relation.toLowerCase().includes(qq),
     );
   }
-  if (status) rows = rows.filter(r => r.status === status);
-  if (from) rows = rows.filter(r => r.createdAt >= from);
-  if (to) rows = rows.filter(r => r.createdAt <= to);
+  if (status) rows = rows.filter((r) => r.status === status);
+  if (from) rows = rows.filter((r) => r.createdAt >= from);
+  if (to) rows = rows.filter((r) => r.createdAt <= to);
 
   let start = 0;
   if (cursor) {
-    const idx = rows.findIndex(r => r.id === cursor);
+    const idx = rows.findIndex((r) => r.id === cursor);
     if (idx >= 0) start = idx + 1;
   }
   const take = Math.max(1, Math.min(1000, limit));
@@ -99,20 +107,30 @@ export async function listDG(args: ListArgs = { /* TODO: implement or remove */ 
   return { data: page, nextCursor };
 }
 
-export async function countDG(): Promise<number> { return mem().size; }
+export async function countDG(): Promise<number> {
+  return mem().size;
+}
 
 export async function seedDG(n = 5): Promise<number> {
-  const drugs = ["Imatinib","Gefitinib","Erlotinib","Sunitinib","Dasatinib"];
-  const genes = ["ABL1","EGFR","KRAS","BRAF","ALK"];
-  const rels = ["inhibits","activates","binds"];
-  for (let i=0;i<n;i++){
+  const drugs = [
+    "Imatinib",
+    "Gefitinib",
+    "Erlotinib",
+    "Sunitinib",
+    "Dasatinib",
+  ];
+  const genes = ["ABL1", "EGFR", "KRAS", "BRAF", "ALK"];
+  const rels = ["inhibits", "activates", "binds"];
+  for (let i = 0; i < n; i++) {
     await createDG({
       drugName: drugs[i % drugs.length],
-      geneSymbol: genes[(i+1) % genes.length],
+      geneSymbol: genes[(i + 1) % genes.length],
       relation: rels[i % rels.length],
-      status: (i%3===0 ? "curated" : "pending") as unknown
+      status: (i % 3 === 0 ? "curated" : "pending") as unknown,
     });
   }
   return mem().size;
 }
-export async function resetDG(): Promise<void> { mem().clear(); }
+export async function resetDG(): Promise<void> {
+  mem().clear();
+}

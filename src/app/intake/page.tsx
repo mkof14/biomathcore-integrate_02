@@ -4,11 +4,13 @@ import { QUESTIONNAIRE_REGISTRY } from "@/lib/questionnaire/registry";
 type Item = { key: string; title: string; description?: string };
 
 function allForms(): Item[] {
-  return Object.entries(QUESTIONNAIRE_REGISTRY).map(([key, s]: [string, any]) => ({
-    key,
-    title: s.title ?? key,
-    description: s.description ?? "",
-  }));
+  return Object.entries(QUESTIONNAIRE_REGISTRY).map(
+    ([key, s]: [string, any]) => ({
+      key,
+      title: s.title ?? key,
+      description: s.description ?? "",
+    }),
+  );
 }
 
 export default async function IntakeIndex() {
@@ -22,10 +24,15 @@ export default async function IntakeIndex() {
 
       <div className="grid gap-4 sm:grid-cols-2">
         {forms.map((f) => (
-          <div key={f.key} className="rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900/80 p-5">
+          <div
+            key={f.key}
+            className="rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900/80 p-5"
+          >
             <div className="font-medium">{f.title}</div>
             {f.description && (
-              <div className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">{f.description}</div>
+              <div className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
+                {f.description}
+              </div>
             )}
             <div className="mt-4">
               <Link

@@ -18,7 +18,9 @@ export async function GET(req: Request) {
   try {
     const parsed = JSON.parse(decodeURIComponent(raw));
     selected = Array.isArray(parsed) ? parsed : [];
-  } catch { selected = []; }
+  } catch {
+    selected = [];
+  }
 
   return NextResponse.json({
     ok: true,

@@ -2,7 +2,7 @@
 import React from "react";
 import { getLang, setLang, type UILang } from "@/lib/i18n-ui";
 
-const langs: UILang[] = ["en","ru","es"];
+const langs: UILang[] = ["en", "ru", "es"];
 
 export default function LanguageSwitcherFixed() {
   const [mounted, setMounted] = React.useState(false);
@@ -35,7 +35,9 @@ export default function LanguageSwitcherFixed() {
         title="Language"
       >
         {langs.map((l) => (
-          <option key={l} value={l}>{l.toUpperCase()}</option>
+          <option key={l} value={l}>
+            {l.toUpperCase()}
+          </option>
         ))}
       </select>
     </div>

@@ -14,7 +14,11 @@ const storage = new Storage({
 export async function POST(req: Request) {
   try {
     const { filename, contentType, sizeBytes } = await req.json();
-    if (!filename) return NextResponse.json({ ok: false, error: "filename required" }, { status: 400 });
+    if (!filename)
+      return NextResponse.json(
+        { ok: false, error: "filename required" },
+        { status: 400 },
+      );
 
     const ext = filename.includes(".") ? filename.split(".").pop() : "bin";
     const objectKey = `users/raw/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;

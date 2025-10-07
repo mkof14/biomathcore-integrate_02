@@ -1,11 +1,21 @@
 /* API-SURFACE-CLEANUP-TODO: replace 'unknown' with precise types incrementally */
-export function kgToLb(kg: number) { return kg * 2.2046226218; }
-export function lbToKg(lb: number) { return lb / 2.2046226218; }
+export function kgToLb(kg: number) {
+  return kg * 2.2046226218;
+}
+export function lbToKg(lb: number) {
+  return lb / 2.2046226218;
+}
 
-export function cmToIn(cm: number) { return cm / 2.54; }
-export function inToCm(inches: number) { return inches * 2.54; }
+export function cmToIn(cm: number) {
+  return cm / 2.54;
+}
+export function inToCm(inches: number) {
+  return inches * 2.54;
+}
 
-export function ftInToCm(feet: number, inches: number) { return inToCm(feet * 12 + inches); }
+export function ftInToCm(feet: number, inches: number) {
+  return inToCm(feet * 12 + inches);
+}
 export function cmToFtIn(cm: number) {
   const totalIn = cmToIn(cm);
   const ft = Math.floor(totalIn / 12);

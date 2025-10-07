@@ -7,5 +7,5 @@ export type AuditEvent = {
 
 export async function audit(evt: AuditEvent): Promise<void> {
   // eslint-disable-next-line no-console
-  console.debug('[audit]', { ...evt, ts: evt.ts ?? Date.now() });
+  console.debug("[audit]", { ...evt, ts: evt.ts ?? Date.now() });
 }

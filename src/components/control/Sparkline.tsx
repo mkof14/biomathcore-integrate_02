@@ -22,8 +22,19 @@ export function Sparkline({
     .join(" ");
 
   return (
-    <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`} className="block">
-      <polyline points={points} fill="none" stroke="currentColor" strokeWidth="2" className="opacity-80" />
+    <svg
+      width={width}
+      height={height}
+      viewBox={`0 0 ${width} ${height}`}
+      className="block"
+    >
+      <polyline
+        points={points}
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        className="opacity-80"
+      />
     </svg>
   );
 }

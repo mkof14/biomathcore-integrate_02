@@ -1,4 +1,4 @@
-'use client';
+"use client";
 "use client";
 
 import { useEffect, useState } from "react";
@@ -7,7 +7,10 @@ import AssistantChat from "@/components/assistant/AssistantChat";
 function RobotIcon() {
   return (
     <svg viewBox="0 0 24 24" className="h-7 w-7" aria-hidden="true">
-      <path fill="currentColor" d="M11 2a1 1 0 1 1 2 0v1h1a2 2 0 0 1 2 2v1h2a2 2 0 0 1 2 2v6a5 5 0 0 1-5 5h-6a5 5 0 0 1-5-5V8a2 2 0 0 1 2-2h2V5a2 2 0 0 1 2-2h1V2Zm-4 8a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Zm10 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Z"/>
+      <path
+        fill="currentColor"
+        d="M11 2a1 1 0 1 1 2 0v1h1a2 2 0 0 1 2 2v1h2a2 2 0 0 1 2 2v6a5 5 0 0 1-5 5h-6a5 5 0 0 1-5-5V8a2 2 0 0 1 2-2h2V5a2 2 0 0 1 2-2h1V2Zm-4 8a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Zm10 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Z"
+      />
     </svg>
   );
 }
@@ -19,13 +22,17 @@ export default function FloatingAssistant() {
   const [hasUnread, setHasUnread] = useState(false);
 
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setOpen(false); };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
   // clear unread when opening
-  useEffect(() => { if (open) setHasUnread(false); }, [open]);
+  useEffect(() => {
+    if (open) setHasUnread(false);
+  }, [open]);
 
   if (!enabled) return null;
 
@@ -90,7 +97,9 @@ export default function FloatingAssistant() {
                     <RobotIcon />
                   )}
                 </div>
-                <h2 className="text-slate-100 font-semibold">AI Health Assistant</h2>
+                <h2 className="text-slate-100 font-semibold">
+                  AI Health Assistant
+                </h2>
               </div>
               <button
                 onClick={() => setOpen(false)}
@@ -119,13 +128,25 @@ export default function FloatingAssistant() {
       {/* Pulse animation */}
       <style jsx global>{`
         @keyframes bmc-pulse {
-          0%   { box-shadow: 0 0 0 0 rgba(56,189,248,0.55), 0 0 0 0 rgba(16,185,129,0.55); }
-          70%  { box-shadow: 0 0 0 16px rgba(56,189,248,0.0), 0 0 0 30px rgba(16,185,129,0.0); }
-          100% { box-shadow: 0 0 0 0 rgba(56,189,248,0.0), 0 0 0 0 rgba(16,185,129,0.0); }
+          0% {
+            box-shadow:
+              0 0 0 0 rgba(56, 189, 248, 0.55),
+              0 0 0 0 rgba(16, 185, 129, 0.55);
+          }
+          70% {
+            box-shadow:
+              0 0 0 16px rgba(56, 189, 248, 0),
+              0 0 0 30px rgba(16, 185, 129, 0);
+          }
+          100% {
+            box-shadow:
+              0 0 0 0 rgba(56, 189, 248, 0),
+              0 0 0 0 rgba(16, 185, 129, 0);
+          }
         }
         .fab-pulse {
           animation: bmc-pulse 2.2s ease-out infinite;
-          border-color: rgba(56,189,248,0.45) !important;
+          border-color: rgba(56, 189, 248, 0.45) !important;
         }
       `}</style>
     </>

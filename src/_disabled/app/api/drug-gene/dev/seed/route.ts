@@ -11,5 +11,5 @@ export const POST = withLog(async () => {
     { drug: "Abacavir", gene: "HLA-B*57:01", status: "done" },
   ];
   for (const s of samples) await createDG(s as unknown);
-  return NextResponse.json({ ok:true, created: samples.length });
+  return NextResponse.json({ ok: true, created: samples.length });
 }, "dg.dev.seed");

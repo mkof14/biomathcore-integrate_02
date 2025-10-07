@@ -2,8 +2,6 @@
 // src/components/RunPanel.tsx
 import React, { useEffect, useRef, useState } from "react";
 
-
-
 type Props = {
   serviceId: string; // e.g. "mood-tracker"
   serviceTitle: string; // e.g. "Mood Tracker"

@@ -14,7 +14,9 @@ export default function FooterClassic() {
         <div className="grid gap-10 md:grid-cols-4">
           <div className="md:col-span-1">
             <Link href="/" className="inline-flex items-center gap-2">
-              <span className="text-xl font-semibold text-white">{brand.name}</span>
+              <span className="text-xl font-semibold text-white">
+                {brand.name}
+              </span>
             </Link>
             <p className="mt-2 text-sm text-neutral-400">{brand.tagline}</p>
             <div className="mt-5 flex gap-3">
@@ -37,7 +39,10 @@ export default function FooterClassic() {
               <ul className="mt-3 space-y-2">
                 {footerNav.product.map((item) => (
                   <li key={item.href}>
-                    <Link href={item.href} className="text-sm text-neutral-400 hover:text-white">
+                    <Link
+                      href={item.href}
+                      className="text-sm text-neutral-400 hover:text-white"
+                    >
                       {item.label}
                     </Link>
                   </li>
@@ -50,7 +55,10 @@ export default function FooterClassic() {
               <ul className="mt-3 space-y-2">
                 {footerNav.company.map((item) => (
                   <li key={item.href}>
-                    <Link href={item.href} className="text-sm text-neutral-400 hover:text-white">
+                    <Link
+                      href={item.href}
+                      className="text-sm text-neutral-400 hover:text-white"
+                    >
                       {item.label}
                     </Link>
                   </li>
@@ -63,7 +71,10 @@ export default function FooterClassic() {
               <ul className="mt-3 space-y-2">
                 {footerNav.legal.map((item) => (
                   <li key={item.href}>
-                    <Link href={item.href} className="text-sm text-neutral-400 hover:text-white">
+                    <Link
+                      href={item.href}
+                      className="text-sm text-neutral-400 hover:text-white"
+                    >
                       {item.label}
                     </Link>
                   </li>
@@ -75,12 +86,22 @@ export default function FooterClassic() {
 
         <div className="mt-10 border-t border-neutral-800 pt-6 text-xs text-neutral-400">
           <div className="flex flex-col justify-between gap-4 sm:flex-row">
-            <p>© {range} {brand.name}. All rights reserved.</p>
+            <p>
+              © {range} {brand.name}. All rights reserved.
+            </p>
             <div className="flex flex-wrap gap-4">
-              <Link href="/legal/privacy" className="hover:text-white">Privacy</Link>
-              <Link href="/legal/terms" className="hover:text-white">Terms</Link>
-              <Link href="/legal/cookies" className="hover:text-white">Cookies</Link>
-              <Link href="/sitemap.xml" className="hover:text-white">Sitemap</Link>
+              <Link href="/legal/privacy" className="hover:text-white">
+                Privacy
+              </Link>
+              <Link href="/legal/terms" className="hover:text-white">
+                Terms
+              </Link>
+              <Link href="/legal/cookies" className="hover:text-white">
+                Cookies
+              </Link>
+              <Link href="/sitemap.xml" className="hover:text-white">
+                Sitemap
+              </Link>
             </div>
           </div>
         </div>

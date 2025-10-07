@@ -1,7 +1,10 @@
 type SecretValue = string;
 const mem = new Map<string, SecretValue>();
 
-export async function putSecret(key: string, value: SecretValue): Promise<void> {
+export async function putSecret(
+  key: string,
+  value: SecretValue,
+): Promise<void> {
   mem.set(key, value);
 }
 export async function getSecret(key: string): Promise<SecretValue | null> {

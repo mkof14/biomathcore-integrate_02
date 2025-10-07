@@ -57,7 +57,11 @@ export function createJob(
     status: "queued",
     createdAt: now,
     updatedAt: now,
-    params: params || { /* TODO: implement or remove */ },
+    params:
+      params ||
+      {
+        /* TODO: implement or remove */
+      },
     result: null,
     error: null,
   };

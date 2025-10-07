@@ -10,15 +10,25 @@ type Profile = {
 
 export function buildSystemPrompt(
   profile: Profile,
-  facts: { text: string; sourceId: string; sourceType: "form" | "report" | "file" }[]
+  facts: {
+    text: string;
+    sourceId: string;
+    sourceType: "form" | "report" | "file";
+  }[],
 ) {
   const p = [
     profile.name ? `Name: ${profile.name}` : null,
     profile.gender ? `Gender: ${profile.gender}` : null,
     profile.age ? `Age: ${profile.age}` : null,
-    profile.conditions?.length ? `Conditions: ${profile.conditions.join(", ")}` : null,
-    profile.allergies?.length ? `Allergies: ${profile.allergies.join(", ")}` : null,
-    profile.medications?.length ? `Medications: ${profile.medications.join(", ")}` : null,
+    profile.conditions?.length
+      ? `Conditions: ${profile.conditions.join(", ")}`
+      : null,
+    profile.allergies?.length
+      ? `Allergies: ${profile.allergies.join(", ")}`
+      : null,
+    profile.medications?.length
+      ? `Medications: ${profile.medications.join(", ")}`
+      : null,
   ]
     .filter(Boolean)
     .join("\n");

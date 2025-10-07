@@ -24,19 +24,21 @@ export default async function SearchPage({ searchParams }: Props) {
           />
           <button
             type="submit"
-            className="rounded-xl border border-slate-900 bg-slate-900 text-white px-4 py-2 hover:opacity-90"
+            className="btn-nasa"
           >
             Find
           </button>
         </form>
 
         {!q ? (
-          <p className="text-slate-600">Type a query to search across the catalog.</p>
+          <p className="text-slate-600">
+            Type a query to search across the catalog.
+          </p>
         ) : results.length === 0 ? (
           <p className="text-slate-600">No results for “{q}”.</p>
         ) : (
           <ul className="space-y-3">
-            {results.map(r => (
+            {results.map((r) => (
               <li key={`${r.type}:${r.slug}`}>
                 <Link
                   href={r.url}
@@ -46,7 +48,11 @@ export default async function SearchPage({ searchParams }: Props) {
                     {r.type}
                   </div>
                   <div className="text-base font-medium">{r.title}</div>
-                  {r.summary && <div className="mt-1 text-sm text-slate-600">{r.summary}</div>}
+                  {r.summary && (
+                    <div className="mt-1 text-sm text-slate-600">
+                      {r.summary}
+                    </div>
+                  )}
                 </Link>
               </li>
             ))}

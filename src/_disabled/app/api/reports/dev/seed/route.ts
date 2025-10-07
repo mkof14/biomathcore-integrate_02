@@ -11,7 +11,7 @@ export const POST = withLog(async () => {
     { title: "Clinical note", status: "archived" },
   ];
   for (const s of samples) await createReport(s as unknown);
-  return NextResponse.json({ ok:true, created: samples.length });
+  return NextResponse.json({ ok: true, created: samples.length });
 }, "reports.dev.seed");
 
-export { /* TODO: implement or remove */ };
+export /* TODO: implement or remove */ {};

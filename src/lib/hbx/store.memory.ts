@@ -14,7 +14,11 @@ type Store = {
   put: (item: Omit<HbxItem, "id" | "createdAt"> & { id?: string }) => HbxItem;
   list: (userId: string) => HbxItem[];
   get: (userId: string, id: string) => HbxItem | undefined;
-  usage: (userId: string) => { userId: string; totalBytes: number; files: number };
+  usage: (userId: string) => {
+    userId: string;
+    totalBytes: number;
+    files: number;
+  };
   clear: (userId: string) => number;
 };
 
@@ -34,8 +38,10 @@ g.__HBX_STORE__ ||= (() => {
     items.unshift(it);
     return it;
   };
-  const list: Store["list"] = (userId) => items.filter(it => it.userId === userId);
-  const get: Store["get"] = (userId, id) => items.find(it => it.userId === userId && it.id === id);
+  const list: Store["list"] = (userId) =>
+    items.filter((it) => it.userId === userId);
+  const get: Store["get"] = (userId, id) =>
+    items.find((it) => it.userId === userId && it.id === id);
   const usage: Store["usage"] = (userId) => {
     const mine = list(userId);
     const totalBytes = mine.reduce((s, it) => s + (it.size || 0), 0);

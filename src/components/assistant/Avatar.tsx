@@ -6,7 +6,11 @@ export default function Avatar({
   src = "/images/assistant_avatar.svg",
   alt = "Assistant",
   size = 48,
-}: { src?: string; alt?: string; size?: number }) {
+}: {
+  src?: string;
+  alt?: string;
+  size?: number;
+}) {
   const [broken, setBroken] = useState(false);
 
   return (

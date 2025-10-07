@@ -10,7 +10,9 @@ export type HbxFileMeta = {
 };
 
 export type HbxFileRepo = {
-  put(meta: Omit<HbxFileMeta, "id"|"createdAt"> & { id?: string }): Promise<HbxFileMeta>;
+  put(
+    meta: Omit<HbxFileMeta, "id" | "createdAt"> & { id?: string },
+  ): Promise<HbxFileMeta>;
   get(id: string): Promise<HbxFileMeta | null>;
   listByUser(userId: string, limit?: number): Promise<HbxFileMeta[]>;
 };

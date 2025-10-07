@@ -14,7 +14,8 @@ export const dict = {
     ttsOff: "Mute",
     clear: "Clear",
     language: "Language",
-    intro_assistant: "Hello! I'm your AI Health Assistant. How can I help today?",
+    intro_assistant:
+      "Hello! I'm your AI Health Assistant. How can I help today?",
     typing: "Assistant is typing",
   },
   es: {
@@ -30,7 +31,8 @@ export const dict = {
     ttsOff: "Silencio",
     clear: "Limpiar",
     language: "Idioma",
-    intro_assistant: "¡Hola! Soy tu asistente de salud IA. ¿En qué puedo ayudar hoy?",
+    intro_assistant:
+      "¡Hola! Soy tu asistente de salud IA. ¿En qué puedo ayudar hoy?",
     typing: "El asistente está escribiendo",
   },
   de: {
@@ -46,7 +48,8 @@ export const dict = {
     ttsOff: "Stumm",
     clear: "Leeren",
     language: "Sprache",
-    intro_assistant: "Hallo! Ich bin dein KI-Gesundheitsassistent. Womit kann ich helfen?",
+    intro_assistant:
+      "Hallo! Ich bin dein KI-Gesundheitsassistent. Womit kann ich helfen?",
     typing: "Assistent tippt",
   },
   fr: {
@@ -62,7 +65,8 @@ export const dict = {
     ttsOff: "Muet",
     clear: "Effacer",
     language: "Langue",
-    intro_assistant: "Bonjour ! Je suis votre assistant santé IA. Comment puis-je aider ?",
+    intro_assistant:
+      "Bonjour ! Je suis votre assistant santé IA. Comment puis-je aider ?",
     typing: "L’assistant est en train d’écrire",
   },
   ru: {
@@ -78,12 +82,13 @@ export const dict = {
     ttsOff: "Без звука",
     clear: "Очистить",
     language: "Язык",
-    intro_assistant: "Здравствуйте! Я ваш AI Health Assistant. Чем могу помочь?",
+    intro_assistant:
+      "Здравствуйте! Я ваш AI Health Assistant. Чем могу помочь?",
     typing: "Ассистент печатает",
   },
 } as const;
 
-export function t(lang: Lang, key: keyof typeof dict["en"]) {
+export function t(lang: Lang, key: keyof (typeof dict)["en"]) {
   const pack = (dict as any)[lang] ?? dict.en;
   return pack[key] ?? dict.en[key];
 }

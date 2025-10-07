@@ -13,8 +13,10 @@ async function safeJson<T>(p: Promise<Response>, fallback: T): Promise<T> {
 export async function fetchServicesByCategory(category: string) {
   if (!API) return [];
   return safeJson(
-    fetch(`${API}/services?category=${encodeURIComponent(category)}`, { cache: "no-store" }),
-    []
+    fetch(`${API}/services?category=${encodeURIComponent(category)}`, {
+      cache: "no-store",
+    }),
+    [],
   );
 }
 
@@ -22,6 +24,6 @@ export async function fetchServiceBySlug(slug: string) {
   if (!API) return null;
   return safeJson(
     fetch(`${API}/services/${encodeURIComponent(slug)}`, { cache: "no-store" }),
-    null
+    null,
   );
 }

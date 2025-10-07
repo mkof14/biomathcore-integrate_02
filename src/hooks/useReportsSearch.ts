@@ -2,12 +2,17 @@
 "use client";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-type Row = { id: string; title?: string | null; content?: unknown; createdAt?: string };
+type Row = {
+  id: string;
+  title?: string | null;
+  content?: unknown;
+  createdAt?: string;
+};
 type Resp = { ok: boolean; data?: Row[] };
 
 export function useReportsSearch(
   initialQ = "",
-  opts?: { limit?: number; sort?: string; autoRefreshSec?: number }
+  opts?: { limit?: number; sort?: string; autoRefreshSec?: number },
 ) {
   const [q, setQ] = useState(initialQ);
   const [from, setFrom] = useState<string>("");
@@ -30,7 +35,9 @@ export function useReportsSearch(
     setLoading(true);
     setError(null);
     try {
-      const r = await fetch(`/api/reports/search?${params}`, { cache: "no-store" });
+      const r = await fetch(`/api/reports/search?${params}`, {
+        cache: "no-store",
+      });
       const j: Resp = await r.json();
       if (!j.ok) throw new Error("Search failed");
       setRows(j.data || []);
@@ -41,11 +48,22 @@ export function useReportsSearch(
     }
   }, [params]);
 
-  useEffect(() => { run(); }, [run]);
+  useEffect(() => {
+    run();
+  }, [run]);
 
   return {
-    q, setQ, from, setFrom, to, setTo,
-    rows, setRows, loading, error, refresh: run,
-    autoRefreshSec: opts?.autoRefreshSec ?? 0
+    q,
+    setQ,
+    from,
+    setFrom,
+    to,
+    setTo,
+    rows,
+    setRows,
+    loading,
+    error,
+    refresh: run,
+    autoRefreshSec: opts?.autoRefreshSec ?? 0,
   };
 }

@@ -2,7 +2,11 @@
 
 import { useState } from "react";
 
-export default function ClearSelectionsBar({ onCleared }: { onCleared?: () => void }) {
+export default function ClearSelectionsBar({
+  onCleared,
+}: {
+  onCleared?: () => void;
+}) {
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState<string | null>(null);
   const [err, setErr] = useState<string | null>(null);
@@ -23,7 +27,7 @@ export default function ClearSelectionsBar({ onCleared }: { onCleared?: () => vo
       }
       setMsg("Selections cleared");
       onCleared?.();
-    } catch (e:any) {
+    } catch (e: any) {
       setErr(e?.message || "Failed to clear selections");
     } finally {
       setBusy(false);

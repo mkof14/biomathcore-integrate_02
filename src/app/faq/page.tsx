@@ -201,7 +201,7 @@ export default function FAQPage() {
   };
 
   return (
-    <section className="bg-black text-white py-16 px-6">
+    <section className="btn-nasa">
       <div className="max-w-4xl mx-auto">
         <h2 className="text-3xl font-bold text-purple-400 text-center mb-8">
           Frequently Asked Questions

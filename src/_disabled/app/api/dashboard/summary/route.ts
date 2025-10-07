@@ -2,9 +2,9 @@
 import { NextResponse } from "next/server";
 import { listBlackbox } from "@/lib/repos/blackboxRepo";
 import { listDevices } from "@/lib/repos/deviceRepo";
-import { listAIRuns } from "@/lib/repos/aiRepo";         // already exists in your codebase
-import { listVoice } from "@/lib/repos/voiceRepo";       // already exists
-import { listDG } from "@/lib/repos/drugGeneRepo";       // already exists
+import { listAIRuns } from "@/lib/repos/aiRepo"; // already exists in your codebase
+import { listVoice } from "@/lib/repos/voiceRepo"; // already exists
+import { listDG } from "@/lib/repos/drugGeneRepo"; // already exists
 
 export const runtime = "nodejs";
 

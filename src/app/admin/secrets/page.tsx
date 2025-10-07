@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import React, { useEffect, useState } from "react";
 import { SectionCard } from "@/components/admin/AdminShell";
@@ -14,55 +14,76 @@ export default function SecretsPage() {
   const [newKey, setNewKey] = useState("");
   const [newVal, setNewVal] = useState("");
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState<string|null>(null);
+  const [message, setMessage] = useState<string | null>(null);
 
   /**    ( ,    ). */
   const load = async () => {
-    const j = await fetch("/api/admin/secrets").then(r => r.json());
+    const j = await fetch("/api/admin/secrets").then((r) => r.json());
     setItems(j.items || []);
   };
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => {
+    load();
+  }, []);
 
   /** /   . */
   const add = async () => {
-    setLoading(true); setMessage(null);
+    setLoading(true);
+    setMessage(null);
     const r = await fetch("/api/admin/secrets", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ key: newKey, value: newVal })
+      body: JSON.stringify({ key: newKey, value: newVal }),
     });
     setLoading(false);
-    if (r.ok) { setNewKey(""); setNewVal(""); setMessage("Saved"); load(); }
-    else { const j = await r.json().catch(() => ({})); setMessage(j.error || "Error"); }
+    if (r.ok) {
+      setNewKey("");
+      setNewVal("");
+      setMessage("Saved");
+      load();
+    } else {
+      const j = await r.json().catch(() => ({}));
+      setMessage(j.error || "Error");
+    }
   };
 
   /**    . */
   const del = async (key: string) => {
-    setLoading(true); setMessage(null);
-    const r = await fetch(`/api/admin/secrets?key=${encodeURIComponent(key)}`, { method: "DELETE" });
+    setLoading(true);
+    setMessage(null);
+    const r = await fetch(`/api/admin/secrets?key=${encodeURIComponent(key)}`, {
+      method: "DELETE",
+    });
     setLoading(false);
-    if (r.ok) { setMessage("Deleted"); load(); }
-    else { const j = await r.json().catch(() => ({})); setMessage(j.error || "Error"); }
+    if (r.ok) {
+      setMessage("Deleted");
+      load();
+    } else {
+      const j = await r.json().catch(() => ({}));
+      setMessage(j.error || "Error");
+    }
   };
 
   return (
     <div className="space-y-6">
-      <SectionCard title="Secrets Manager" descr="   (Stripe, Gemini, OAuth  . .)">
+      <SectionCard
+        title="Secrets Manager"
+        descr="   (Stripe, Gemini, OAuth  . .)"
+      >
         <div className="grid md:grid-cols-3 gap-3">
           <input
             className="px-3 py-2 rounded-xl border border-black/10"
             placeholder="KEY (e.g., GEMINI_API_KEY)"
             aria-label="Secret key name"
             value={newKey}
-            onChange={e => setNewKey(e.target.value)}
+            onChange={(e) => setNewKey(e.target.value)}
           />
           <input
             className="px-3 py-2 rounded-xl border border-black/10"
             placeholder="VALUE"
             aria-label="Secret value"
             value={newVal}
-            onChange={e => setNewVal(e.target.value)}
+            onChange={(e) => setNewVal(e.target.value)}
           />
           <button
             disabled={!newKey || !newVal || loading}
@@ -89,11 +110,13 @@ export default function SecretsPage() {
               </tr>
             </thead>
             <tbody>
-              {items.map(it => (
+              {items.map((it) => (
                 <tr key={it.key} className="border-t border-black/10">
                   <td className="py-2 px-3">{it.key}</td>
                   <td className="py-2 px-3">{it.valuePreview}</td>
-                  <td className="py-2 px-3">{new Date(it.updatedAt).toLocaleString()}</td>
+                  <td className="py-2 px-3">
+                    {new Date(it.updatedAt).toLocaleString()}
+                  </td>
                   <td className="py-2 px-3 text-right">
                     <button
                       onClick={() => del(it.key)}
@@ -109,7 +132,7 @@ export default function SecretsPage() {
               {items.length === 0 ? (
                 <tr>
                   <td className="py-3 px-3 kicker" colSpan={4}>
-                     .     .
+                    . .
                   </td>
                 </tr>
               ) : null}

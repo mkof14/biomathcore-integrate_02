@@ -1,7 +1,11 @@
-import { ReportInput, ReportResultSchema } from "@/lib/report-engine/contracts/reportSchemas";
+import {
+  ReportInput,
+  ReportResultSchema,
+} from "@/lib/report-engine/contracts/reportSchemas";
 
 export async function generateReport(input: ReportInput) {
-  const forceMock = !!process.env.REPORTS_MOCK && process.env.REPORTS_MOCK !== "0";
+  const forceMock =
+    !!process.env.REPORTS_MOCK && process.env.REPORTS_MOCK !== "0";
   const key = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
   const prompt =
     input.params?.prompt ??
@@ -15,7 +19,11 @@ export async function generateReport(input: ReportInput) {
         `(${input.title}) mock line 2`,
         `(${input.title}) mock line 3`,
       ],
-      meta: { source: "mock", reason: forceMock ? "FORCED" : "NO_API_KEY", mock: true },
+      meta: {
+        source: "mock",
+        reason: forceMock ? "FORCED" : "NO_API_KEY",
+        mock: true,
+      },
     };
     return ReportResultSchema.parse(mock);
   }
@@ -24,7 +32,9 @@ export async function generateReport(input: ReportInput) {
   const genAI = new GoogleGenerativeAI(key);
   const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-  const resp = await model.generateContent([{ role: "user", parts: [{ text: prompt }] }]);
+  const resp = await model.generateContent([
+    { role: "user", parts: [{ text: prompt }] },
+  ]);
   const text = resp.response?.text?.() ?? "";
 
   const rawLines = text

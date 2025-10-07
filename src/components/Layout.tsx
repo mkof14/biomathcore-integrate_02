@@ -21,7 +21,7 @@ export default function RootLayout({
         <Header />
         <LoadingSpinner />
         <main className="flex-grow">{children}</main>
-        
+
         <Notifications />
       </body>
     </html>

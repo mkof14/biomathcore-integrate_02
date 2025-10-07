@@ -12,12 +12,18 @@ export async function GET() {
 
   let userId: string | null = null;
   if (email) {
-    const u = await prisma.user.findUnique({ where: { email }, select: { id: true } });
+    const u = await prisma.user.findUnique({
+      where: { email },
+      select: { id: true },
+    });
     userId = u?.id ?? null;
   }
 
   const [categories, services] = await Promise.all([
-    prisma.category.findMany({ orderBy: { title: "asc" }, select: { id: true, title: true } }),
+    prisma.category.findMany({
+      orderBy: { title: "asc" },
+      select: { id: true, title: true },
+    }),
     prisma.service.findMany({
       orderBy: { title: "asc" },
       select: { id: true, title: true, description: true, categoryId: true },
@@ -30,10 +36,10 @@ export async function GET() {
       where: { userId },
       select: { serviceId: true },
     });
-    selectedSet = new Set(sels.map(s => s.serviceId));
+    selectedSet = new Set(sels.map((s) => s.serviceId));
   }
 
-  const servicesWithFlag = services.map(s => ({
+  const servicesWithFlag = services.map((s) => ({
     id: s.id,
     title: s.title,
     description: s.description ?? null,
@@ -44,4 +50,4 @@ export async function GET() {
   return NextResponse.json({ categories, services: servicesWithFlag });
 }
 
-export { /* TODO: implement or remove */ };
+export /* TODO: implement or remove */ {};

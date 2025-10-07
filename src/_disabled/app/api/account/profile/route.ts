@@ -22,7 +22,17 @@ function ok<T>(payload: T, init?: ResponseInit) {
   });
 }
 function bad(status: number, message: string, extra?: unknown) {
-  return ok({ ok: false, error: message, ...(extra || { /* TODO: implement or remove */ }) }, { status });
+  return ok(
+    {
+      ok: false,
+      error: message,
+      ...(extra ||
+        {
+          /* TODO: implement or remove */
+        }),
+    },
+    { status },
+  );
 }
 
 export async function PATCH(req: NextRequest) {

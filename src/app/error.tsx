@@ -1,7 +1,13 @@
 "use client";
 import { useEffect } from "react";
 
-export default function GlobalError({ error, reset }: { error: Error & { digest?: string }, reset: () => void }) {
+export default function GlobalError({
+  error,
+  reset,
+}: {
+  error: Error & { digest?: string };
+  reset: () => void;
+}) {
   useEffect(() => {
     // log if you want: console.error(error);
   }, [error]);
@@ -13,7 +19,8 @@ export default function GlobalError({ error, reset }: { error: Error & { digest?
           <div className="text-6xl">😵‍💫</div>
           <h1 className="text-2xl font-semibold">Something went wrong</h1>
           <p className="text-neutral-400 text-sm break-all">
-            {error?.message || "Unexpected error"}{error?.digest ? ` • ${error.digest}` : ""}
+            {error?.message || "Unexpected error"}
+            {error?.digest ? ` • ${error.digest}` : ""}
           </p>
           <div className="flex justify-center gap-2">
             <button
@@ -22,7 +29,10 @@ export default function GlobalError({ error, reset }: { error: Error & { digest?
             >
               Try again
             </button>
-            <a href="/" className="border rounded px-4 py-2 hover:bg-neutral-900">
+            <a
+              href="/"
+              className="border rounded px-4 py-2 hover:bg-neutral-900"
+            >
               Go home
             </a>
           </div>

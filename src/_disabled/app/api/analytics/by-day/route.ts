@@ -6,12 +6,12 @@ import { listDG } from "@/lib/repos/drugGeneRepo";
 
 export const runtime = "nodejs";
 
-function bucket(items: unknown[], field:string) {
+function bucket(items: unknown[], field: string) {
   const map = new Map<string, number>();
-  for (const it of (items||[])) {
+  for (const it of items || []) {
     const d = new Date(it[field] ?? it.createdAt ?? Date.now());
     if (isNaN(d.getTime())) continue;
-    const key = d.toISOString().slice(0,10);
+    const key = d.toISOString().slice(0, 10);
     map.set(key, (map.get(key) ?? 0) + 1);
   }
   return map;
@@ -20,7 +20,10 @@ function bucket(items: unknown[], field:string) {
 export async function GET(req: Request) {
   try {
     const url = new URL(req.url);
-    const days = Math.max(7, Math.min(90, parseInt(url.searchParams.get("days") || "30", 10)));
+    const days = Math.max(
+      7,
+      Math.min(90, parseInt(url.searchParams.get("days") || "30", 10)),
+    );
 
     const [ai, voice, dg] = await Promise.all([
       listAIRuns({ limit: 5000 }),
@@ -37,7 +40,7 @@ export async function GET(req: Request) {
     for (let i = days - 1; i >= 0; i--) {
       const d = new Date(now);
       d.setDate(now.getDate() - i);
-      const key = d.toISOString().slice(0,10);
+      const key = d.toISOString().slice(0, 10);
       out.push({
         date: key,
         ai: mAI.get(key) ?? 0,
@@ -46,8 +49,14 @@ export async function GET(req: Request) {
       });
     }
 
-    return NextResponse.json({ ok: true, data: out }, { headers: { "Cache-Control": "no-store" } });
+    return NextResponse.json(
+      { ok: true, data: out },
+      { headers: { "Cache-Control": "no-store" } },
+    );
   } catch (e: unknown) {
-    return NextResponse.json({ ok:false, error:e?.message || "failed" }, { status: 500 });
+    return NextResponse.json(
+      { ok: false, error: e?.message || "failed" },
+      { status: 500 },
+    );
   }
 }

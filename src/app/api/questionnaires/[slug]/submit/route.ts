@@ -11,6 +11,8 @@ function extractSlug(req: Request) {
 }
 export async function POST(req: Request) {
   const slug = extractSlug(req);
-  const body = await req.json().catch(()=> ({ /* TODO: implement or remove */ }));
+  const body = await req.json().catch(() => ({
+    /* TODO: implement or remove */
+  }));
   return NextResponse.json({ ok: true, slug, received: body });
 }

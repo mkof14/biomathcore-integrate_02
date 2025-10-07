@@ -1,55 +1,69 @@
-export const dynamicParams = true;
-export const dynamic = "force-dynamic";
-
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getService } from "@/lib/service-catalog";
-import { fetchServiceBySlug } from "@/lib/catalog-client";
+import {
+  allServicesFlat,
+  findServiceBySlug,
+  findCategoryByServiceSlug,
+} from "@/app/services/services.catalog";
+import ClientActions from "./ClientActions";
+import BackClient from "./BackClient";
+import AIOpinions from "./AIOpinions";
+import AiWhiteAndAB from "@/app/_components/AiWhiteAndAB";
 
-type Props = { params: Promise<{ slug: string }> };
+export async function generateStaticParams() {
+  return allServicesFlat().map((s) => ({ slug: s.slug }));
+}
 
-export default async function ServiceDetailsPage({ params }: Props) {
+export default async function ServicePage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
   const { slug } = await params;
-
-  const found = getService(slug);
-  if (!found) return notFound();
-
-  const { category, service } = found;
-
-  // Пытаемся получить подробности из API (опционально)
-  const api = await fetchServiceBySlug(slug);
-  const title = api?.title || service.title;
-  const summary = api?.summary || service.summary;
-  const body = api?.bodyHtml || api?.body || null; // адаптируй под своё API
+  const isAI = (slug ?? "").startsWith("ai-");
+  const s = findServiceBySlug(slug);
+  if (!s) return notFound();
+  const cat = findCategoryByServiceSlug(slug);
 
   return (
-    <main className="min-h-screen bg-white text-slate-900">
-      <section className="mx-auto max-w-3xl px-6 py-12">
-        <nav className="mb-6 text-sm flex items-center gap-2 text-slate-600">
-          <Link href="/services" className="hover:text-slate-900">Services</Link>
-          <span>›</span>
-          <Link href={`/services/${category.slug}`} className="hover:text-slate-900">
-            {category.title}
-          </Link>
-          <span>›</span>
-          <span className="text-slate-900">{title}</span>
-        </nav>
+    <main className={`px-6 py-8 max-w-3xl mx-auto ${isAI ? 'ai-white-text' : ''}`}>\n      <AiWhiteAndAB />
+    <BackClient />
+      <h1 className="mt-2 text-3xl md:text-4xl font-extrabold tracking-tight text-sky-700 dark:text-sky-400">
+        {s.title}
+      </h1>
+      <p className="mt-2 text-slate-600 dark:text-slate-300/90">
+        Service: {s.slug}
+        {cat ? (
+          <>
+            {" "}
+            • Category:{" "}
+            <Link
+              href={`/services/${cat.slug}`}
+              className="underline hover:no-underline"
+            >
+              {cat.title}
+            </Link>
+          </>
+        ) : null}
+      </p>
 
-        <h1 className="text-2xl md:text-3xl font-semibold">{title}</h1>
-        {summary && <p className="mt-2 text-slate-600">{summary}</p>}
+      <div className="mt-4">
+        <ClientActions
+          serviceSlug={s.slug}
+          categoryHref={cat ? `/services/${cat.slug}` : undefined}
+        />
+      </div>
 
-        {body ? (
-          <article className="prose prose-slate mt-6">
-            {/* Рендер HTML из API (используй только если доверяешь источнику)
-               Альтернатива — отрендерить Markdown. */}
-            <div dangerouslySetInnerHTML={{ __html: body }} />
-          </article>
-        ) : (
-          <div className="mt-6 rounded-xl border border-dashed border-slate-300 bg-slate-50 p-6 text-slate-600">
-            Detailed content will appear here.
-          </div>
-        )}
-      </section>
+      <article className="prose prose-slate dark:prose-invert max-w-none mt-6">
+        <div className="rounded-3xl border border-slate-200/50 bg-gradient-to-br from-white/95 to-white/75 dark:from-slate-900/70 dark:to-slate-900/40 backdrop-blur-md p-6 shadow-lg">
+          <p>
+            Details to be connected with Reports/Questionnaires and data
+            pipelines.
+          </p>
+        </div>
+      </article>
+
+      <AIOpinions serviceTitle={s.title} />
     </main>
   );
 }

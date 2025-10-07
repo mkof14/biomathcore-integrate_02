@@ -3,11 +3,13 @@ import { z } from "zod";
 export const ReportInputSchema = z.object({
   userId: z.string().min(1),
   title: z.string().min(1),
-  params: z.object({
-    prompt: z.string().min(1).optional(),
-    lines: z.array(z.string()).optional(),
-    meta: z.record(z.any()).optional(),
-  }).optional(),
+  params: z
+    .object({
+      prompt: z.string().min(1).optional(),
+      lines: z.array(z.string()).optional(),
+      meta: z.record(z.any()).optional(),
+    })
+    .optional(),
 });
 export type ReportInput = z.infer<typeof ReportInputSchema>;
 

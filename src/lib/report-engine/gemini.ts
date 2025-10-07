@@ -2,7 +2,9 @@ import { ReportInput } from "./contracts/reportSchemas";
 
 type GenResult = { lines: string[]; meta?: any };
 
-export async function generateWithGemini(input: ReportInput): Promise<GenResult> {
+export async function generateWithGemini(
+  input: ReportInput,
+): Promise<GenResult> {
   const key = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
   const prompt =
     input.params?.prompt ??
@@ -40,5 +42,8 @@ export async function generateWithGemini(input: ReportInput): Promise<GenResult>
     .filter(Boolean)
     .slice(0, 10);
 
-  return { lines: rawLines.length ? rawLines : [text.trim()].filter(Boolean), meta: { source: "gemini" } };
+  return {
+    lines: rawLines.length ? rawLines : [text.trim()].filter(Boolean),
+    meta: { source: "gemini" },
+  };
 }

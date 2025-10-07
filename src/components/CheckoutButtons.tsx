@@ -5,7 +5,7 @@ async function createCheckout(priceId: string) {
   const r = await fetch("/api/stripe/create-checkout-session", {
     method: "POST",
     headers: { "content-type": "application/json" },
-    body: JSON.stringify({ priceId })
+    body: JSON.stringify({ priceId }),
   });
   if (!r.ok) {
     const text = await r.text();
@@ -18,8 +18,8 @@ async function createCheckout(priceId: string) {
 
 export default function CheckoutButtons() {
   const starter = process.env.NEXT_PUBLIC_STRIPE_PRICE_STARTER!;
-  const plus    = process.env.NEXT_PUBLIC_STRIPE_PRICE_PLUS!;
-  const pro     = process.env.NEXT_PUBLIC_STRIPE_PRICE_PRO!;
+  const plus = process.env.NEXT_PUBLIC_STRIPE_PRICE_PLUS!;
+  const pro = process.env.NEXT_PUBLIC_STRIPE_PRICE_PRO!;
 
   return (
     <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4">

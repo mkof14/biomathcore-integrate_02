@@ -1,6 +1,11 @@
 "use client";
 
-type Row = { id: string; title?: string; status?: string; createdAt?: string | Date };
+type Row = {
+  id: string;
+  title?: string;
+  status?: string;
+  createdAt?: string | Date;
+};
 
 export default function LatestList({
   title,

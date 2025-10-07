@@ -4,7 +4,12 @@ export default function Page() {
   const schema = QUESTIONNAIRE_REGISTRY["core-profile"];
   return (
     <main className="mx-auto max-w-3xl px-4 py-8">
-      <FormRenderer schema={schema} questionnaireKey="core-profile" visibility="identified" themeName="medical" />
+      <FormRenderer
+        schema={schema}
+        questionnaireKey="core-profile"
+        visibility="identified"
+        themeName="medical"
+      />
     </main>
   );
 }

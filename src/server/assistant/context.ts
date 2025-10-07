@@ -12,19 +12,35 @@ export type PatientContext = {
     medications: string[];
   };
   forms: Array<{ id: string; title: string }>;
-  reports: Array<{ id: string; title: string; kind: string; summary?: string | null; createdAt: string }>;
-  chat: Array<{ role: "user" | "assistant"; content: string; createdAt: string }>;
+  reports: Array<{
+    id: string;
+    title: string;
+    kind: string;
+    summary?: string | null;
+    createdAt: string;
+  }>;
+  chat: Array<{
+    role: "user" | "assistant";
+    content: string;
+    createdAt: string;
+  }>;
 };
 
 function toStrArr(v: any): string[] {
   if (Array.isArray(v)) return v.map(String);
   if (v && typeof v === "object") {
-    try { return Object.values(v).map(String); } catch { return []; }
+    try {
+      return Object.values(v).map(String);
+    } catch {
+      return [];
+    }
   }
   return [];
 }
 
-export async function buildPatientContext(userId: string): Promise<PatientContext> {
+export async function buildPatientContext(
+  userId: string,
+): Promise<PatientContext> {
   const prisma = getPrisma();
 
   const user = await prisma.user.findUnique({ where: { id: userId } });
@@ -39,7 +55,13 @@ export async function buildPatientContext(userId: string): Promise<PatientContex
     }),
     prisma.report.findMany({
       where: { userId },
-      select: { id: true, title: true, kind: true, summary: true, createdAt: true },
+      select: {
+        id: true,
+        title: true,
+        kind: true,
+        summary: true,
+        createdAt: true,
+      },
       orderBy: { createdAt: "desc" },
       take: 50,
     }),
@@ -62,8 +84,8 @@ export async function buildPatientContext(userId: string): Promise<PatientContex
       allergies: toStrArr(user.allergies),
       medications: toStrArr(user.medications),
     },
-    forms: forms.map(f => ({ id: f.id, title: f.title })),
-    reports: reports.map(r => ({
+    forms: forms.map((f) => ({ id: f.id, title: f.title })),
+    reports: reports.map((r) => ({
       id: r.id,
       title: r.title,
       kind: r.kind,
@@ -71,8 +93,10 @@ export async function buildPatientContext(userId: string): Promise<PatientContex
       createdAt: r.createdAt.toISOString(),
     })),
     chat: chat
-      .map(m => ({
-        role: (m.role === "assistant" ? "assistant" : "user") as "user" | "assistant",
+      .map((m) => ({
+        role: (m.role === "assistant" ? "assistant" : "user") as
+          | "user"
+          | "assistant",
         content: m.content,
         createdAt: m.createdAt.toISOString(),
       }))

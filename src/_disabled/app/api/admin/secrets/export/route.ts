@@ -7,24 +7,28 @@ export const runtime = "nodejs";
  *  Генерирует .env из текущих секретов. Значения экранируются для безопасной записи.
  */
 export async function GET(req: Request) {
-/* params preamble */
-const { pathname } = new URL(req.url);
-const parts = pathname.split("/").filter(Boolean);
-const apiIdx = parts.findIndex(p => p === "api");
-const base = apiIdx >= 0 ? parts.slice(apiIdx + 1) : parts;
-/* end preamble */
+  /* params preamble */
+  const { pathname } = new URL(req.url);
+  const parts = pathname.split("/").filter(Boolean);
+  const apiIdx = parts.findIndex((p) => p === "api");
+  const base = apiIdx >= 0 ? parts.slice(apiIdx + 1) : parts;
+  /* end preamble */
 
-/* params preamble */
+  /* params preamble */
 
-
-
-
-/* end preamble */
+  /* end preamble */
 
   const { searchParams } = new URL(req.url);
   const onlyParam = searchParams.get("only");
   const filename = searchParams.get("filename") || ".env.local";
-  const only = onlyParam ? new Set(onlyParam.split(",").map(s => s.trim()).filter(Boolean)) : null;
+  const only = onlyParam
+    ? new Set(
+        onlyParam
+          .split(",")
+          .map((s) => s.trim())
+          .filter(Boolean),
+      )
+    : null;
 
   const mgr = getSecretsManager();
   const records = await mgr.list();
@@ -46,4 +50,4 @@ const base = apiIdx >= 0 ? parts.slice(apiIdx + 1) : parts;
   });
 }
 
-export { /* TODO: implement or remove */ };
+export /* TODO: implement or remove */ {};
