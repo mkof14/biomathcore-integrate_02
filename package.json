@@ -49,7 +49,9 @@
     "generate:prisma": "prisma generate",
     "vercel-build": "pnpm run generate:prisma && next build",
     "postinstall": "prisma generate || true",
-    "test:routes": "node tests/routes.smoke.mjs"
+    "test:routes": "node tests/routes.smoke.mjs",
+    "backup": "bash scripts/backup_db.sh",
+    "report:pdf": "curl -sS -X POST localhost:3000/api/reports/pdf -H \"content-type: application/json\" -d @report.sample.json > out.pdf"
   },
   "dependencies": {
     "@google-cloud/storage": "^7.17.1",
@@ -76,7 +78,9 @@
     "nodemailer": "^6.10.1",
     "openai": "^5.22.1",
     "pdf-lib": "^1.17.1",
+    "pdfkit": "^0.17.2",
     "pg": "^8.16.3",
+    "pino": "^10.0.0",
     "rate-limiter-flexible": "7.2.0",
     "react": "18.3.1",
     "react-dom": "18.3.1",
@@ -102,6 +106,7 @@
     "@types/jest": "^30.0.0",
     "@types/node": "20.12.12",
     "@types/nodemailer": "^7.0.1",
+    "@types/pino": "^7.0.5",
     "@types/react": "18.3.5",
     "@types/react-dom": "18.3.0",
     "@typescript-eslint/eslint-plugin": "6.21.0",
