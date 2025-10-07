@@ -14,20 +14,23 @@ import Image from "next/image";
 export default function HomePage() {
   const servicesCount = CATEGORIES.reduce((n, c) => n + c.services.length, 0);
   return (
-    <main className="px-6 py-12 md:py-16 max-w-6xl mx-auto">
+    <main className="px-6  md: max-w-6xl mx-auto  md: py-4 md:py-6">
+  <div className="flex justify-center mt-0 mb-6">
+    <Image src="/images/BioMath-Logo-22.png" alt="BioMath Core" width={200} height={70} />
+  </div>
   <div className="flex items-start mb-6">
     <Image src="/images/BioMath-Logo-22.png" alt="BioMath Core Logo" width={180} height={60}  style={{marginTop:"-40px"}}/>
   </div>
-      <div className="text-center mb-6">
+      
+<div className="text-center mb-2">
         <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-white">
           BioMath Core
         </h1>
-        <p className="mt-2 text-lg text-white/90">
+        <p className="mt-1 text-lg text-white/90">
           Evidence-first wellness & longevity tools — {servicesCount}+ services across {CATEGORIES.length} categories.
         </p>
       </div>
-
-      <HomeCategories />
+<HomeCategories />
   <HowItWorks />
   <TrustSecurity />
   <CtaFooter /><div className="mt-8">
