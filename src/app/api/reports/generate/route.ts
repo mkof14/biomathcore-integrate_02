@@ -1,34 +1,25 @@
 import { NextResponse } from "next/server";
-import { generateReport } from "@/lib/reports/engine";
+import { PrismaClient } from "@prisma/client";
 
 export async function POST(req: Request) {
-  if (!process.env.GOOGLE_API_KEY) {
-    const { PrismaClient } = await import("@prisma/client");
-    const prisma = new PrismaClient();
-    const row = await prisma.report.create({
-      data: {
-        userId: "U1001",
-        title: "Demo Health Report",
-        status: "ready",
-      } as any,
-    });
-    await prisma.$disconnect();
-    return new Response(
-      JSON.stringify({
-        ok: true,
-        id: row.id,
-        note: "created without external model",
-      }),
-      {
-        status: 200,
-        headers: { "content-type": "application/json" },
-      },
-    );
-  }
+  const prisma = new PrismaClient();
+  try {
+    const body = await req.json().catch(() => ({} as any));
+    const src = (body?.data ?? body ?? {}) as any;
 
-  const { topic = "Personal Health Plan", userId } = await req
-    .json()
-    .catch(() => ({}));
-  const report = await generateReport({ topic, userId });
-  return NextResponse.json(report);
+    const userId = src.userId ?? "U1001";
+    const title = src.title ?? "Demo Health Report";
+    const status = src.status ?? "ready";
+    const kind = src.kind ?? "demo";
+
+    const row = await prisma.report.create({
+      data: { userId, title, status, kind },
+    });
+
+    return NextResponse.json({ ok: true, id: row.id });
+  } catch (e: any) {
+    return NextResponse.json({ ok: false, error: String(e?.message ?? e) }, { status: 500 });
+  } finally {
+    await prisma.$disconnect().catch(() => {});
+  }
 }
