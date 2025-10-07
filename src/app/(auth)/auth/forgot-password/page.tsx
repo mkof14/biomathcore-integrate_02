@@ -83,9 +83,7 @@ export default function ForgotPasswordPage() {
         <button
           type="submit"
           disabled={busy}
-          className="w-full rounded-lg px-4 py-2 font-semibold text-white shadow transition-colors
-                           bg-gradient-to-r from-cyan-500 to-emerald-400 hover:from-cyan-600 hover:to-emerald-500
-                           focus:outline-none focus:ring-2 focus:ring-cyan-400 disabled:opacity-60"
+          className="btn-nasa"
         >
           {busy ? "Sending…" : "Send reset link"}
         </button>

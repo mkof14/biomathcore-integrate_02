@@ -144,7 +144,7 @@ export default function ResetPasswordPage() {
         <button
           type="submit"
           disabled={loading || !token}
-          className="rounded-xl bg-gradient-to-r from-sky-500 to-emerald-400 text-white font-semibold py-3 disabled:opacity-60"
+          className="btn-nasa"
         >
           {loading ? "Saving…" : "Change password"}
         </button>

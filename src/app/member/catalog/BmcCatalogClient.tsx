@@ -69,7 +69,7 @@ export default function BmcCatalogClient({
   }
 
   return (
-    <div className="mx-auto max-w-7xl p-6 text-white">
+    <div className="btn-nasa">
       <header className="mb-6 flex items-end justify-between">
         <div>
           <h1 className="text-3xl font-semibold tracking-tight">
@@ -125,13 +125,13 @@ export default function BmcCatalogClient({
 
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0">
-                      <div className="font-semibold text-white">{c.title}</div>
+                      <div className="btn-nasa">{c.title}</div>
                       <div className="text-xs mt-1 text-slate-300/80">
                         Priority #{c.priority}
                       </div>
                     </div>
                     <span
-                      className="inline-flex items-center px-2 py-1 rounded-full text-xs font-bold border backdrop-blur-md"
+                      className="btn-nasa"
                       style={{
                         background: "rgba(255,255,255,.08)",
                         borderColor: "rgba(255,255,255,.2)",
@@ -177,7 +177,7 @@ export default function BmcCatalogClient({
                 <span>$19</span>
                 <span>$79</span>
               </div>
-              <div className="w-full h-4 rounded-full bg-white/10 overflow-hidden border border-white/15">
+              <div className="btn-nasa">
                 <div
                   style={{ width: `${progress}%` }}
                   className={[
@@ -229,7 +229,7 @@ export default function BmcCatalogClient({
                 type="button"
                 type="button"
                 onClick={clear}
-                className="w-1/3 rounded-xl px-3 py-2 text-sm font-medium bg-white/10 border border-white/20 text-white hover:bg-white/15 transition-colors"
+                className="btn-nasa"
               >
                 Clear
               </button>

@@ -125,11 +125,11 @@ export default function CatalogClient({
                             <div className="text-base font-medium">
                               {c.title}
                             </div>
-                            <div className="mt-1 text-[11px] text-white/70">
+                            <div className="btn-nasa">
                               Priority #{c.priority}
                             </div>
                           </div>
-                          <div className="text-sm text-white/85">
+                          <div className="btn-nasa">
                             ${c.price}
                           </div>
                         </div>
@@ -177,7 +177,7 @@ export default function CatalogClient({
                   <span>$19</span>
                   <span>$79</span>
                 </div>
-                <div className="bmc-progress w-full h-4 rounded-full bg-white/10 overflow-hidden border border-white/15">
+                <div className="btn-nasa">
                   <div
                     className={[
                       "bar h-4 rounded-full transition-all duration-300",
@@ -229,7 +229,7 @@ export default function CatalogClient({
                 <button
                   type="button"
                   onClick={clear}
-                  className="w-1/3 rounded-xl px-3 py-2 text-sm font-medium bg-white/10 border border-white/20 text-white hover:bg-white/15 transition-colors"
+                  className="btn-nasa"
                 >
                   Clear
                 </button>

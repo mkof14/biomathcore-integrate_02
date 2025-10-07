@@ -68,7 +68,7 @@ export default function Alerts() {
         </select>
         <button
           onClick={load}
-          className="px-3 py-1 rounded bg-sky-500 text-slate-900"
+          className="btn-nasa"
         >
           Refresh
         </button>

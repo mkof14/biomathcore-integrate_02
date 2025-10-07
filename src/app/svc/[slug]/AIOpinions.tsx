@@ -194,14 +194,14 @@ export default function AIOpinions({ serviceTitle }: { serviceTitle: string }) {
         <div className="flex items-center gap-4">
           {/* Emblem: balanced scales, indigo/amber duotone */}
           <motion.div
-            className="relative h-12 w-12 shrink-0 rounded-full grid place-items-center shadow-md ring-2 ring-white/60 dark:ring-slate-900/40 bg-[radial-gradient(120%_120%_at_30%_30%,#3730a3_0%,#1f2937_80%)]"
+            className="btn-nasa"
             initial={{ scale: 0.9, rotate: -2, opacity: 0 }}
             animate={{ scale: 1, rotate: 0, opacity: 1 }}
             transition={{ duration: 0.3 }}
           >
             <Scale className="h-7 w-7 text-amber-300" />
-            <span className="absolute -bottom-1 -right-1 h-4 w-4 rounded-full bg-amber-400 ring-2 ring-white/80 dark:ring-slate-900/60"></span>
-            <span className="absolute -top-1 -left-1 h-4 w-4 rounded-full bg-indigo-400 ring-2 ring-white/80 dark:ring-slate-900/60"></span>
+            <span className="btn-nasa"></span>
+            <span className="btn-nasa"></span>
           </motion.div>
           <div>
             <h2 className="text-2xl font-extrabold leading-tight">
@@ -223,15 +223,15 @@ export default function AIOpinions({ serviceTitle }: { serviceTitle: string }) {
 
         {/* Quick-glance explainer chips */}
         <div className="flex flex-wrap gap-2 pt-1">
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200/70 dark:border-slate-700/60 px-3 py-1 text-xs text-slate-800 dark:text-slate-200 bg-white/75 dark:bg-slate-900/40">
+          <span className="btn-nasa">
             <BadgeCheck className="h-3.5 w-3.5 text-indigo-700 dark:text-indigo-300" />{" "}
             Evidence-focused
           </span>
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200/70 dark:border-slate-700/60 px-3 py-1 text-xs text-slate-800 dark:text-slate-200 bg-white/75 dark:bg-slate-900/40">
+          <span className="btn-nasa">
             <Lightbulb className="h-3.5 w-3.5 text-amber-700 dark:text-amber-300" />{" "}
             Alternative pathways
           </span>
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200/70 dark:border-slate-700/60 px-3 py-1 text-xs text-slate-800 dark:text-slate-200 bg-white/75 dark:bg-slate-900/40">
+          <span className="btn-nasa">
             <FileOutput className="h-3.5 w-3.5 text-indigo-700 dark:text-indigo-300" />{" "}
             Merge & export
           </span>
@@ -247,10 +247,10 @@ export default function AIOpinions({ serviceTitle }: { serviceTitle: string }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.35, delay: 0.05 }}
         >
-          <div className="rounded-t-3xl p-4 text-white bg-gradient-to-r from-indigo-800 via-indigo-700 to-indigo-600">
+          <div className="btn-nasa">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="h-9 w-9 rounded-full bg-white/15 ring-1 ring-white/30 grid place-items-center text-white text-sm font-semibold">
+                <div className="btn-nasa">
                   A
                 </div>
                 <span className="font-semibold">Opinion A</span>
@@ -295,10 +295,10 @@ export default function AIOpinions({ serviceTitle }: { serviceTitle: string }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.35, delay: 0.1 }}
         >
-          <div className="rounded-t-3xl p-4 text-white bg-gradient-to-r from-amber-800 via-amber-700 to-orange-700">
+          <div className="btn-nasa">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="h-9 w-9 rounded-full bg-white/15 ring-1 ring-white/30 grid place-items-center text-white text-sm font-semibold">
+                <div className="btn-nasa">
                   B
                 </div>
                 <span className="font-semibold">Opinion B</span>
@@ -346,7 +346,7 @@ export default function AIOpinions({ serviceTitle }: { serviceTitle: string }) {
       >
         <button
           onClick={() => downloadMerged("pdf")}
-          className="inline-flex items-center gap-2 rounded-md bg-indigo-700 text-white px-4 py-2 text-sm hover:bg-indigo-800"
+          className="btn-nasa"
         >
           <FileDown className="h-4 w-4" /> Merge & Download (PDF)
         </button>

@@ -24,7 +24,7 @@ export default async function SearchPage({ searchParams }: Props) {
           />
           <button
             type="submit"
-            className="rounded-xl border border-slate-900 bg-slate-900 text-white px-4 py-2 hover:opacity-90"
+            className="btn-nasa"
           >
             Find
           </button>

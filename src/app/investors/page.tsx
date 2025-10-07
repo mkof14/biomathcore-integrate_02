@@ -31,7 +31,7 @@ export default function InvestorsPage() {
           <div className="mt-6 flex flex-wrap gap-3">
             <Link
               href="/about"
-              className="rounded-lg bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 transition"
+              className="btn-nasa"
             >
               Learn about BioMath Core
             </Link>
@@ -196,7 +196,7 @@ export default function InvestorsPage() {
           <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
             <Link
               href="/contact"
-              className="rounded-lg bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 transition"
+              className="btn-nasa"
             >
               Contact the team
             </Link>

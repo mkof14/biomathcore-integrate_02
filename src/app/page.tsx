@@ -3,53 +3,29 @@ import HomeAdsBand from "@/app/_components/HomeAdsBand";
 import Link from "next/link";
 import { CATEGORIES } from "./services/services.catalog";
 import { CategoryTitle } from "@/app/_components/CategoryVisual";
-import { categoryGlass } from "@/app/_components/CategoryVisual";
+import StatsStrip from "@/app/_components/StatsStrip";
+import HomeCategories from "@/app/_components/HomeCategories";
 
 export default function HomePage() {
   const servicesCount = CATEGORIES.reduce((n, c) => n + c.services.length, 0);
   return (
     <main className="px-6 py-12 md:py-16 max-w-6xl mx-auto">
-      <section className="mb-10">
-        <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-sky-800 dark:text-sky-300">
+      <div className="text-center mb-6">
+        <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-white">
           BioMath Core
         </h1>
-        <p className="mt-3 text-lg text-slate-700 dark:text-slate-300/90">
-          Evidence-first wellness & longevity tools — {servicesCount}+ services
-          across {CATEGORIES.length} categories.
+        <p className="mt-2 text-lg text-white/90">
+          Evidence-first wellness & longevity tools — {servicesCount}+ services across {CATEGORIES.length} categories.
         </p>
-        <div className="mt-6 flex flex-wrap gap-3"></div>
-      </section>
+      </div>
 
-      <section
-        id="categories"
-        className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
-      >
-        {CATEGORIES.map((cat) => (
-          <Link
-            key={cat.slug}
-            href={`/services/${cat.slug}`}
-            className="group nasa-card rounded-3xl p-6 border border-slate-200/50  /95 /75 dark:/70 dark:/40 backdrop-blur-md shadow-md hover:shadow-xl hover:-translate-y-1 transition-all cat-glass"
-          >
-            <div className="flex items-center justify-between">
-              <div className="text-lg font-semibold tracking-tight text-sky-800 dark:text-sky-300">
-                <CategoryTitle cat={cat} />
-              </div>
-              <span className="text-xs text-slate-500">
-                {cat.services.length} services
-              </span>
-            </div>
-            {cat.description ? (
-              <p className="mt-2 text-sm text-slate-600 dark:text-slate-300/90">
-                {cat.description}
-              </p>
-            ) : null}
-          </Link>
-        ))}
-      </section>
+      <HomeCategories /><div className="mt-8">
+        <HomeAdsBand />
+      </div>
 
-      <div className="mt-6 flex justify-center"></div>
-      <PromoDualAI />
-      <HomeAdsBand />
+      <div className="mt-8">
+        <StatsStrip />
+      </div>
     </main>
   );
 }

@@ -175,7 +175,7 @@ export default function ReportsAllSections() {
           {/* Compact / Refresh / Preview */}
           <button
             onClick={() => setCompact((v) => !v)}
-            className="px-3 py-1.5 rounded-full border bg-white text-slate-700 hover:border-slate-400 text-sm"
+            className="btn-nasa"
             aria-pressed={compact}
             title="Toggle density"
           >
@@ -183,14 +183,14 @@ export default function ReportsAllSections() {
           </button>
           <button
             onClick={() => fetchReport(plan)}
-            className="px-3 py-1.5 rounded-full border bg-white text-slate-700 hover:border-slate-400 text-sm"
+            className="btn-nasa"
             title="Reload data"
           >
             Refresh
           </button>
           <a
             href={`/member/reports/preview/${plan}`}
-            className="px-3 py-1.5 rounded-full border bg-white text-slate-700 hover:border-slate-400 text-sm"
+            className="btn-nasa"
             title="Open raw preview"
           >
             Open Preview
@@ -264,17 +264,17 @@ export default function ReportsAllSections() {
                     <h3 className="text-lg font-semibold">{s.title}</h3>
                     {/* badges */}
                     {items > 0 && (
-                      <span className="text-[11px] px-2 py-0.5 rounded-full bg-slate-100 border">
+                      <span className="btn-nasa">
                         items: {items}
                       </span>
                     )}
                     {notes > 0 && (
-                      <span className="text-[11px] px-2 py-0.5 rounded-full bg-slate-100 border">
+                      <span className="btn-nasa">
                         notes: {notes}
                       </span>
                     )}
                     {charts > 0 && (
-                      <span className="text-[11px] px-2 py-0.5 rounded-full bg-slate-100 border">
+                      <span className="btn-nasa">
                         charts: {charts}
                       </span>
                     )}

@@ -48,7 +48,7 @@ export default function TagFilter() {
             setSelected([]);
             router.push("/services");
           }}
-          className="px-3 py-1 text-xs rounded-full border border-slate-300 hover:bg-slate-100"
+          className="btn-nasa"
         >
           Clear Tags
         </button>

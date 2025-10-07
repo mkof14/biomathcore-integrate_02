@@ -97,7 +97,7 @@ export default function ClientActions({
 
       <button
         onClick={downloadSummary}
-        className="inline-flex items-center gap-2 rounded-md bg-sky-600 text-white hover:bg-sky-700 px-3 py-2 text-sm "
+        className="btn-nasa"
       >
         <Download className="h-4 w-4" /> Download
       </button>

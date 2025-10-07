@@ -56,7 +56,7 @@ export default function SearchBox({
             : base;
           router.push(url);
         }}
-        className="rounded-md bg-slate-900 text-white px-3 py-2 text-sm hover:opacity-90 dark:bg-slate-100 dark:text-slate-900"
+        className="btn-nasa"
       >
         Search
       </button>

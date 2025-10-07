@@ -1,6 +1,6 @@
 export default function HomePreview() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 text-white">
+    <div className="btn-nasa">
       <section className="mx-auto max-w-6xl px-6 pt-20 pb-10">
         <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-center">
           BioMath <span className="text-sky-400">Core</span>

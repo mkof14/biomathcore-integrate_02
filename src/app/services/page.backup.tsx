@@ -417,7 +417,7 @@ export default function ServicesPage() {
                           <Link
                             href={href}
                             prefetch
-                            className="inline-flex items-center px-3 py-2 rounded-lg text-sm bg-white/10 hover:bg-white/15 border border-white/15 text-white"
+                            className="btn-nasa"
                           >
                             <span className="mr-2">⚙️</span> Details
                           </Link>
@@ -425,7 +425,7 @@ export default function ServicesPage() {
                           <Link
                             href={href}
                             prefetch
-                            className="inline-flex items-center px-3 py-2 rounded-lg text-sm bg-purple-600/70 hover:bg-purple-600 text-white"
+                            className="btn-nasa"
                           >
                             Open page →
                           </Link>
@@ -442,7 +442,7 @@ export default function ServicesPage() {
           <div className="mt-12 flex justify-end">
             <a
               href="#top"
-              className="inline-flex items-center gap-2 rounded-lg bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 transition"
+              className="btn-nasa"
             >
               ↑ Back to top
             </a>

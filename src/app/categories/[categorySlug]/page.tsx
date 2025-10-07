@@ -24,7 +24,7 @@ export default function CategoryPage() {
         {categoryServices.map((service) => (
           <div
             key={service.id}
-            className="bg-gray-800 p-4 rounded-lg text-white"
+            className="btn-nasa"
           >
             <h3 className="text-xl font-bold">{service.name}</h3>
             <p>{service.description}</p>

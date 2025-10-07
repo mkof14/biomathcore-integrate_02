@@ -48,7 +48,7 @@ export default function SignInPage() {
           height={64}
           priority
         />
-        <h1 className="mt-4 text-2xl font-semibold text-white">Sign In</h1>
+        <h1 className="btn-nasa">Sign In</h1>
       </div>
 
       {message && (
@@ -98,7 +98,7 @@ export default function SignInPage() {
         <button
           type="submit"
           disabled={submitting}
-          className="rounded-xl bg-gradient-to-r from-sky-500 to-emerald-400 text-white font-semibold py-3 disabled:opacity-60"
+          className="btn-nasa"
         >
           {submitting ? "Signing in…" : "Sign In"}
         </button>

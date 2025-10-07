@@ -29,7 +29,7 @@ export default function IntakeSessionsPage() {
 
       <div className="grid gap-3">
         {loading && (
-          <div className="rounded-xl border border-white/10 bg-black/40 text-white p-4">
+          <div className="btn-nasa">
             Loading...
           </div>
         )}

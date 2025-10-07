@@ -274,7 +274,7 @@ export default function Catalog() {
           </div>
         </div>
         {maxReached && (
-          <div className="mt-4 rounded-lg border border-red-500 bg-red-600 text-white px-4 py-3 text-sm font-semibold">
+          <div className="btn-nasa">
             You’ve reached the MAX ($79) threshold. MAX includes everything —
             it’s better value now.
           </div>
@@ -322,7 +322,7 @@ export default function Catalog() {
                 ) : isSelected ? (
                   <button
                     onClick={() => toggle(cat.id)}
-                    className="px-3 py-1.5 rounded-lg bg-slate-900 text-white text-sm"
+                    className="btn-nasa"
                   >
                     Reset
                   </button>

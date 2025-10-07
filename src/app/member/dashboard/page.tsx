@@ -60,7 +60,7 @@ async function RecentFiles({ userId }: { userId: string }) {
       <div className="px-4 py-3">
         <Link
           href="/member/health-blackbox"
-          className="inline-block text-xs px-2 py-1 rounded-md bg-emerald-600/80 hover:bg-emerald-600 text-white"
+          className="btn-nasa"
         >
           Upload File
         </Link>
@@ -101,7 +101,7 @@ async function Reports({ userId }: { userId: string }) {
       <div className="px-4 py-3">
         <Link
           href="/member/reports"
-          className="inline-block text-xs px-2 py-1 rounded-md bg-indigo-600/80 hover:bg-indigo-600 text-white"
+          className="btn-nasa"
         >
           Open Reports
         </Link>
@@ -126,19 +126,19 @@ export default async function Dashboard() {
           <div className="flex items-center gap-2">
             <Link
               href="/member/health-assistant"
-              className="text-xs px-2 py-1 rounded-md bg-sky-600/80 hover:bg-sky-600 text-white"
+              className="btn-nasa"
             >
               Ask Assistant
             </Link>
             <Link
               href="/member/health-blackbox"
-              className="text-xs px-2 py-1 rounded-md bg-emerald-600/80 hover:bg-emerald-600 text-white"
+              className="btn-nasa"
             >
               Upload File
             </Link>
             <Link
               href="/member/questionnaires"
-              className="text-xs px-2 py-1 rounded-md bg-amber-600/80 hover:bg-amber-600 text-white"
+              className="btn-nasa"
             >
               Questionnaires
             </Link>

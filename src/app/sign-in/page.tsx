@@ -72,7 +72,7 @@ export default function SignInPage() {
           </div>
           <button
             onClick={() => setHideResetBanner(true)}
-            className="shrink-0 rounded-md px-2 py-0.5 text-emerald-200/80 hover:text-white"
+            className="btn-nasa"
             aria-label="Close"
             type="button"
           >
@@ -146,7 +146,7 @@ export default function SignInPage() {
         <button
           type="submit"
           disabled={submitting}
-          className="rounded-xl bg-gradient-to-r from-sky-500 to-emerald-400 text-white font-semibold py-3 disabled:opacity-60"
+          className="btn-nasa"
         >
           {submitting ? "Signing in…" : "Sign In"}
         </button>

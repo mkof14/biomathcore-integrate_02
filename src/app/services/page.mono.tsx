@@ -175,7 +175,7 @@ function ServiceModalInline({
       <div className="relative w-full max-w-3xl mx-4 rounded-2xl bg-white dark:bg-zinc-900 p-6 shadow-xl">
         <button
           onClick={onClose}
-          className="absolute top-3 right-3 rounded-md px-2.5 py-1.5 text-sm bg-zinc-800/70 hover:bg-zinc-800 text-white"
+          className="btn-nasa"
           aria-label="Close"
         >
           ×
@@ -222,7 +222,7 @@ function ServiceModalInline({
           <button
             onClick={generate}
             disabled={busy}
-            className="inline-flex items-center gap-2 rounded-md bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 text-sm"
+            className="btn-nasa"
           >
             {busy ? "Generating…" : "Generate"}
           </button>
@@ -269,7 +269,7 @@ function ActionBtn({
   return (
     <button
       onClick={onClick}
-      className="flex items-center justify-center gap-2 rounded-lg bg-zinc-900 text-white px-3 py-2 text-xs hover:bg-zinc-800"
+      className="btn-nasa"
     >
       <span className="text-base leading-none">{icon}</span>
       <span>{label}</span>
@@ -309,7 +309,7 @@ function ServiceCardInline({
         </h3>
       </div>
 
-      <p className="text-xs text-white/85 min-h-[38px]">{desc}</p>
+      <p className="btn-nasa">{desc}</p>
 
       <div className="mt-3 flex items-center gap-2">
         <button
@@ -321,7 +321,7 @@ function ServiceCardInline({
 
         <Link
           href={href}
-          className="inline-flex items-center gap-1 rounded-md bg-black/70 hover:bg-black text-white px-3 py-1.5 text-xs"
+          className="btn-nasa"
         >
           Open page →
         </Link>
@@ -680,7 +680,7 @@ export default function ServicesPageMonolith() {
           <div className="mt-12 flex justify-end">
             <a
               href="#top"
-              className="inline-flex items-center gap-2 rounded-lg bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 transition"
+              className="btn-nasa"
             >
               ↑ Back to top
             </a>

@@ -116,7 +116,7 @@ export default function IntakePage() {
               <div className="mb-4 flex items-center justify-between">
                 <div>
                   <div className="text-sm font-medium">Selected categories</div>
-                  <div className="text-xs text-white/70">
+                  <div className="btn-nasa">
                     {selected.length
                       ? selected.join(", ")
                       : "No categories selected yet."}

@@ -28,7 +28,7 @@ export default function AdminLoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-neutral-950 text-white flex items-center justify-center">
+    <div className="btn-nasa">
       <form
         onSubmit={onSubmit}
         className="p-6 rounded-2xl bg-white/5 border border-white/10 w-full max-w-sm space-y-3"
