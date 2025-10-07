@@ -6,7 +6,7 @@ export async function POST(req: Request) {
     const { PrismaClient } = await import("@prisma/client");
     const prisma = new PrismaClient();
     const row = await prisma.report.create({
-      data: {
+      data: { kind: "demo",
         userId: "U1001",
         title: "Demo Health Report",
         status: "ready",
@@ -30,5 +30,5 @@ export async function POST(req: Request) {
     .json()
     .catch(() => ({}));
   const report = await generateReport({ topic, userId });
-  return NextResponse.json(report);
+  return NextResponse.json({ ok: true, id: row.id });
 }
