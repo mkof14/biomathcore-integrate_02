@@ -18,22 +18,31 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: '22'
           cache: 'pnpm'
 
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 10.18.1
-          run_install: true
+      - name: Ensure pnpm
+        run: |
+          set -euo pipefail
+          if ! command -v pnpm >/dev/null 2>&1; then
+            npm i -g pnpm@10.18.1
+          fi
+          pnpm -v
+          node -v
 
-      - uses: actions/cache@v4
+      - name: Install deps
+        run: pnpm install --frozen-lockfile
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
         with:
           path: ~/.cache/ms-playwright
           key: ${{ runner.os }}-ms-playwright-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-ms-playwright-
 
-      - uses: microsoft/playwright-github-action@v1
+      - name: Install Playwright deps
+        uses: microsoft/playwright-github-action@v1
         timeout-minutes: 25
 
       - name: Run E2E (${{ matrix.browser }})
