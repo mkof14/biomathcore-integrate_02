@@ -29,11 +29,11 @@ jobs:
             ${{ runner.os }}-ms-playwright-
 
       - name: Install Playwright browsers + system deps
-        run: pnpm exec playwright install --with-deps
-        timeout-minutes: 20
+        run: pnpm exec playwright install --with-deps ${{ matrix.browser }}
+        timeout-minutes: 30
 
       - name: Run E2E (${{ matrix.browser }})
-        run: pnpm exec playwright test --project=${{ matrix.browser }} --reporter=github
+        run: pnpm exec playwright test --project=${{ matrix.browser }} --reporter=github,html
         timeout-minutes: 30
 
       - name: Upload HTML report
