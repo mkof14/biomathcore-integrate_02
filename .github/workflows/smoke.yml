@@ -12,24 +12,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: pnpm
-
       - run: corepack enable
       - run: pnpm -v
       - run: pnpm install --frozen-lockfile
       - run: pnpm exec playwright install --with-deps
-      - name: Run smoke tests
-        env:
+      - env:
           HOST: 127.0.0.1
           PORT: 3010
           NEXT_TELEMETRY_DISABLED: "1"
         run: pnpm run test:smoke
-      - name: Upload HTML report
-        if: always()
+      - if: always()
         uses: actions/upload-artifact@v4
         with:
           name: playwright-smoke-report
