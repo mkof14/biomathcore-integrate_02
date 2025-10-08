@@ -2,27 +2,11 @@ name: smoke
 on:
   push:
     branches: [ main-2 ]
-    paths:
-      - 'tests/e2e/**'
-      - 'scripts/start-smoke-server.js'
-      - 'tests/e2e/scripts/**'
-      - '.github/workflows/smoke.yml'
-      - 'package.json'
   pull_request:
     branches: [ main-2 ]
-    paths:
-      - 'tests/e2e/**'
-      - 'scripts/start-smoke-server.js'
-      - 'tests/e2e/scripts/**'
-      - '.github/workflows/smoke.yml'
-      - 'package.json'
-concurrency:
-  group: smoke-${{ github.ref }}
-  cancel-in-progress: true
 jobs:
   smoke:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -31,7 +15,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'pnpm'
+          cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm exec playwright install --with-deps
       - name: Run smoke tests
@@ -46,4 +30,3 @@ jobs:
         with:
           name: playwright-smoke-report
           path: playwright-report
-          retention-days: 7
