@@ -1,43 +1,35 @@
-name: smoke
-
+name: Smoke
 on:
   push:
-    branches: [ main ]
+    branches: [ main, main-2 ]
+  pull_request:
+    branches: [ main, main-2 ]
   workflow_dispatch:
+
+concurrency:
+  group: smoke-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   smoke:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
           cache: 'pnpm'
-
       - uses: pnpm/action-setup@v4
         with:
           version: 9
           run_install: true
-
-      - name: Cache Playwright browsers
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/ms-playwright
-          key: ${{ runner.os }}-ms-playwright-${{ hashFiles('pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-ms-playwright-
-
       - name: Install Playwright deps
         uses: microsoft/playwright-github-action@v1
         timeout-minutes: 20
-
       - name: Run smoke tests
-        run: pnpm exec playwright test --reporter=html
+        run: pnpm exec playwright test -c playwright.smoke.config.ts --reporter=github
         timeout-minutes: 15
-
       - name: Upload HTML report
         if: always()
         uses: actions/upload-artifact@v4
