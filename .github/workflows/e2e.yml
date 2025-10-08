@@ -16,23 +16,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Node.js 22
-        uses: actions/setup-node@v4
+      - uses: pnpm/action-setup@v4
         with:
-          node-version: '22'
-          cache: 'pnpm'
-
-      - name: Ensure pnpm
-        run: |
-          corepack enable || true
-          corepack prepare pnpm@10.18.1 --activate || true
-          if ! command -v pnpm >/dev/null 2>&1; then
-            npm i -g pnpm@10.18.1
-          fi
-          pnpm -v
-
-      - name: Install deps
-        run: pnpm install --frozen-lockfile=false
+          version: 10.18.1
+          run_install: true
 
       - name: Cache Playwright browsers
         uses: actions/cache@v4
