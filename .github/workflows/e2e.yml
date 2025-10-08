@@ -1,0 +1,59 @@
+name: E2E
+on:
+  push:
+    branches: [ main, main-2 ]
+  pull_request:
+    branches: [ main, main-2 ]
+  workflow_dispatch:
+
+concurrency:
+  group: e2e-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'pnpm'
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+          run_install: true
+
+      - name: Install Playwright deps
+        uses: microsoft/playwright-github-action@v1
+        timeout-minutes: 20
+
+      - name: Run E2E (${{ matrix.browser }})
+        run: pnpm exec playwright test --project=${{ matrix.browser }} --reporter=github
+        timeout-minutes: 30
+
+      - name: Upload failure assets
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-assets-${{ matrix.browser }}
+          path: |
+            test-results/**/*.zip
+            test-results/**/*.png
+            test-results/**/*.webm
+          retention-days: 7
+
+      - name: Upload HTML report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-e2e-report-${{ matrix.browser }}
+          path: playwright-report
+          retention-days: 14
