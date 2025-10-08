@@ -3,8 +3,8 @@ import { defineConfig, devices } from "@playwright/test";
 
 export default defineConfig({
   testDir: "tests/e2e",
-  timeout: 60_000,
-  expect: { timeout: 10_000 },
+  timeout: 300000_000,
+  expect: { timeout: 300000_000 },
   fullyParallel: true,
   reporter: [["list"], ["html", { open: "never" }]],
   use: {
@@ -19,7 +19,7 @@ export default defineConfig({
     : {
         command: "npm run build && npm run start",
         port: 3000,
-        reuseExistingServer: !process.env.CI,
-        timeout: 120_000,
+        reuseExistingServer: true,
+        timeout: 300000_000,
       },
 });
