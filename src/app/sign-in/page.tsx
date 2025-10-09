@@ -62,7 +62,7 @@ export default function SignInPage() {
     <AuthShell
       title="BioMath Core — Sign In"
       subtitle="After login you’ll be redirected to your member area."
-      logoSrc="/images/BMCore-Logo-33.png"
+      logoSrc="/"
     >
       {showResetBanner && (
         <div className="mb-4 flex items-start justify-between gap-3 rounded-lg bg-emerald-500/15 px-3 py-2 text-sm text-emerald-200">

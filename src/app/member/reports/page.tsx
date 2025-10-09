@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "@/shims/NoImage";
 import BackButton from "@/components/ui/BackButton";
 import ReportsAllSections from "./ReportsAllSections";
 

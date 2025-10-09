@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
-import Image from "next/image";
+import Image from "@/shims/NoImage";
 import { usePathname } from "next/navigation";
 
 export default function ControlShell({

@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import Image from "next/image";
+import Image from "@/shims/NoImage";
 import Link from "next/link";
 
 export default function ForgotPasswordPage() {
@@ -43,7 +43,7 @@ export default function ForgotPasswordPage() {
     <div className="rounded-2xl bg-white/90 p-8 shadow-xl backdrop-blur-sm">
       <div className="flex justify-center mb-4">
         <Image
-          src="/images/BMCore-Logo-33.png"
+          src="/"
           alt="BioMath Core Logo"
           width={160}
           height={60}

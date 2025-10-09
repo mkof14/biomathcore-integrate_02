@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "@/shims/NoImage";
 import Link from "next/link";
 import { slugify } from "@/lib/slug";
 

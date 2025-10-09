@@ -9,14 +9,14 @@ import OurAdvantages from "@/app/_components/OurAdvantages";
 import HowItWorks from "@/app/_components/HowItWorks";
 import TrustSecurity from "@/app/_components/TrustSecurity";
 import CtaFooter from "@/app/_components/CtaFooter";
-import Image from "next/image";
+import Image from "@/shims/NoImage";
 
 export default function HomePage() {
   const servicesCount = CATEGORIES.reduce((n, c) => n + c.services.length, 0);
   return (
     <main className="px-6  md: max-w-6xl mx-auto  md: py-4 md:py-6">
   <div className="flex items-start mb-6">
-    <Image src="/images/BioMath-Logo-22.png" alt="BioMath Core Logo" width={180} height={60}  style={{marginTop:"-40px"}}/>
+    <Image src="/" alt="BioMath Core Logo" width={180} height={60}  style={{marginTop:"-40px"}}/>
   </div>
       
 <div className="text-center mb-2">

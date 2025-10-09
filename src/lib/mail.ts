@@ -29,7 +29,7 @@ function brandWrap(innerHtml: string, previewText?: string) {
   const baseUrl =
     process.env.APP_URL || process.env.NEXTAUTH_URL || "http://localhost:3000";
   // На случай, если CID не сработает в каком-то клиенте — дадим абсолютную ссылку (не все клиенты грузят локалхост)
-  const httpLogoUrl = `${baseUrl.replace(/\/$/, "")}/images/BMCore-Logo-33.png`;
+  const httpLogoUrl = `${baseUrl.replace(/\/$/, "")}/`;
 
   return `
 <!doctype html>

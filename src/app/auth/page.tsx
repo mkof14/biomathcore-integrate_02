@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
+import Image from "@/shims/NoImage";
 import AuthShell from "@/components/AuthShell";
 
 export default function SignInPage() {
@@ -42,7 +42,7 @@ export default function SignInPage() {
     <AuthShell>
       <div className="flex flex-col items-center mb-6">
         <Image
-          src="/images/BMCore-Logo-33.png"
+          src="/"
           alt="BioMath Core"
           width={180}
           height={64}

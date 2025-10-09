@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
+import Image from "@/shims/NoImage";
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -14,7 +14,7 @@ export default function Footer() {
           <div>
             <div className="flex flex-col items-start gap-3">
               <Image
-                src="/images/BMCore-Logo-33.png"
+                src="/"
                 alt="BM Core Logo"
                 width={120}
                 height={120}

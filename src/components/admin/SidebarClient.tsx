@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import Image from "next/image";
+import Image from "@/shims/NoImage";
 import RoleGate from "@/components/admin/RoleGate";
 import { useRole } from "@/components/admin/useRole";
 

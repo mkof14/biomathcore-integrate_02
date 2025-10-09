@@ -1,5 +1,5 @@
 import "../globals.css";
-import Image from "next/image";
+import Image from "@/shims/NoImage";
 import SidebarClient from "@/components/admin/SidebarClient";
 import CommandPaletteClient from "@/components/admin/CommandPaletteClient";
 

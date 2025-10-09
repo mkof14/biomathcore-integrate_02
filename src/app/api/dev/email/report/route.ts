@@ -4,7 +4,7 @@ export async function GET() {
   const ORIGIN = new URL(
     process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
   ).origin;
-  const LOGO = `${ORIGIN}/images/BMCore-Logo-33.png`;
+  const LOGO = `${ORIGIN}/`;
   const SITE = "https://biomathcore.com";
   const YEAR = new Date().getFullYear();
   const BTN = `${SITE}/member/reports`;

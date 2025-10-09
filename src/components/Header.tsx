@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Image from "next/image";
+import Image from "@/shims/NoImage";
 
 export default function Header() {
   return (
@@ -8,7 +8,7 @@ export default function Header() {
       <div className="relative mx-auto max-w-7xl px-4 h-full flex items-center justify-between gap-6">
         <Link href="/" className="flex items-center gap-3">
           <Image
-            src="/images/BMCore-Logo-33.png"
+            src="/"
             alt="BioMath Core"
             width={80}
             height={80}

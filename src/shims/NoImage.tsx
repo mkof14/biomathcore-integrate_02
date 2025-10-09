@@ -1,3 +1,7 @@
 "use client";
 import React from "react";
-export default function NoImage(_: any) { return null; }
+type Props = React.ImgHTMLAttributes<HTMLImageElement> & { alt?: string };
+export default function NoImage(props: Props) {
+  // Ничего не рендерим, чтобы Next не трогал оптимизацию
+  return null;
+}

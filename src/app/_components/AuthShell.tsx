@@ -1,11 +1,11 @@
 "use client";
-import Image from "next/image";
+import Image from "@/shims/NoImage";
 
 export default function AuthShell({
   title,
   subtitle,
   children,
-  logoSrc = "/images/BMCore-Logo-33.png",
+  logoSrc = "/",
 }: {
   title: string;
   subtitle?: string;
