@@ -79,7 +79,7 @@
     "firebase": "12.1.0",
     "framer-motion": "^12.23.22",
     "json2csv": "6.0.0-alpha.2",
-    "jspdf": "3.0.2",
+    "jspdf": "3.0.3",
     "jszip": "3.10.1",
     "lucide-react": "0.541.0",
     "luxon": "^3.7.1",
