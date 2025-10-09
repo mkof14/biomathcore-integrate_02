@@ -295,3 +295,9 @@ textarea::placeholder {
 .ai-white-text :is(.text-orange-400,.text-orange-500,.text-orange-600,.text-orange-700,.text-[#a8431f],.text-[#A8431F]) {
   color:#fff !important;
 }
+
+/* hide missing images temporarily */
+img[src="/images/BMCore-Logo-33.png"],
+img[src="/images/BioMath-Logo-22.png"],
+img[src="/images/bm-core-chip.png"],
+img[src="/images/award-hto-2023.png"]{display:none!important}

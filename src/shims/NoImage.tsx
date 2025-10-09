@@ -1,0 +1,3 @@
+"use client";
+import React from "react";
+export default function NoImage(_: any) { return null; }
