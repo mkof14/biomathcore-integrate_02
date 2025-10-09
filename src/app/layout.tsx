@@ -1,3 +1,4 @@
+import FabAIAssistant from "../components/fab/FabAIAssistant";
 import "@/lib/dev/fetch-log";
 
 import "@/lib/dev/fetch-log";
@@ -76,7 +77,8 @@ export default function RootLayout({
         <WidgetMount />
         <WidgetMount />
         <FloatingAssistant />
-      </body>
+        <FabAIAssistant />
+</body>
     </html>
   );
 }
